@@ -30,5 +30,13 @@
 .btn {
     color: white;
     background-color: #6872A6;
+    border-color: #6872A6;
+}
+
+.btn:hover {
+    color: white;
+    background-color: #F2D4C9;
+    border-color: #F2D4C9;
+    color: #3C3D59;
 }
 </style>
