@@ -25,7 +25,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <i class="mdi mdi-plus" style="font-size: 20px;"></i>
+                                    <div class="w-25"><i class="more mdi mdi-plus"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <i class="mdi mdi-plus" style="font-size: 20px;"></i>
+                                    <div class="w-25"><i class="more mdi mdi-plus"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -114,6 +114,12 @@ ul {
     width: 40px;
     border-radius: 70%;
     border: 0.1rem lightgrey solid;
+}
+
+@media all and (max-width: 767px) {
+    .more {
+        font-size: 80px;
+    }
 }
 
 </style>

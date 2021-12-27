@@ -60,6 +60,7 @@ export default {
 }
 
 .comment-img {
+    min-width: 30px;
     width: 90%;
     border-radius: 70%;
     border: 0.1rem lightgrey solid;

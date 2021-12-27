@@ -1,13 +1,78 @@
 <template>
-    
+    <div class="musician">
+        <top></top>
+        <div class="container">
+            <div class="row" style="height: 250px;">
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    <img class="musician-img" :src="require(`@/assets/dummy/musician.png`)" alt="">
+                </div>
+                <div class="col-9 d-flex justify-content-start align-items-center">
+                    <div class="text-left">
+                        <div><h2>{{musician}}</h2></div>
+                        <div><h6>2개의 앨범</h6></div>
+                        <div><h6>12개의 노래</h6></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="mb-3 d-flex align-items-center">
+                    <i class="mdi mdi-post-outline mr-2" style="font-size: 30px;"></i>
+                    <span>12 songs</span>
+                </div>
+            </div>
+            <hr>
+            <div v-for="(item, key) in dummy" :key=key class="mb-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img class="song-img" :src="require(`@/assets/dummy/${item}.jpg`)" alt="대추" @click="$router.push(`/music/${key}`)">
+                    </div>
+                    <div class="col-md-9 text-left">
+                        <div>
+                            <h5 class="m-0">{{item}}</h5>
+                            <small>{{musician}}</small>
+                        </div>
+                        <div style="font-size: 11px;">
+                            <div><i class="mdi mdi-likes"></i><span>좋아요🙆‍♀️🙆‍♂️ 780개</span></div>
+                            <div><span>구독👆 70개</span></div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
+import top from '@/components/Nav.vue'
 
+export default {
+    name: 'Musician',
+    components: {
+        top,
+    },
+    data() {
+        return {
+            musician: '',
+            dummy: { '1': 'persian', '2': 'british', '3': 'scotish', '4': 'russian', '5': 'siam', '6': 'regdoll', 
+                     '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
+        }
+    },
+    created() {
+        this.musician = this.$route.params.musicianId
+    }
 }
 </script>
 
 <style>
+.musician-img {
+    width: 100px;
+    border-radius: 70%;
+    border: 0.1rem lightgrey solid;
+}
 
+.song-img {
+    width: 100%;
+    height: 100px;
+}
 </style>
