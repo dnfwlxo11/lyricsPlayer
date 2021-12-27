@@ -14,7 +14,7 @@
             <div class="row m-0 p-0">
                 <div class="col-md-2 mb-5 album" v-for="(item, key) in dummy" :key="key" style="float: left;">
                     <div class="thumbnail card mb-1">
-                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push(`/music/${key}`)">
+                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push(`/music/${key}`)" >
                     </div>
                     <div class="text-left">
                         <div class="music-info text-left">

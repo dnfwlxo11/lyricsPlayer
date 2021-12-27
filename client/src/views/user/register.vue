@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-4 mb-5">
-                            <h5>몇가지만 입력하면 가입할 수 있어요.</h5>
+                            <h5>간단하게 가입할 수 있어요.</h5>
                         </div>
                         <div class="mb-3">
                             <input class="pl-3 id-input" type="text" style="height: 35px; width: 70%" placeholder="아이디를 입력해주세요.">
