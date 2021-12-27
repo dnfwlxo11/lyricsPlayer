@@ -1,9 +1,9 @@
 <template>
-    <div class="comments">
+    <div class="comments mb-3 pl-2 pr-2">
         <div class="text-left">
             <div class="row h-100 d-flex justify-content-center align-items-center">
-                <div class="col-2"><h2><strong>Comment</strong></h2></div>
-                <div class="col-10">
+                <div class="col-md-2"><h2><strong>Comment</strong></h2></div>
+                <div class="col-md-10">
                     <input class="pl-3 comment-input" type="text" style="width: 80%;height: 45px;">
                     <button class="btn comment-btn" style="width: 20%;height: 45px;">등록</button>
                 </div>

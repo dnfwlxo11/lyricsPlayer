@@ -14,12 +14,12 @@
             <div class="row m-0 p-0">
                 <div class="col-md-2 mb-5 album" v-for="(item, key) in dummy" :key="key" style="float: left;">
                     <div class="thumbnail card mb-1">
-                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push({ path: `/music/${key}`})">
+                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push(`/music/${key}`)">
                     </div>
                     <div class="text-left">
                         <div class="music-info text-left">
-                            <span @click="$router.push({ path: `/music/${key}` })">{{item}}</span> <br>
-                            <span @click="$router.push({ path: `/musician/대추`})"><small>대추</small></span>
+                            <span @click="$router.push(`/music/${key}`)">{{item}}</span> <br>
+                            <span @click="$router.push(`/musician/대추`)"><small>대추</small></span>
                         </div>
                     </div>
                 </div>
@@ -53,6 +53,7 @@
 <style>
     .top {
         position: fixed;
+        z-index: 1000;
     }
 
     .search {
