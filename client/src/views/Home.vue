@@ -12,13 +12,16 @@
         <div class="container trend">
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
             <div class="row m-0 p-0">
-                <div class="col-md-2 mb-5" v-for="(item, idx) of dummy" :key="idx" style="float: left;">
-                    <div class="album card">
-                        <img class="" :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;">
+                <div class="col-md-2 mb-5 album" v-for="(item, key) in dummy" :key="key" style="float: left;">
+                    {{item}}{{key}}
+                    <div class="thumbnail card mb-1">
+                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push({ path: `/music/${key}`})">
                     </div>
                     <div class="text-left">
-                        {{item}} <br>
-                        <small>대추</small>
+                        <div class="music-info text-left">
+                            <span @click="$router.push({ path: `/music/${key}` })">{{item}}</span> <br>
+                            <span @click="$router.push({ path: `/musician/대추`})"><small>대추</small></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,11 +38,14 @@
         name: 'Home',
         components: {
             top,
-            bottom
+            bottom,
         },
         data() {
             return {
-                dummy: [ 'persian', 'british', 'scotish', 'russian', 'siam', 'regdoll', 'cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6' ]
+                dummy: { '1': 'persian', '2': 'british', '3': 'scotish', '4': 'russian', '5': 'siam', '6': 'regdoll', 
+                         '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
+                isRegister: false,
+                isLogin: false,
             }
         }
     }
@@ -51,13 +57,6 @@
     }
 
     .keyword-input {
-        background-color: #F2F2F2;
-        color: #A599B0;
-        border: none;
-        outline: none;
-        /* border-radius: 0.5rem; */
-        width: 40%;
-        height: 40%;
         border-radius: 0.5rem 0 0 0.5rem;
     }
 
@@ -75,7 +74,7 @@
         margin-bottom: 50px;
     }
 
-    .album, .album > img{
+    .thumbnail, .thumbnail > img{
         height: 200px;
     }
 
@@ -87,5 +86,9 @@
     .innerIcon {
         position: relative;
         font-size: 30px;
+    }
+
+    .music-info:hover {
+        cursor: pointer;
     }
 </style>
