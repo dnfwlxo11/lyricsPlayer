@@ -13,7 +13,6 @@
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
             <div class="row m-0 p-0">
                 <div class="col-md-2 mb-5 album" v-for="(item, key) in dummy" :key="key" style="float: left;">
-                    {{item}}{{key}}
                     <div class="thumbnail card mb-1">
                         <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push({ path: `/music/${key}`})">
                     </div>
@@ -52,6 +51,10 @@
 </script>
 
 <style>
+    .top {
+        position: fixed;
+    }
+
     .search {
         height: 100px;
     }
