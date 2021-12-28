@@ -10,7 +10,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeRouteEnter (to, from, next) {
+      if (to == from) {
+        router.go()
+      }
+    },
   },
   {
     path: '/music/:musicId',

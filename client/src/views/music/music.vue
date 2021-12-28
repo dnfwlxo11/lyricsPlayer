@@ -18,7 +18,7 @@
                             <progress value="30" max="100" style="height: 50px;width: 100%;"></progress>
                         </div>
                     </div>
-                    <div class="col-md-2 h-100 p-0">
+                    <div class="col-md-2 h-100">
                         <div class="card text-left w-100 m-0 p-2 mb-3">
                             <div class="ml-2">
                                 <div class="mb-1">좋아요 🙆‍♀️🙆‍♂️</div>

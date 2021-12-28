@@ -27,7 +27,6 @@ router.post('/check', (req, res, next) => {
         const sql = Quries.selectUser(req.body.id);
         const rows = await conn.query(sql);
 
-        console.log(rows[0])
         if (rows[0] == undefined) return false
         return true
     });
@@ -44,12 +43,9 @@ router.post('/login', (req, res, next) => {
         const sql = Quries.selectUserInfo(req.body.id);
         const rows = await conn.query(sql);
 
-        console.log(rows)
-
         if (rows[0] == undefined) return false
         else {
             if (rows[0].password == req.body.password) {
-                console.log(User.generateToken(req.body.password))
                 return User.generateToken(req.body.password);
             } else return false;
         }
