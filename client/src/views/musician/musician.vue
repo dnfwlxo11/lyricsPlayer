@@ -64,15 +64,17 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 .musician-img {
-    width: 100px;
+    width: 70%;
+    min-width: 80px;
     border-radius: 70%;
     border: 0.1rem lightgrey solid;
 }
 
 .song-img {
     width: 100%;
-    height: 100px;
+    height: 200px;
+    object-fit: cover;
 }
 </style>

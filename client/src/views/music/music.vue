@@ -7,7 +7,7 @@
             </div>
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
-                    <div class="col-md-2 m-0 p-0 h-100 mt-2 mb-2 pl-2 pr-2">
+                    <div class="col-md-2 m-0 p-0 mt-2 mb-2 pl-2 pr-2">
                         <img class="musician-img" src="@/assets/dummy/musician.png" alt="대추" @click="$router.push(`/musician/대추`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
@@ -25,7 +25,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <div class="w-25"><i class="more mdi mdi-plus"></i></div>
+                                    <div><i class="more mdi mdi-plus"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <div class="w-25"><i class="more mdi mdi-plus"></i></div>
+                                    <div><i class="more mdi mdi-plus"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 progress {
     border-radius: 0;
     color: #3C3D59;
@@ -93,17 +93,15 @@ progress::-webkit-progress-bar {
     background-color: white;
 }
 
-.musician-img {
-    max-width: 200px;
-    max-height: 200px;
-    width: 70%;
-    border-radius: 70%;
-    border: 0.1rem lightgrey solid;
-}
-
 .play-btn:hover, .musician-img:hover {
     transform: scale(1.1);
     transition: transform 0.5s;
+}
+
+.musician-img {
+    width: 85%;
+    border-radius: 70%;
+    border: 0.1rem lightgrey solid;
 }
 
 ul {
@@ -118,7 +116,7 @@ ul {
 
 @media all and (max-width: 767px) {
     .more {
-        font-size: 80px;
+        font-size: 40px;
     }
 }
 

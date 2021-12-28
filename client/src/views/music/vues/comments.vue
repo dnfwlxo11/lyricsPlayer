@@ -2,9 +2,9 @@
     <div class="comments mb-3 pl-2 pr-2">
         <div class="text-left">
             <div class="row h-100 d-flex justify-content-start align-items-center mb-5">
-                <div class="col-md-2"><h2 class="m-0 p-0"><strong>Comment</strong></h2></div>
+                <div class="col-md-2 mb-3"><h2 class="m-0 p-0"><strong>Comment</strong></h2></div>
                 <div class="col-md-10">
-                    <textarea class="p-3 comment-input" type="text" style="width: 85%;height: 45px;float: left" />
+                    <textarea class="p-2 comment-input" type="text" style="width: 85%;height: 45px;float: left" />
                     <button class="btn comment-btn" style="width: 15%;height: 45px;">등록</button>
                 </div>
             </div>
@@ -53,6 +53,7 @@ export default {
     border-radius: 0.5rem 0 0 0.5rem;
     overflow: hidden;
     resize: none;
+    outline: none;
 }
 
 .comment-btn {
