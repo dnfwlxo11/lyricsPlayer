@@ -31,8 +31,8 @@
                         </div>
                         
                         <div>
-                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm', registerData)" style="width: 90%; height: 40px;">
-                                {{!isDuplication?'아이디 중복체크를 해주세요.':registerData.password==registerData.check_password && registerData.password != '' ? '가입하기!' : '비밀번호를 확인해주세요.'}}
+                            <button type="button" class="btn btn-sm" @click="checkRule" style="width: 90%; height: 40px;">
+                                {{!isDuplication ? '아이디 중복체크를 해주세요.':registerData.password==registerData.check_password && registerData.password != undefined ? '가입하기!' : '비밀번호를 확인해주세요.'}}
                             </button>
                         </div>
                     </div>
@@ -49,18 +49,20 @@
         name: 'Register',
         data() {
             return {
-                registerData: {
-                    password: 0,
-                    check_password: -1,
-                },
+                registerData: {},
                 isDuplication: false,
             }
         },
         methods: {
             async checkId() {
                 let res = await axios.post('/api/user/check', { 'id': this.registerData.id })
-                console.log(res)
+
                 if (!res.data.success) this.isDuplication = true;
+            },
+            checkRule() {
+                if (this.registerData.password == this.registerData.check_password && this.isDuplication 
+                    && this.registerData.password != undefined && this.registerData.check_password != undefined) 
+                    this.$emit('on-confirm', this.registerData)
             }
         }
     }

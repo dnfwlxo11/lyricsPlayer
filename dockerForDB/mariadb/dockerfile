@@ -1,0 +1,7 @@
+FROM mariadb:latest
+
+ADD init.sql /docker-entrypoint-initdb.d
+
+RUN mkdir -p /backup
+
+COPY ./backup.sh /backup

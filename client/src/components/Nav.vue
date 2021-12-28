@@ -12,9 +12,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="target">
-                    <div class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
+                    <div v-if="!loginState" class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
                         <button class="nav-item btn mr-3" @click="isRegister=true">회원가입</button>
                         <button class="nav-item btn" @click="isLogin=true">로그인</button>
+                    </div>
+                    <div v-else class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
+                        <button class="nav-item btn mr-3" @click="logout">로그아웃</button>
                     </div>
                 </div>
             </nav>
@@ -26,26 +29,29 @@
 
 <script>
     import Vue from 'vue';
-    import VueCookies from 'vue-cookies';
     import axios from 'axios';
     import register from '@/views/user/register.vue';
     import login from '@/views/user/login.vue';
 
-    Vue.use(VueCookies);
-
     export default {
         name: 'Nav',
-        
+        props: {
+            popDialog: {
+                type: Boolean,
+                default: false,
+            }
+        },
         components: {
             register,
             login
         },
         data() {
             return {
-                isRegister: false,
                 isLogin: false,
+                isRegister: false,
                 registerData: null,
                 loginState: false,
+                loginErr: false,
             }
         },
         mounted() {
@@ -54,19 +60,27 @@
         methods: {
             async register(data) {
                 let res = await axios.post('/api/user/register', data);
-                console.log(res);
             },
 
-            async login(data) {
-                let res = await axios.post('/api/user/login', data);
-                if (res.data.success) {
-                    Vue.$cookies.set('x_auth', res.data.token)
-                    this.loginState = true;
-                }
+            login(data) {
+                this.loginState = data;
+            },
+
+            logout() {
+                sessionStorage.removeItem('x_auth');
+                this.$router.push('/')
             },
 
             checkAuth() {
-                console.log(Vue.$cookies.get('x_auth'))
+                let token = sessionStorage.getItem('x_auth');
+                // if (Vue.$cookies.get('x_auth') != undefined) this.loginState = true;
+                if (token != null) this.loginState = true;
+                else this.loginState = false;
+            },
+        },
+        watch: {
+            popDialog() {
+                this.isLogin = this.popDialog;
             }
         }
     }

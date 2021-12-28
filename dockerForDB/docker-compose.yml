@@ -1,0 +1,16 @@
+version: '3'
+services:
+  audio_db:
+    build: 
+      context: ./mariadb
+      dockerfile: Dockerfile
+    image: mariadb
+    container_name: daein_mariadb
+    restart: always
+    environment: 
+      - MYSQL_ROOT_PASSWORD=daein
+    ports:
+      - "15000:3306"
+    volumes:
+      - ./mariadb/app/db:/var/lib/mysql
+      - ./mariadb/app/backup:/backup

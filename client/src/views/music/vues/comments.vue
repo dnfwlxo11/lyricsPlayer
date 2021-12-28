@@ -4,8 +4,8 @@
             <div class="row h-100 d-flex justify-content-start align-items-center mb-5">
                 <div class="col-md-2 mb-3"><h2 class="m-0 p-0"><strong>Comment</strong></h2></div>
                 <div class="col-md-10">
-                    <textarea class="p-2 comment-input" type="text" style="width: 85%;height: 45px;float: left" />
-                    <button class="btn comment-btn" style="width: 15%;height: 45px;">등록</button>
+                    <textarea class="p-2 comment-input" type="text" style="width: 85%;height: 45px;float: left" v-model="comment" />
+                    <button class="btn comment-btn" style="width: 15%;height: 45px;" @click="submitComment">등록</button>
                 </div>
             </div>
             <div class="text-left m-0 p-0">
@@ -40,9 +40,19 @@ export default {
     name: 'Comments',
     data() {
         return {
-            comments: ['hi', 'good', 'hello']
+            comments: ['hi', 'good', 'hello'],
+            comment: ''
         }
     },
+    methods: {
+        submitComment() {
+            if (sessionStorage.getItem('x_auth') != null) {
+                return true;
+            } else {
+                this.$emit('on-login');
+            }
+        }
+    }
 }
 </script>
 

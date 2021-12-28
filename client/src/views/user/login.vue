@@ -20,6 +20,7 @@
                     <div class="modal-body">
                         <div class="mt-4 mb-5">
                             <h5>반가워요 😊</h5>
+                            <h6 v-if="loginErr" class="text-danger">가입하지 않았거나<br>아이디 또는 비밀번호가 틀렸어요!</h6>
                         </div>
                         <div class="mb-3">
                             <input class="pl-3 id-input" type="text" style="height: 35px; width: 90%" placeholder="아이디를 입력해주세요." v-model="registerData.id" >
@@ -29,7 +30,7 @@
                         </div>
                         
                         <div>
-                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm', registerData)" style="width: 90%; height: 40px;">
+                            <button type="button" class="btn btn-sm" @click="login()" style="width: 90%; height: 40px;">
                                 자 드가자
                             </button>
                         </div>
@@ -41,13 +42,33 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueCookies from 'vue-cookies';
+import axios from 'axios';
+
+Vue.use(VueCookies);
+
 export default {
     name: 'Login',
     data() {
         return {
             registerData: {},
+            loginErr: false,
         }
-    }
+    },
+    methods: {
+        async login() {
+            let res = await axios.post('/api/user/login', this.registerData);
+            if (res.data.success) {
+                sessionStorage.setItem('x_auth', res.data.token);
+                // Vue.$cookies.set('x_auth', res.data.token, '10s')
+                this.loginErr = false;
+                this.$emit('on-confirm', true)
+            } else {
+                this.loginErr = true;
+            }
+        }
+    },
 }
 </script>
 

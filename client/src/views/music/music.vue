@@ -1,6 +1,6 @@
 <template>
     <div class="music">
-        <top></top>
+        <top :popDialog="isLogin"></top>
         <div class="container p-0">
             <div class="profile mb-2">
                 <img class="w-100" :src="require(`@/assets/dummy/${dummy[musicId]}.jpg`)" :alt="dummy[musicId]" style="height: 700px; object-fit: cover;">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <comments></comments>
+            <comments @on-login="mustLogin"></comments>
         </div>
         
     </div>
@@ -65,6 +65,7 @@ export default {
                      '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
+            isLogin: false,
         }
     },
     created() {
@@ -73,6 +74,10 @@ export default {
     methods: {
         musicPlay() {
             console.log('음악을 재생합니다.');
+        },
+        mustLogin() {
+            this.isLogin = true;
+            console.log('로그인해!');
         }
     }
 }
