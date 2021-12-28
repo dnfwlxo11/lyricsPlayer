@@ -19,17 +19,19 @@
                 </div>
             </nav>
         </div>
-        <register v-if="isRegister" @on-close="isRegister=false" @on-confirm="isRegister=false"></register>
-        <login v-if="isLogin" @on-close="isLogin=false" @on-confirm="isLogin=false"></login>
+        <register v-if="isRegister" @on-close="isRegister=false" @on-confirm="isRegister=false;register($event)"></register>
+        <login v-if="isLogin" @on-close="isLogin=false" @on-confirm="isLogin=false;login($event)" ></login>
     </div>
 </template>
 
 <script>
-    import register from '@/views/user/register.vue'
-    import login from '@/views/user/login.vue'
+    import axios from 'axios';
+    import register from '@/views/user/register.vue';
+    import login from '@/views/user/login.vue';
 
     export default {
         name: 'Nav',
+        
         components: {
             register,
             login
@@ -38,8 +40,22 @@
             return {
                 isRegister: false,
                 isLogin: false,
+                registerData: null,
             }
         },
+        methods: {
+            async register(data) {
+                let res = await axios.post('/api/user/register', data);
+                console.log(res);
+            },
+
+            async login(data) {
+                console.log(data);
+
+                let res = await axios.post('/api/user/login');
+                console.log(res);
+            }
+        }
     }
 </script>
 

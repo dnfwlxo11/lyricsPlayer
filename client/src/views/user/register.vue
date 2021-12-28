@@ -22,17 +22,17 @@
                             <h5>간단하게 가입할 수 있어요.</h5>
                         </div>
                         <div class="mb-3">
-                            <input class="pl-3 id-input" type="text" style="height: 35px; width: 70%" placeholder="아이디를 입력해주세요.">
-                            <button class="btn id-btn" style="width: 20%; height: 35px">중복체크</button>
+                            <input class="pl-3 id-input" type="text" style="height: 35px; width: 70%" placeholder="아이디를 입력해주세요." v-model="registerData.id"  @change="isDuplication=false;">
+                            <button class="btn id-btn" style="width: 20%; height: 35px" @click="checkId" :disabled="isDuplication">중복체크</button>
                         </div>
                         <div class="mb-5">
-                            <input class="pl-3 mb-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 입력해주세요.">
-                            <input class="pl-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 한번 더 입력해주세요.">
+                            <input class="pl-3 mb-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 입력해주세요." v-model="registerData.password">
+                            <input class="pl-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 한번 더 입력해주세요." v-model="registerData.check_password">
                         </div>
                         
                         <div>
-                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm')" style="width: 90%; height: 40px;">
-                                가입하기!
+                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm', registerData)" style="width: 90%; height: 40px;">
+                                {{!isDuplication?'아이디 중복체크를 해주세요.':registerData.password==registerData.check_password && registerData.password != '' ? '가입하기!' : '비밀번호를 확인해주세요.'}}
                             </button>
                         </div>
                     </div>
@@ -43,8 +43,26 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
-        name: 'Register'
+        name: 'Register',
+        data() {
+            return {
+                registerData: {
+                    password: 0,
+                    check_password: -1,
+                },
+                isDuplication: false,
+            }
+        },
+        methods: {
+            async checkId() {
+                let res = await axios.post('/api/user/check', { 'id': this.registerData.id })
+                console.log(res)
+                if (!res.data.success) this.isDuplication = true;
+            }
+        }
     }
 </script>
 

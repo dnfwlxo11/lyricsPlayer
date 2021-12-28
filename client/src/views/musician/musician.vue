@@ -27,13 +27,17 @@
                         <img class="song-img" :src="require(`@/assets/dummy/${item}.jpg`)" alt="대추" @click="$router.push(`/music/${key}`)">
                     </div>
                     <div class="col-md-9 text-left">
-                        <div>
-                            <h5 class="m-0">{{item}}</h5>
-                            <small>{{musician}}</small>
+                        <div class="row h-75">
+                            <div>
+                                <h5 class="m-0">{{item}}</h5>
+                                <small>{{musician}}</small>
+                            </div>
                         </div>
-                        <div style="font-size: 11px;">
-                            <div><i class="mdi mdi-likes"></i><span>좋아요🙆‍♀️🙆‍♂️ 780개</span></div>
-                            <div><span>구독👆 70개</span></div>
+                        <div class="row h-25">
+                            <div class="d-flex justify-content-start align-items-end" style="font-size: 15px;">
+                                <div><i class="mdi mdi-likes"></i><span>좋아요🙆‍♀️🙆‍♂️ 780개</span></div>,&nbsp;
+                                <div><span>구독👆 70개</span></div>    
+                            </div>
                         </div>
                     </div>
                 </div>
