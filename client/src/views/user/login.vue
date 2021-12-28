@@ -22,14 +22,14 @@
                             <h5>반가워요 😊</h5>
                         </div>
                         <div class="mb-3">
-                            <input class="pl-3 id-input" type="text" style="height: 35px; width: 90%" placeholder="아이디를 입력해주세요.">
+                            <input class="pl-3 id-input" type="text" style="height: 35px; width: 90%" placeholder="아이디를 입력해주세요." v-model="registerData.id" >
                         </div>
                         <div class="mb-5">
-                            <input class="pl-3 mb-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 입력해주세요.">
+                            <input class="pl-3 mb-3" type="password" style="height: 35px; width: 90%" placeholder="비밀번호를 입력해주세요." v-model="registerData.password">
                         </div>
                         
                         <div>
-                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm')" style="width: 90%; height: 40px;">
+                            <button type="button" class="btn btn-sm" @click="$emit('on-confirm', registerData)" style="width: 90%; height: 40px;">
                                 자 드가자
                             </button>
                         </div>
@@ -42,7 +42,12 @@
 
 <script>
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+        return {
+            registerData: {},
+        }
+    }
 }
 </script>
 

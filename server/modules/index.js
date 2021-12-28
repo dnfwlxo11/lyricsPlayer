@@ -1,5 +1,7 @@
 const Database = require('./mariadb')
+const { auth } = require('./auth')
 
 module.exports = {
-    Database: new Database
+    Database: new Database,
+    Auth: auth
 }

@@ -25,9 +25,13 @@
 </template>
 
 <script>
+    import Vue from 'vue';
+    import VueCookies from 'vue-cookies';
     import axios from 'axios';
     import register from '@/views/user/register.vue';
     import login from '@/views/user/login.vue';
+
+    Vue.use(VueCookies);
 
     export default {
         name: 'Nav',
@@ -41,7 +45,11 @@
                 isRegister: false,
                 isLogin: false,
                 registerData: null,
+                loginState: false,
             }
+        },
+        mounted() {
+            this.checkAuth();
         },
         methods: {
             async register(data) {
@@ -50,10 +58,15 @@
             },
 
             async login(data) {
-                console.log(data);
+                let res = await axios.post('/api/user/login', data);
+                if (res.data.success) {
+                    Vue.$cookies.set('x_auth', res.data.token)
+                    this.loginState = true;
+                }
+            },
 
-                let res = await axios.post('/api/user/login');
-                console.log(res);
+            checkAuth() {
+                console.log(Vue.$cookies.get('x_auth'))
             }
         }
     }
