@@ -17,11 +17,13 @@
                         <button class="nav-item btn" @click="isLogin=true">로그인</button>
                     </div>
                     <div v-else class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
+                        <button class="nav-item btn mr-3" @click="showMypage">내 정보</button>
                         <button class="nav-item btn mr-3" @click="logout">로그아웃</button>
                     </div>
                 </div>
             </nav>
         </div>
+        <mypage v-if="isMypage" @on-close="isMypage=false" @on-confirm="isMypage=false;"></mypage>
         <register v-if="isRegister" @on-close="isRegister=false" @on-confirm="isRegister=false;register($event)"></register>
         <login v-if="isLogin" @on-close="isLogin=false" @on-confirm="isLogin=false;login($event)" ></login>
     </div>
@@ -30,6 +32,7 @@
 <script>
     import Vue from 'vue';
     import axios from 'axios';
+    import mypage from '@/views/user/mypage.vue';
     import register from '@/views/user/register.vue';
     import login from '@/views/user/login.vue';
 
@@ -42,11 +45,13 @@
             }
         },
         components: {
+            mypage,
             register,
-            login
+            login,
         },
         data() {
             return {
+                isMypage: false,
                 isLogin: false,
                 isRegister: false,
                 registerData: null,
@@ -68,7 +73,13 @@
 
             logout() {
                 sessionStorage.removeItem('x_auth');
-                this.$router.push('/')
+                this.$router.push('/', () => {}, () => {
+                    window.location.reload();
+                });
+            },
+
+            showMypage() {
+                this.isMypage = true;
             },
 
             checkAuth() {

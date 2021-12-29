@@ -29,7 +29,7 @@
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
-                                <h5 class="m-0">{{item}}</h5>
+                                <h5 class="m-0" @click="$router.push(`/music/${key}`)">{{item}}</h5>
                                 <small>{{musician}}</small>
                             </div>
                         </div>
@@ -63,7 +63,8 @@ export default {
         }
     },
     created() {
-        this.musician = this.$route.params.musicianId
+        window.scrollTo(0, 0);
+        this.musician = this.$route.params.musicianId;
     }
 }
 </script>

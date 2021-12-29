@@ -11,11 +11,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    beforeRouteEnter (to, from, next) {
-      if (to == from) {
-        router.go()
-      }
-    },
   },
   {
     path: '/music/:musicId',
@@ -26,7 +21,7 @@ const routes = [
     path: '/musician/:musicianId',
     name: 'Musician',
     component: Musician
-  }
+  },
 ]
 
 const router = new VueRouter({
