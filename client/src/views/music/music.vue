@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
 
@@ -66,15 +67,25 @@ export default {
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
             isLogin: false,
+            audioPlayer: null,
         }
     },
     created() {
+        this.audioPlayer = new Audio();
+        this.audioPlayer.volume = 1;
+        this.audioPlayer.setAttribute('autoplay', true);
+        this.audioPlayer.addEventListener('play', (e) => { this.isPlay = true; }, false)
+        this.audioPlayer.addEventListener('ended', (e) => { this.isPlay = false; }, false)
+
         window.scrollTo(0, 0);
         this.musicId = this.$route.params.musicId;
     },
     methods: {
-        musicPlay() {
-            console.log('음악을 재생합니다.');
+        async musicPlay() {
+            if (!this.audioPlayer.paused) this.audioPlayer.pause();
+
+            this.audioPlayer.src = `/api/music/play/Secrets/00:00`;
+            this.currAudioName = 'Secrets';
         },
         mustLogin() {
             this.isLogin = true;
