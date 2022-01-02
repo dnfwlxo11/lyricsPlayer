@@ -1,7 +1,7 @@
 <template>
     <div class="music">
         <top :popDialog="isLogin"></top>
-        <div class="container p-0">
+        <div ref="audios" class="container p-0">
             <div class="profile mb-2">
                 <img class="w-100" :src="require(`@/assets/dummy/${dummy[musicId]}.jpg`)" :alt="dummy[musicId]" style="height: 700px; object-fit: cover;">
             </div>
@@ -11,11 +11,20 @@
                         <img class="musician-img" src="@/assets/dummy/musician.png" alt="대추" @click="$router.push(`/musician/대추`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
-                        <i class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicPlay"></i>
+                        <i v-if="!isPlay" class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
+                        <i v-else class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
                         <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{dummy[musicId]}}</h3></div>
-                        <div class="row m-0 p-0 text-left" @click="$router.push('/musician/대추')"><small class="m-0 p-0"> 대추</small></div>
+                        <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push('/musician/대추')"> 대추</small></div>
                         <div>
-                            <progress value="30" max="100" style="height: 50px;width: 100%;"></progress>
+                            <progress :value="(currentTime/duration)*100" max="100" style="height: 50px;width: 100%;"></progress>
+                        </div>
+                        <div class="w-100">
+                            <div class="text-left" style="float: left;">
+                                <span>{{calcTime(currentTime)}}</span>
+                            </div>
+                            <div class="text-right">
+                                <span>{{calcTime(duration)}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-2 h-100 p-0">
@@ -42,6 +51,7 @@
                     </div>
                 </div>
             </div>
+            <button class="btn" @click="getInfo">정보</button>
             <comments @on-login="mustLogin"></comments>
         </div>
         
@@ -67,31 +77,70 @@ export default {
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
             isLogin: false,
+            isPlay: false,
             audioPlayer: null,
+            currentTime: 0,
+            duration: 0,
         }
     },
     created() {
         this.audioPlayer = new Audio();
         this.audioPlayer.volume = 1;
-        this.audioPlayer.setAttribute('autoplay', true);
-        this.audioPlayer.addEventListener('play', (e) => { this.isPlay = true; }, false)
-        this.audioPlayer.addEventListener('ended', (e) => { this.isPlay = false; }, false)
+        
+        this.audioPlayer.addEventListener('loadedmetadata', (e) => {
+            this.duration = this.audioPlayer.duration;
+            this.currentTime = this.audioPlayer.currentTime;
+        });
+        this.audioPlayer.addEventListener('timeupdate', (e) => {
+            this.duration = this.audioPlayer.duration;
+            this.currentTime = this.audioPlayer.currentTime;
+        });
+
+        this.audioPlayer.addEventListener('play', (e) => { this.isPlay = true; });
+        this.audioPlayer.addEventListener('ended', (e) => { this.isPlay = false; });
 
         window.scrollTo(0, 0);
         this.musicId = this.$route.params.musicId;
+        this.setMusic();
+    },
+    mounted() {
+        this.getInfo();
+    },
+    destroyed() {
+        this.audioPlayer.removeEventListener('play', () => { this.isPlay = false; });
+        this.audioPlayer.removeEventListener('ended', () => { this.isPlay = false; });
+        this.audioPlayer.removeEventListener('loadedmetadata', () => { this.isPlay = false; });
+        this.audioPlayer.removeEventListener('timeupdate', () => { this.isPlay = false; });
+        this.audioPlayer = null;
     },
     methods: {
-        async musicPlay() {
+        setMusic() {
             if (!this.audioPlayer.paused) this.audioPlayer.pause();
-
-            this.audioPlayer.src = `/api/music/play/Secrets/00:00`;
             this.currAudioName = 'Secrets';
+            this.audioPlayer.src = `/api/music/play/Secrets/00:00`;
         },
+
+        musicControl() {
+            if (this.audioPlayer.paused) this.audioPlayer.play();
+            else this.audioPlayer.pause();
+
+            this.isPlay = !this.isPlay;
+        },
+
         mustLogin() {
             this.isLogin = true;
             console.log('로그인해!');
+        },
+
+        calcTime(time) {
+            return (time/60 < 10 ? '0' + Math.floor(time/60).toString() : Math.floor(time/60).toFixed(0).toString()).toString() + ':' + (time%60 < 10 ? '0' + Math.floor(time%60).toString() : Math.floor(time%60).toString()).toString();
+        },
+
+        getInfo() {
+            this.duration = this.audioPlayer.duration;
+            this.currentTime = this.audioPlayer.currentTime;
         }
-    }
+    },
 }
 </script>
 
