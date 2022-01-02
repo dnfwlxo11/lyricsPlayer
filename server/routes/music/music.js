@@ -7,14 +7,13 @@ router.get('/songs', (req, res, next) => {
     res.send({ 'success': true });
 })
 
-router.get('/play/:musicName/:time', (req, res, next) => {
+router.get('/play/:musicName', (req, res, next) => {
     let musicName = req.params.musicName;
-    let playTime = req.params.time;
-    let musicPath = path.join(_workDir, 'music/RYYZN', musicName) + '.mp3';
+    let musicPath = path.join(_workDir, 'music/RYYZN', musicName);
 
     console.log(musicPath);
 
-    let audioStream = fs.createReadStream(path.join(_workDir, 'music/RYYZN', musicName) + '.mp3');
+    let audioStream = fs.createReadStream(path.join(_workDir, 'music/RYYZN', musicName));
     audioStream.pipe(res);
 })
 

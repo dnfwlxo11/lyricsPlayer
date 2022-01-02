@@ -16,7 +16,7 @@
                         <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{dummy[musicId]}}</h3></div>
                         <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push('/musician/대추')"> 대추</small></div>
                         <div>
-                            <progress :value="(currentTime/duration)*100" max="100" style="height: 50px;width: 100%;"></progress>
+                            <progress ref="progress" :value="(currentTime/duration)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
                         </div>
                         <div class="w-100">
                             <div class="text-left" style="float: left;">
@@ -51,7 +51,6 @@
                     </div>
                 </div>
             </div>
-            <button class="btn" @click="getInfo">정보</button>
             <comments @on-login="mustLogin"></comments>
         </div>
         
@@ -59,7 +58,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Vue from 'vue';
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
 
@@ -81,6 +80,7 @@ export default {
             audioPlayer: null,
             currentTime: 0,
             duration: 0,
+            originSrc: '',
         }
     },
     created() {
@@ -92,6 +92,8 @@ export default {
             this.currentTime = this.audioPlayer.currentTime;
         });
         this.audioPlayer.addEventListener('timeupdate', (e) => {
+            console.log('시간 업데이트')
+            console.log(this.audioPlayer.currentTime, this.audioPlayer.duration)
             this.duration = this.audioPlayer.duration;
             this.currentTime = this.audioPlayer.currentTime;
         });
@@ -102,9 +104,6 @@ export default {
         window.scrollTo(0, 0);
         this.musicId = this.$route.params.musicId;
         this.setMusic();
-    },
-    mounted() {
-        this.getInfo();
     },
     destroyed() {
         this.audioPlayer.removeEventListener('play', () => { this.isPlay = false; });
@@ -117,7 +116,8 @@ export default {
         setMusic() {
             if (!this.audioPlayer.paused) this.audioPlayer.pause();
             this.currAudioName = 'Secrets';
-            this.audioPlayer.src = `/api/music/play/Secrets/00:00`;
+            this.originSrc = `/api/music/play/Secrets.mp3`;
+            this.audioPlayer.src = `/api/music/play/Secrets.mp3`;
         },
 
         musicControl() {
@@ -136,9 +136,13 @@ export default {
             return (time/60 < 10 ? '0' + Math.floor(time/60).toString() : Math.floor(time/60).toFixed(0).toString()).toString() + ':' + (time%60 < 10 ? '0' + Math.floor(time%60).toString() : Math.floor(time%60).toString()).toString();
         },
 
-        getInfo() {
-            this.duration = this.audioPlayer.duration;
-            this.currentTime = this.audioPlayer.currentTime;
+        timeMove(e) {
+            if (e == undefined) return;
+            let time = Math.floor(this.duration * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
+            
+            console.log(time)
+            Vue.set(this.audioPlayer, 'currentTime', time)
+            this.audioPlayer.currentTime = time;           
         }
     },
 }
