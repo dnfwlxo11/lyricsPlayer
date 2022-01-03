@@ -93,7 +93,8 @@ export default {
         });
         this.audioPlayer.addEventListener('timeupdate', (e) => {
             console.log('시간 업데이트')
-            console.log(this.audioPlayer.currentTime, this.audioPlayer.duration)
+            console.log(this.currentTime, this.audioPlayer.currentTime)
+            
             this.duration = this.audioPlayer.duration;
             this.currentTime = this.audioPlayer.currentTime;
         });
@@ -103,6 +104,9 @@ export default {
 
         window.scrollTo(0, 0);
         this.musicId = this.$route.params.musicId;
+        this.setMusic();
+    },
+    mounted() {
         this.setMusic();
     },
     destroyed() {
@@ -140,9 +144,8 @@ export default {
             if (e == undefined) return;
             let time = Math.floor(this.duration * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
             
-            console.log(time)
-            Vue.set(this.audioPlayer, 'currentTime', time)
-            this.audioPlayer.currentTime = time;           
+            Vue.set(this.audioPlayer, 'currentTime', time);
+            this.audioPlayer.play();
         }
     },
 }

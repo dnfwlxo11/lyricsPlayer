@@ -13,6 +13,15 @@ router.get('/play/:musicName', (req, res, next) => {
 
     console.log(musicPath);
 
+    let musicFile = fs.statSync(musicPath)
+    console.log(musicFile.size)
+
+    res.writeHead(200, {
+        "Content-Type": "audio/mp3",
+        "Accept-Ranges": "bytes",
+        "Content-Length": musicFile.size
+    })
+
     let audioStream = fs.createReadStream(path.join(_workDir, 'music/RYYZN', musicName));
     audioStream.pipe(res);
 })
