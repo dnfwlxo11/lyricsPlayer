@@ -25,7 +25,7 @@
         </div>
         <mypage v-if="isMypage" @on-close="isMypage=false" @on-confirm="isMypage=false;"></mypage>
         <register v-if="isRegister" @on-close="isRegister=false" @on-confirm="isRegister=false;register($event)"></register>
-        <login v-if="isLogin" @on-close="isLogin=false" @on-confirm="isLogin=false;login($event)" ></login>
+        <login v-if="isLogin" @on-close="isLogin=false;$emit('not-auth')" @on-confirm="isLogin=false;login($event)" ></login>
     </div>
 </template>
 
@@ -84,7 +84,7 @@
 
             checkAuth() {
                 let token = sessionStorage.getItem('x_auth');
-                // if (Vue.$cookies.get('x_auth') != undefined) this.loginState = true;
+                
                 if (token != null) this.loginState = true;
                 else this.loginState = false;
             },

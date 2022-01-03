@@ -1,6 +1,6 @@
 <template>
     <div class="music">
-        <top :popDialog="isLogin"></top>
+        <top :popDialog="isLogin" @not-auth="isLogin=false;"></top>
         <div ref="audios" class="container p-0">
             <div class="profile mb-2">
                 <img class="w-100" :src="require(`@/assets/dummy/${dummy[musicId]}.jpg`)" :alt="dummy[musicId]" style="height: 700px; object-fit: cover;">
@@ -92,9 +92,12 @@ export default {
             this.currentTime = this.audioPlayer.currentTime;
         });
         this.audioPlayer.addEventListener('timeupdate', (e) => {
-            console.log('시간 업데이트')
-            console.log(this.currentTime, this.audioPlayer.currentTime)
-            
+            if (sessionStorage.getItem('x_auth') == null && this.audioPlayer.currentTime > 5) {
+                this.audioPlayer.pause();
+                this.isPlay = false;
+                this.isLogin = true;
+            }
+
             this.duration = this.audioPlayer.duration;
             this.currentTime = this.audioPlayer.currentTime;
         });
@@ -102,9 +105,10 @@ export default {
         this.audioPlayer.addEventListener('play', (e) => { this.isPlay = true; });
         this.audioPlayer.addEventListener('ended', (e) => { this.isPlay = false; });
 
-        window.scrollTo(0, 0);
         this.musicId = this.$route.params.musicId;
         this.setMusic();
+
+        window.scrollTo(0, 0);
     },
     mounted() {
         this.setMusic();
