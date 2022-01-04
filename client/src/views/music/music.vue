@@ -84,7 +84,7 @@ export default {
         }
     },
     created() {
-        this.audioPlayer = new Audio();
+        this.audioPlayer = this.$store.getters.getAudioPlayer;
         this.audioPlayer.volume = 1;
         
         this.audioPlayer.addEventListener('loadedmetadata', (e) => {
@@ -118,7 +118,6 @@ export default {
         this.audioPlayer.removeEventListener('ended', () => { this.isPlay = false; });
         this.audioPlayer.removeEventListener('loadedmetadata', () => { this.isPlay = false; });
         this.audioPlayer.removeEventListener('timeupdate', () => { this.isPlay = false; });
-        this.audioPlayer = null;
     },
     methods: {
         setMusic() {
