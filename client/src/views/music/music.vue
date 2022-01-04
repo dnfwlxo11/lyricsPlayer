@@ -11,8 +11,8 @@
                         <img class="musician-img" src="@/assets/dummy/musician.png" alt="대추" @click="$router.push(`/musician/대추`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
-                        <i v-if="!isPlay" class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
-                        <i v-else class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
+                        <i v-if="$store.getters.getPlayState && $store.getters.getCurrMusic == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
+                        <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
                         <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{dummy[musicId]}}</h3></div>
                         <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push('/musician/대추')"> 대추</small></div>
                         <div>
@@ -71,65 +71,56 @@ export default {
     data() {
         return {
             musicId: null,
+            musicDummy: { '1': 'persian', '2': 'Secrets', '3': 'Passionate Affair', '4': 'russian', '5': 'siam', '6': 'regdoll', 
+                     '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
             dummy: { '1': 'persian', '2': 'british', '3': 'scotish', '4': 'russian', '5': 'siam', '6': 'regdoll', 
                      '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
             isLogin: false,
-            isPlay: false,
             audioPlayer: null,
             currentTime: 0,
             duration: 0,
-            originSrc: '',
+            currMusic: null,
+
         }
     },
     created() {
-        this.audioPlayer = this.$store.getters.getAudioPlayer;
-        this.audioPlayer.volume = 1;
-        
-        this.audioPlayer.addEventListener('loadedmetadata', (e) => {
-            this.duration = this.audioPlayer.duration;
-            this.currentTime = this.audioPlayer.currentTime;
-        });
-        this.audioPlayer.addEventListener('timeupdate', (e) => {
-            if (sessionStorage.getItem('x_auth') == null && this.audioPlayer.currentTime > 5) {
-                this.audioPlayer.pause();
-                this.isPlay = false;
-                this.isLogin = true;
-            }
-
-            this.duration = this.audioPlayer.duration;
-            this.currentTime = this.audioPlayer.currentTime;
-        });
-
-        this.audioPlayer.addEventListener('play', (e) => { this.isPlay = true; });
-        this.audioPlayer.addEventListener('ended', (e) => { this.isPlay = false; });
-
         this.musicId = this.$route.params.musicId;
-        this.setMusic();
+        this.currAudioName = this.musicDummy[this.$route.params.musicId.toString()];
+        this.currMusic = this.$store.getters.getCurrMusic;
+        this.isPlay = this.$store.getters.getPlayState;
+        this.audioPlayer = this.$store.getters.getAudioPlayer;
 
         window.scrollTo(0, 0);
+    },
+    destroyed() {
     },
     mounted() {
         this.setMusic();
     },
-    destroyed() {
-        this.audioPlayer.removeEventListener('play', () => { this.isPlay = false; });
-        this.audioPlayer.removeEventListener('ended', () => { this.isPlay = false; });
-        this.audioPlayer.removeEventListener('loadedmetadata', () => { this.isPlay = false; });
-        this.audioPlayer.removeEventListener('timeupdate', () => { this.isPlay = false; });
-    },
     methods: {
         setMusic() {
-            if (!this.audioPlayer.paused) this.audioPlayer.pause();
-            this.currAudioName = 'Secrets';
-            this.originSrc = `/api/music/play/Secrets.mp3`;
-            this.audioPlayer.src = `/api/music/play/Secrets.mp3`;
+            if (this.currMusic == 'none') {
+                this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
+                this.$store.commit('setMusicSrc', `/api/music/play/${this.musicDummy[this.musicId]}.mp3`);
+            }
         },
 
         musicControl() {
-            if (this.audioPlayer.paused) this.audioPlayer.play();
-            else this.audioPlayer.pause();
+            if (this.currMusic != this.currAudioName) {
+                this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
+                this.currMusic = this.$store.getters.getCurrMusic;
+                this.$store.commit('setMusicSrc', `/api/music/play/${this.musicDummy[this.musicId]}.mp3`);
+            }
+
+            if (this.audioPlayer.paused) {
+                this.audioPlayer.play();
+                this.$store.commit('setPlayState', true);
+            } else {
+                this.audioPlayer.pause();
+                this.$store.commit('setPlayState', false);
+            }
 
             this.isPlay = !this.isPlay;
         },
