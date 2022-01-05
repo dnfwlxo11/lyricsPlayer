@@ -8,21 +8,26 @@ function setAudioPlayer() {
   audioPlayer.volume = 1;
 
   audioPlayer.addEventListener('loadedmetadata', (e) => {
-    console.log(e, 'in vuex by loadedmetadata');
+    console.log(e, 'loadedmetadata')
+    Vue.set(vuex.state.currMusic, 'duration', vuex.state.audioPlayer.duration);
+    Vue.set(vuex.state.currMusic, 'currentTime', vuex.state.audioPlayer.currentTime);
   });
 
   audioPlayer.addEventListener('timeupdate', (e) => {
-    console.log(e, 'in vuex by timeupdate');
+    Vue.set(vuex.state.currMusic, 'currentTime', vuex.state.audioPlayer.currentTime);
   });
 
   audioPlayer.addEventListener('play', (e) => { 
-    console.log(vuex)
+    console.log(e, 'play')
     vuex.state.isPlay = true;
   });
 
   audioPlayer.addEventListener('ended', (e) => { 
+    console.log(e, 'ended')
     vuex.state.isPlay = false;
-    vuex.state.currMusic = 'none';
+    Vue.set(vuex.state.currMusic, 'name', 'none');
+    Vue.set(vuex.state.currMusic, 'duration', 'none');
+    Vue.set(vuex.state.currMusic, 'currentTime', 'none');
   });
 
   return audioPlayer;
@@ -31,25 +36,32 @@ function setAudioPlayer() {
 const vuex = new Vuex.Store({
   state: {
     audioPlayer: setAudioPlayer(),
-    currMusic: 'none',
+    currMusic: {
+      name: 'none',
+      duration: 'none',
+      currentTime: 'none'
+    },
     isPlay: false,
   },
   mutations: {
     setCurrMusic(state, name) {
-      state.currMusic = name;
+      Vue.set(state.currMusic, 'name', name);
     },
     setMusicSrc(state, src) {
-      state.audioPlayer.src = src;
+      Vue.set(state.audioPlayer, 'src', src);
+    },
+    setMusicTime(state, time) {
+      Vue.set(state.audioPlayer, 'currentTime', time);
     },
     setPlayState(state, playState) {
       state.isPlay = playState;
-    }
+    },
   },
   getters: {
     getAudioPlayer(state) {
       return state.audioPlayer;
     },
-    getCurrMusic(state) {
+    getMusicState(state) {
       return state.currMusic;
     },
     getPlayState(state) {

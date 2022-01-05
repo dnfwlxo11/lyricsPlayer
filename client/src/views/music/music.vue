@@ -11,19 +11,19 @@
                         <img class="musician-img" src="@/assets/dummy/musician.png" alt="대추" @click="$router.push(`/musician/대추`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
-                        <i v-if="$store.getters.getPlayState && $store.getters.getCurrMusic == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
+                        <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
                         <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
                         <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{dummy[musicId]}}</h3></div>
                         <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push('/musician/대추')"> 대추</small></div>
                         <div>
-                            <progress ref="progress" :value="(currentTime/duration)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
+                            <progress ref="progress" :value="(musicState['name'] == currAudioName ? musicState['currentTime']/musicState['duration'] : 0)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
                         </div>
                         <div class="w-100">
                             <div class="text-left" style="float: left;">
-                                <span>{{calcTime(currentTime)}}</span>
+                                <span>{{musicState['name'] == currAudioName ? calcTime(musicState['currentTime']) : "00:00"}}</span>
                             </div>
                             <div class="text-right">
-                                <span>{{calcTime(duration)}}</span>
+                                <span>{{calcTime(musicState['duration'])}}</span>
                             </div>
                         </div>
                     </div>
@@ -79,16 +79,19 @@ export default {
             subscribes: [1, 2, 3],
             isLogin: false,
             audioPlayer: null,
+            musicState: {
+                name: 'none',
+                duration: 'none',
+                currTime: 'none'
+            },
             currentTime: 0,
             duration: 0,
-            currMusic: null,
-
         }
     },
     created() {
         this.musicId = this.$route.params.musicId;
         this.currAudioName = this.musicDummy[this.$route.params.musicId.toString()];
-        this.currMusic = this.$store.getters.getCurrMusic;
+        this.musicState = this.$store.getters.getMusicState;
         this.isPlay = this.$store.getters.getPlayState;
         this.audioPlayer = this.$store.getters.getAudioPlayer;
 
@@ -101,25 +104,25 @@ export default {
     },
     methods: {
         setMusic() {
-            if (this.currMusic == 'none') {
+            if (this.musicState['name'] == 'none') {
                 this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
                 this.$store.commit('setMusicSrc', `/api/music/play/${this.musicDummy[this.musicId]}.mp3`);
             }
         },
 
         musicControl() {
-            if (this.currMusic != this.currAudioName) {
-                this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
-                this.currMusic = this.$store.getters.getCurrMusic;
+            if (this.musicState['name'] != this.currAudioName) {
                 this.$store.commit('setMusicSrc', `/api/music/play/${this.musicDummy[this.musicId]}.mp3`);
-            }
-
+                this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
+            } 
+            
             if (this.audioPlayer.paused) {
-                this.audioPlayer.play();
                 this.$store.commit('setPlayState', true);
+                this.audioPlayer.play();
+                
             } else {
-                this.audioPlayer.pause();
                 this.$store.commit('setPlayState', false);
+                this.audioPlayer.pause();
             }
 
             this.isPlay = !this.isPlay;
@@ -135,13 +138,27 @@ export default {
         },
 
         timeMove(e) {
-            if (e == undefined) return;
-            let time = Math.floor(this.duration * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
+            if (e == undefined || this.musicState['name'] != this.currAudioName) return;
+            let time = Math.floor(this.musicState['duration'] * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
             
-            Vue.set(this.audioPlayer, 'currentTime', time);
+            this.$store.commit('setMusicTime', time);
             this.audioPlayer.play();
         }
     },
+    computed: {
+        getMusicState() {
+            let musicState = this.$store.getters.getMusicState
+
+            console.log(musicState, 'computed state')
+            return 
+        }
+    },
+    watch: {
+        getMusicState(val) {
+            console.log(val)
+            this.musicState = val;
+        }
+    }
 }
 </script>
 
