@@ -8,7 +8,6 @@ function setAudioPlayer() {
   audioPlayer.volume = 1;
 
   audioPlayer.addEventListener('loadedmetadata', (e) => {
-    console.log(e, 'loadedmetadata')
     Vue.set(vuex.state.currMusic, 'duration', vuex.state.audioPlayer.duration);
     Vue.set(vuex.state.currMusic, 'currentTime', vuex.state.audioPlayer.currentTime);
   });
@@ -17,13 +16,11 @@ function setAudioPlayer() {
     Vue.set(vuex.state.currMusic, 'currentTime', vuex.state.audioPlayer.currentTime);
   });
 
-  audioPlayer.addEventListener('play', (e) => { 
-    console.log(e, 'play')
+  audioPlayer.addEventListener('play', (e) => {
     vuex.state.isPlay = true;
   });
 
-  audioPlayer.addEventListener('ended', (e) => { 
-    console.log(e, 'ended')
+  audioPlayer.addEventListener('ended', (e) => {
     vuex.state.isPlay = false;
     Vue.set(vuex.state.currMusic, 'name', 'none');
     Vue.set(vuex.state.currMusic, 'duration', 'none');

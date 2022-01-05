@@ -138,7 +138,12 @@ export default {
         },
 
         timeMove(e) {
-            if (e == undefined || this.musicState['name'] != this.currAudioName) return;
+            if (e == undefined) return;
+            if (this.musicState['name'] != this.currAudioName) {
+                this.$store.commit('setMusicSrc', `/api/music/play/${this.musicDummy[this.musicId]}.mp3`);
+                this.$store.commit('setCurrMusic', this.musicDummy[this.musicId]);
+            }
+
             let time = Math.floor(this.musicState['duration'] * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
             
             this.$store.commit('setMusicTime', time);
@@ -149,13 +154,11 @@ export default {
         getMusicState() {
             let musicState = this.$store.getters.getMusicState
 
-            console.log(musicState, 'computed state')
             return 
         }
     },
     watch: {
         getMusicState(val) {
-            console.log(val)
             this.musicState = val;
         }
     }

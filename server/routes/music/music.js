@@ -10,11 +10,7 @@ router.get('/songs', (req, res, next) => {
 router.get('/play/:musicName', (req, res, next) => {
     let musicName = req.params.musicName;
     let musicPath = path.join(_workDir, 'music/RYYZN', musicName);
-
-    console.log(musicPath);
-
-    let musicFile = fs.statSync(musicPath)
-    console.log(musicFile.size)
+    let musicFile = fs.statSync(musicPath);
 
     res.writeHead(200, {
         "Content-Type": "audio/mp3",
