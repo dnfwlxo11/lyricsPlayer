@@ -7,9 +7,13 @@ router.get('/songs', (req, res, next) => {
     res.send({ 'success': true });
 })
 
-router.get('/play/:musicName', (req, res, next) => {
-    let musicName = req.params.musicName;
-    let musicPath = path.join(_workDir, 'music/RYYZN', musicName);
+router.get('/play/:musician/:musicName', (req, res, next) => {
+    let musicianName = req.params.musician.replace(/-/g, ' ');
+    let musicName = req.params.musicName.replace(/-/g, ' ');
+    let musicPath = path.join(_workDir, 'music', musicianName, musicName);
+
+    console.log(musicPath)
+
     let musicFile = fs.statSync(musicPath);
 
     res.writeHead(200, {
@@ -18,7 +22,7 @@ router.get('/play/:musicName', (req, res, next) => {
         "Content-Length": musicFile.size
     })
 
-    let audioStream = fs.createReadStream(path.join(_workDir, 'music/RYYZN', musicName));
+    let audioStream = fs.createReadStream(musicPath);
     audioStream.pipe(res);
 })
 

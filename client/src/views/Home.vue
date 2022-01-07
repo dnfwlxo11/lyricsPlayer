@@ -12,14 +12,14 @@
         <div class="container trend">
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
             <div class="row m-0 p-0">
-                <div class="col-md-2 mb-5 album" v-for="(item, key) in dummy" :key="key" style="float: left;">
+                <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicianDummy" :key="idx" style="float: left;">
                     <div class="thumbnail card mb-1">
-                        <img :src="require(`@/assets/dummy/${item}.jpg`)" :alt="`${item}`" style="object-fit: cover;" @click="$router.push(`/music/${key}`)" >
+                        <img :src="require(`@/assets/dummy/${musicThumbnail[musicDummy[idx]]}.jpg`)" :alt="`${musicDummy[idx]}`" style="object-fit: cover;" @click="$router.push(`/music/${item}/${musicDummy[idx]}`)" >
                     </div>
                     <div class="text-left">
                         <div class="music-info text-left">
-                            <span @click="$router.push(`/music/${key}`)">{{item}}</span> <br>
-                            <span @click="$router.push(`/musician/대추`)"><small>대추</small></span>
+                            <span @click="$router.push(`/music/${item}/${musicDummy[idx]}`)">{{musicDummy[idx].replaceAll('-', ' ')}}</span> <br>
+                            <span @click="$router.push(`/musician/대추`)"><small>{{item.replaceAll('-', ' ')}}</small></span>
                         </div>
                     </div>
                 </div>
@@ -41,8 +41,12 @@
         },
         data() {
             return {
-                dummy: { '1': 'persian', '2': 'british', '3': 'scotish', '4': 'russian', '5': 'siam', '6': 'regdoll', 
-                         '7': 'cat1', '8': 'cat2', '9': 'cat3', '10': 'cat4', '11': 'cat5', '12': 'cat6' },
+                musicianDummy: ['Dylan-Emmet', 'RYYZN', 'RYYZN', 'Vince-Miranda', 'Nick-Ray', 'MODUS', 
+                    'Kavi-Jezzie-Hockaday', 'Kavi-Jezzie-Hockaday', 'Dylan-Emmet', 'Color-Out', 'Cole-Powell', 'Cole-Powell'],
+                musicDummy: ['Some-Things-Dont-Change', 'Secrets', 'Passionate-Affair', 'Mas-Alla', 'Tread-Lightly', 'My-Love', 
+                    'Dont-Throw-Your-Light-Away', 'Everyone-Will-Fall-Down', 'Some-Things-Dont-Change', 'Alone', 'Always-Ever-Be', 'Not-the-One-to-Say-I-Told-You-So'],
+                musicThumbnail: { 'Some-Things-Dont-Change': 'persian', 'Secrets': 'british', 'Passionate-Affair': 'scotish', 'Mas-Alla': 'russian', 'Tread-Lightly': 'siam', 'My-Love': 'regdoll', 
+                        'Dont-Throw-Your-Light-Away': 'cat1', 'Everyone-Will-Fall-Down': 'cat2', 'Some-Things-Dont-Change': 'cat3', 'Alone': 'cat4', 'Always-Ever-Be': 'cat5', 'Not-the-One-to-Say-I-Told-You-So': 'cat6' },
                 isRegister: false,
                 isLogin: false,
             }

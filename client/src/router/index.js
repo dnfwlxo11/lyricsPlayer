@@ -13,7 +13,7 @@ const routes = [
     component: Home,
   },
   {
-    path: '/music/:musicId',
+    path: '/music/:musician/:musicName',
     name: 'Music',
     component: Music
   },
