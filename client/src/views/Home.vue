@@ -19,7 +19,7 @@
                     <div class="text-left">
                         <div class="music-info text-left">
                             <span @click="$router.push(`/music/${item}/${musicDummy[idx]}`)">{{musicDummy[idx].replaceAll('-', ' ')}}</span> <br>
-                            <span @click="$router.push(`/musician/대추`)"><small>{{item.replaceAll('-', ' ')}}</small></span>
+                            <span @click="$router.push(`/musician/${item}`)"><small>{{item.replaceAll('-', ' ')}}</small></span>
                         </div>
                     </div>
                 </div>
