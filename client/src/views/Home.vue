@@ -5,8 +5,8 @@
             <img class="w-100 placeholder-glow" src="@/assets/main.png" alt="메인이미지">
         </div>
         <div class="search w-100 d-flex justify-content-center align-items-center mt-3 mb-3">
-            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐">
-            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon"></button>
+            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="$router.push(`/search` + (keyword == '' ? '' : `?keyword=${keyword}`))" v-model="keyword">
+            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="$router.push(`/search` + (keyword == '' ? '' : `?keyword=${keyword}`))"></button>
             <button class="btn btn-outline-primary">옵션 더보기</button>
         </div>
         <div class="container trend">
@@ -49,8 +49,9 @@
                         'Dont-Throw-Your-Light-Away': 'cat1', 'Everyone-Will-Fall-Down': 'cat2', 'Some-Things-Dont-Change': 'cat3', 'Alone': 'cat4', 'Always-Ever-Be': 'cat5', 'Not-the-One-to-Say-I-Told-You-So': 'cat6' },
                 isRegister: false,
                 isLogin: false,
+                keyword: '',
             }
-        }
+        },
     }
 </script>
 

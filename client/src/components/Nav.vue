@@ -3,7 +3,7 @@
         <div class="top">
             <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3C3D59;">
                 <span class="pl-3 text-left w-50">
-                    <a href="/" style="font-size:1.25rem; color: white;">
+                    <a style="font-size:1.25rem; color: white;" @click="$router.push('/', () => {}, () => { $router.go(); })">
                         <img class="logo mr-3" :src="require('@/assets/logo.png')" alt="lyricsPlayer">𝒍𝒚𝒓𝒊𝒄𝒔𝑷𝒍𝒂𝒚𝒆𝒓
                     </a>
                 </span>

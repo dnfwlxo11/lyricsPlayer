@@ -20,7 +20,10 @@
                     <span>{{Object.keys(albumDummy).length}} albums</span>
                 </div>
             </div>
-            <div v-for="(value, key) in albumDummy" :key="key" class="mb-3">
+            <div v-if="!Object.keys(albumDummy).length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div v-else v-for="(value, key) in albumDummy" :key="key" class="mb-3">
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
@@ -49,7 +52,10 @@
                     <span>{{musics.length}} songs</span>
                 </div>
             </div>
-            <div v-for="(item, key) in musics" :key="key" class="mb-3">
+            <div v-if="!musics.length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div v-else v-for="(item, key) in musics" :key="key" class="mb-3">
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
