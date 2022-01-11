@@ -40,7 +40,7 @@
                     <div class="thumbnail card mb-1">
                         <img :src="item['thumbnail_path']" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)" >
                         <div class="overlay d-flex justify-content-center align-items-center">
-                            <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item, musicDummy[idx])"></i>
+                            <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
                             <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
                         </div>
                     </div>
@@ -70,12 +70,6 @@
         },
         data() {
             return {
-                musicianDummy: ['Dylan-Emmet', 'RYYZN', 'RYYZN', 'Vince-Miranda', 'Nick-Ray', 'MODUS', 
-                    'Kavi-Jezzie-Hockaday', 'Kavi-Jezzie-Hockaday', 'Dylan-Emmet', 'Color-Out', 'Cole-Powell', 'Cole-Powell'],
-                musicDummy: ['Some-Things-Dont-Change', 'Secrets', 'Passionate-Affair', 'Mas-Alla', 'Tread-Lightly', 'My-Love', 
-                    'Dont-Throw-Your-Light-Away', 'Everyone-Will-Fall-Down', 'Some-Things-Dont-Change', 'Alone', 'Always-Ever-Be', 'Not-the-One-to-Say-I-Told-You-So'],
-                musicThumbnail: { 'Some-Things-Dont-Change': 'persian', 'Secrets': 'british', 'Passionate-Affair': 'scotish', 'Mas-Alla': 'russian', 'Tread-Lightly': 'siam', 'My-Love': 'regdoll', 
-                        'Dont-Throw-Your-Light-Away': 'cat1', 'Everyone-Will-Fall-Down': 'cat2', 'Some-Things-Dont-Change': 'cat3', 'Alone': 'cat4', 'Always-Ever-Be': 'cat5', 'Not-the-One-to-Say-I-Told-You-So': 'cat6' },
                 musicRank: [],
                 isRegister: false,
                 isLogin: false,
