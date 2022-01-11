@@ -4,11 +4,11 @@
         <div class="container">
             <div class="row" style="height: 250px;">
                 <div class="col-3 d-flex justify-content-center align-items-center">
-                    <img class="musician-img" :src="require(`@/assets/dummy/musician.png`)" alt="">
+                    <img class="musician-img" :src="`/images/musician.png`" alt="">
                 </div>
                 <div class="col-9 d-flex justify-content-start align-items-center">
                     <div class="text-left">
-                        <div><h2>{{musician}}</h2></div>
+                        <div><h2>{{musician.replaceAll('-', ' ')}}</h2></div>
                         <div><h6>{{Object.keys(albumDummy).length}}개의 앨범</h6></div>
                         <div><h6>{{musics.length}}개의 노래</h6></div>
                     </div>
@@ -27,19 +27,18 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="require(`@/assets/dummy/${value}.jpg`)" alt="대추">
+                        <img class="song-img" :src="`/images/${value}.jpg`" alt="대추">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
                                 <h5 class="m-0">{{value}}</h5>
-                                <small>{{musician}}</small>
+                                <small>{{musician.replaceAll('-', ' ')}}</small>
                             </div>
                         </div>
                         <div class="row h-25 pl-3 pr-3">
                             <div class="d-flex justify-content-start align-items-end" style="font-size: 15px;">
-                                <div><i class="mdi mdi-likes"></i><span>좋아요🙆‍♀️🙆‍♂️ 780개</span></div>,&nbsp;
-                                <div><span>구독👆 70개</span></div>    
+                                <div><i class="mdi mdi-likes"></i><span>{{musics.length}}개의 노래 수록</span></div>
                             </div>
                         </div>
                     </div>
@@ -59,13 +58,13 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="require(`@/assets/dummy/${musicThumbnail[item.replaceAll(' ', '-')]}.jpg`)" alt="대추" @click="$router.push(`/music/${musician}/${item}`)">
+                        <img class="song-img" :src="`/images/${musicThumbnail[item.replaceAll(' ', '-')]}.jpg`" alt="대추" @click="$router.push(`/music/${musician}/${item}`)">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
                                 <h5 class="m-0" @click="$router.push(`/music/${musician}/${item}`)">{{item}}</h5>
-                                <small>{{musician}}</small>
+                                <small>{{musician.replaceAll('-', ' ')}}</small>
                             </div>
                         </div>
                         <div class="row h-25 pl-3 pr-3">

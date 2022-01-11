@@ -3,18 +3,20 @@
         <top :popDialog="isLogin" @not-auth="isLogin=false;"></top>
         <div ref="audios" class="container p-0">
             <div class="profile mb-2">
-                <img class="w-100" :src="require(`@/assets/dummy/${musicThumbnail[currAudioName]}.jpg`)" :alt="musicThumbnail[currAudioName]" style="height: 700px; object-fit: cover;">
+                <img class="w-100" :src="`/images/${musicThumbnail[currAudioName]}.jpg`" :alt="musicThumbnail[currAudioName]" style="height: 700px; object-fit: cover;">
             </div>
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
                     <div class="col-md-2 m-0 p-0 mt-2 mb-2 pl-2 pr-2">
-                        <img class="musician-img" src="@/assets/dummy/musician.png" alt="대추" @click="$router.push(`/musician/${$route.params.musician}`)">
+                        <img class="musician-img" src="/images/musician.png" alt="대추" @click="$router.push(`/musician/${$route.params.musician}`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
-                        <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
-                        <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px;float: left;" @click="musicControl"></i>
-                        <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{currAudioName}}</h3></div>
-                        <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician.replaceAll('-', ' ')}}</small></div>
+                        <div style="float: left">
+                            <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px; float: left" @click="musicControl"></i>
+                            <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px; float: left;" @click="musicControl"></i>
+                            <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{currAudioName}}</h3></div>
+                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician.replaceAll('-', ' ')}}</small></div>
+                        </div>
                         <div>
                             <progress ref="progress" :value="(musicState['name'] == currAudioName ? musicState['currentTime']/musicState['duration'] : 0)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
                         </div>
@@ -30,21 +32,29 @@
                     <div class="col-md-2 h-100 p-0">
                         <div class="card text-left w-100 m-0 p-2 mb-3">
                             <div class="ml-2">
-                                <div class="mb-1">좋아요 🙆‍♀️🙆‍♂️</div>
+                                <div class="mb-1 row">
+                                    <div class="p-0 m-0 ml-3 col-5">좋아요</div>
+                                    <div class="p-0 m-0 text-right col-5"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
+                                    <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
+                                </div>
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
-                                    <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <div><i class="more mdi mdi-plus"></i></div>
+                                    <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
+                                    <div><i class="more mdi mdi-plus" @click="showLikes=true;"></i></div>
                                 </div>
                             </div>
                         </div>
                         <div class="card text-left w-100 m-0 p-2">
                             <div class="ml-2">
-                                <div class="mb-1">구독 👆</div>
+                                <div class="mb-1 row">
+                                    <div class="p-0 m-0 ml-3 col-5">구독</div>
+                                    <div class="p-0 m-0 text-right col-5"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
+                                    <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
+                                </div>
                                 <hr>
                                 <div class="d-flex justify-content-start align-items-center">
-                                    <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
-                                    <div><i class="more mdi mdi-plus"></i></div>
+                                    <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
+                                    <div><i class="more mdi mdi-plus" @click="showSubscribes=true;"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -52,20 +62,25 @@
                 </div>
             </div>
             <comments @on-login="mustLogin"></comments>
+            <likeModal v-if="showLikes" @on-login="mustLogin" @click="showLikes=true;" @on-close="showLikes=false;" :title="$route.params.musicName.replaceAll('-', ' ')" :musician="$route.params.musician.replaceAll('-', ' ')"></likeModal>
+            <subscribeModal v-if="showSubscribes" @on-login="mustLogin" @click="showSubscribes=true;" @on-close="showSubscribes=false;" :title="$route.params.musicName.replaceAll('-', ' ')" :musician="$route.params.musician.replaceAll('-', ' ')"></subscribeModal>
         </div>
-        
     </div>
 </template>
 
 <script>
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
+import likeModal from '@/views/music/vues/likes.vue'
+import subscribeModal from '@/views/music/vues/subscribes.vue'
 
 export default {
     name: 'Music',
     components: {
         top,
         comments,
+        likeModal,
+        subscribeModal
     },
     data() {
         return {
@@ -74,6 +89,8 @@ export default {
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
             isLogin: false,
+            showLikes: false,
+            showSubscribes: false,
             audioPlayer: null,
             musicState: {
                 name: 'none',
@@ -143,6 +160,14 @@ export default {
             
             this.$store.commit('setMusicTime', time);
             this.audioPlayer.play();
+        },
+
+        like() {
+            console.log('like')
+        },
+
+        subscribe() {
+            console.log('subscribe')
         }
     },
     computed: {
@@ -183,7 +208,6 @@ progress::-webkit-progress-bar {
 .musician-img {
     width: 85%;
     border-radius: 70%;
-    border: 0.1rem lightgrey solid;
 }
 
 ul {
@@ -193,7 +217,12 @@ ul {
 .like-img, .subscriber-img {
     width: 40px;
     border-radius: 70%;
-    border: 0.1rem lightgrey solid;
+}
+
+.modal-container{
+    max-width: 640px;
+    height: 480px;
+    margin-top: 100px;
 }
 
 @media all and (max-width: 767px) {

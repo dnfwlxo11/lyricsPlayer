@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const Quries = require('./Queries/query');
+const mariaDB = require('../../modules');
 const path = require('path');
+const DB = mariaDB.Database;
 
 router.get('/songs/:musician', (req, res, next) => {
     let musician = req.params.musician.replace(/-/g, ' ')
@@ -35,6 +38,22 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
 
     let audioStream = fs.createReadStream(musicPath);
     audioStream.pipe(res);
+})
+
+router.post('/ranking', (req, res, next) => {
+    const selectMusicRankingWork = DB.connect(async (conn) => {
+        const sql = Quries.selectMusicRanking(req.body.id);
+        const rows = await conn.query(sql);
+
+        if (rows == undefined) return false
+        return rows
+    });
+
+    selectMusicRankingWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
 })
 
 module.exports = router

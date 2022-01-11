@@ -2,14 +2,24 @@
     <div class="search">
         <top></top>
         <div class="container pt-5">
-            <div>
-                Musician 결과
+            <div class="text-left mb-5">
+                <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
-            <div>
-                Music 결과
+            <div v-if="this.options.title" class="text-left mb-3">
+                <h5><strong>Title</strong></h5>
+                <small>Found {{titles}} tracks.</small>
             </div>
-            <div>
-                Lyrics 결과
+            <div v-if="this.options.lyrics" class="text-left mb-3">
+                <h5><strong>Lyrics</strong></h5>
+                <small>Found {{lyrics}} tracks.</small>
+            </div>
+            <div v-if="this.options.album" class="text-left mb-3">
+                <h5><strong>Album</strong></h5>
+                <small>Found {{albums}} tracks.</small>
+            </div>
+            <div v-if="this.options.musician" class="text-left mb-3">
+                <h5><strong>Musician</strong></h5>
+                <small>Found {{musicians}} tracks.</small>
             </div>
         </div>
     </div>
@@ -25,11 +35,22 @@ export default {
     },
     data() {
         return {
-
+            keyword: 'Everything',
+            titles: 0,
+            lyrics: 0,
+            albums: 0,
+            musicians: 0,
+            options: {},
+            titleDummy: [],
+            lyricsDummy: [],
+            albumDummy: [],
+            msucianDummy: [],
         }
     },
     mounted() {
-        console.log(this.$route.query)
+        if (this.$route.query['keyword'] != undefined) this.keyword = this.$route.query['keyword']
+        this.options = this.$route.query
+        console.log(this.options)
     }
 }
 </script>

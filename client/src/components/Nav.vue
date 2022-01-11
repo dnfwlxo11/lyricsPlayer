@@ -4,7 +4,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3C3D59;">
                 <span class="pl-3 text-left w-50">
                     <a style="font-size:1.25rem; color: white;" @click="$router.push('/', () => {}, () => { $router.go(); })">
-                        <img class="logo mr-3" :src="require('@/assets/logo.png')" alt="lyricsPlayer">𝒍𝒚𝒓𝒊𝒄𝒔𝑷𝒍𝒂𝒚𝒆𝒓
+                        <img class="logo mr-3" src="/images/logo.png" alt="lyricsPlayer">𝒍𝒚𝒓𝒊𝒄𝒔𝑷𝒍𝒂𝒚𝒆𝒓
                     </a>
                 </span>
                 <button class="navbar-toggler pr-3" type="button" data-toggle="collapse" data-target="#target"

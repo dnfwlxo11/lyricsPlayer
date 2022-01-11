@@ -17,7 +17,7 @@
                 <div class="h-100" v-for="(item, idx) of comments" :key="idx">
                     <div class="row mb-3">
                         <div class="col-1 m-auto">
-                            <img class="comment-img" :src="require(`@/assets/dummy/fan.png`)" alt="대추">
+                            <img class="comment-img" :src="`/images/user.png`" alt="대추">
                         </div>
                         <div class="col-9 m-auto">
                             안녕하세요 노래가 너무 좋아요
@@ -74,6 +74,5 @@ export default {
     min-width: 30px;
     width: 90%;
     border-radius: 70%;
-    border: 0.1rem lightgrey solid;
 }
 </style>
