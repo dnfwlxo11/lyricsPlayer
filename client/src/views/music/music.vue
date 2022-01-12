@@ -31,31 +31,27 @@
                     </div>
                     <div class="col-md-2 h-100 p-0">
                         <div class="card text-left w-100 m-0 p-2 mb-3">
-                            <div class="ml-2">
-                                <div class="mb-1 row">
-                                    <div class="p-0 m-0 ml-3 col-5">좋아요</div>
-                                    <div class="p-0 m-0 text-right col-5"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
-                                    <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
-                                    <div><i class="more mdi mdi-plus" @click="showLikes=true;"></i></div>
-                                </div>
+                            <div class="row m-0 p-0 mb-1">
+                                <div class="m-0 p-0 col-6 text-left">좋아요</div>
+                                <div class="m-0 p-0 col-6 text-right"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
+                                <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
+                            </div>
+                            <hr class="m-0 p-0 mb-2">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
+                                <div><i class="more mdi mdi-plus" @click="showLikes=true;"></i></div>
                             </div>
                         </div>
                         <div class="card text-left w-100 m-0 p-2">
-                            <div class="ml-2">
-                                <div class="mb-1 row">
-                                    <div class="p-0 m-0 ml-3 col-5">구독</div>
-                                    <div class="p-0 m-0 text-right col-5"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
-                                    <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
-                                    <div><i class="more mdi mdi-plus" @click="showSubscribes=true;"></i></div>
-                                </div>
+                            <div class="row m-0 p-0 mb-1">
+                                <div class="m-0 p-0 col-6 text-left">구독</div>
+                                <div class="m-0 p-0 col-6 text-right"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
+                                <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
+                            </div>
+                            <hr class="m-0 p-0 mb-2">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
+                                <div><i class="more mdi mdi-plus" @click="showSubscribes=true;"></i></div>
                             </div>
                         </div>
                     </div>
