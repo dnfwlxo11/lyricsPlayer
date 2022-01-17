@@ -17,11 +17,11 @@ const musicianRouter = require('./routes/musician/musician.js');
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api/play/*', express.static(path.join(__dirname, 'music')));
+// app.use('/api/play/*', express.static(path.join(__dirname, 'music')));
 
 app.use('/', indexRouter);
 app.use('/api/user', userRouter);

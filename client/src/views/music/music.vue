@@ -3,7 +3,8 @@
         <top :popDialog="isLogin" @not-auth="isLogin=false;"></top>
         <div ref="audios" class="container p-0">
             <div class="profile mb-2">
-                <img class="w-100" :src="`/images/${musicThumbnail[currAudioName]}.jpg`" :alt="musicThumbnail[currAudioName]" style="height: 700px; object-fit: cover;">
+                <div v-if="!thumbnailPath" class="d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading" style="font-size: 80px;"></i></div>
+                <img v-else class="w-100" :src="thumbnailPath" style="height: 700px; object-fit: cover;">
             </div>
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
@@ -69,6 +70,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
 import likeModal from '@/views/music/vues/likes.vue'
@@ -84,8 +86,7 @@ export default {
     },
     data() {
         return {
-            musicThumbnail: { 'Some Things Dont Change': 'persian', 'Secrets': 'british', 'Passionate Affair': 'scotish', 'Mas Alla': 'russian', 'Tread Lightly': 'siam', 'My Love': 'regdoll', 
-                     'Dont Throw Your Light Away': 'cat1', 'Everyone Will Fall Down': 'cat2', 'Some Things Dont Change': 'cat3', 'Alone': 'cat4', 'Always Ever Be': 'cat5', 'Not the One to Say I Told You So': 'cat6' },
+            thumbnailPath: null,
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
             isLogin: false,
@@ -113,8 +114,18 @@ export default {
     },
     mounted() {
         this.setMusic();
+        this.getMusicInfo();
     },
     methods: {
+        async getMusicInfo() {
+            let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
+
+            if (res.data.success) {
+                this.musicState.duration = res.data.result.playtime
+                this.thumbnailPath = res.data.result.thumbnail_path
+            }
+        },
+
         setMusic() {
             if (this.musicState['name'] == 'none') {
                 this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));

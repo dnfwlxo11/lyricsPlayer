@@ -26,14 +26,12 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
     let musicName = req.params.musicName.replace(/-/g, ' ');
     let musicPath = path.join(_workDir, 'music', musicianName, musicName);
 
-    console.log(musicPath)
-
     let musicFile = fs.statSync(musicPath);
 
     res.writeHead(200, {
         "Content-Type": "audio/mp3",
         "Accept-Ranges": "bytes",
-        "Content-Length": musicFile.size
+        "Content-Length": musicFile.size,
     })
 
     let audioStream = fs.createReadStream(musicPath);
@@ -50,6 +48,23 @@ router.post('/ranking', (req, res, next) => {
     });
 
     selectMusicRankingWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
+router.post('/info', (req, res, next) => {
+    console.log(req.body)
+    const selectMusicInfoWork = DB.connect(async (conn) => {
+        const sql = Quries.selectMusicInfo(req.body.musicName.replace(/-/g, ' '));
+        const rows = await conn.query(sql);
+
+        if (rows == undefined) return false
+        return rows[0]
+    });
+
+    selectMusicInfoWork()
     .then((result) => {
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });

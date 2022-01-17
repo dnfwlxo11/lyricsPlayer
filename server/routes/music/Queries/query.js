@@ -13,4 +13,15 @@ module.exports = {
 
         return sql.join('');
     },
+
+    selectMusicInfo(params) {
+        const songName = params
+        const sql = [];
+
+        sql.push(`SELECT playtime, thumbnail_path, album `)
+        sql.push(`FROM tb_songs `)
+        sql.push(`WHERE song_name = '${songName}'`)
+
+        return sql.join('');
+    }
 }
