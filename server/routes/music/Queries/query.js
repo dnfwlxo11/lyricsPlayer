@@ -23,5 +23,19 @@ module.exports = {
         sql.push(`WHERE song_name = '${songName}'`)
 
         return sql.join('');
+    },
+
+    selectSearchSong(params) {
+        const keyword = params;
+        const sql = [];
+
+
+        sql.push(`SELECT tbMusicians.musician_name as musician, tbAlbums.album_name as album, tbSongs.song_name as song, tbSongs.playtime as duration, tbSongs.thumbnail_path as songImg, tbAlbums.thumbnail_path as albumImg `)
+        sql.push(`FROM tb_songs as tbSongs `)
+        sql.push(`INNER JOIN tb_albums as tbAlbums ON tbSongs.tb_albums_aid = tbAlbums.aid `)
+        sql.push(`INNER JOIN tb_musicians as tbMusicians ON tbAlbums.tb_musicians_mid = tbMusicians.mid `)
+        sql.push(`WHERE song_name = '${keyword}' OR album = '${keyword}'`)
+
+        return sql.join('');
     }
 }

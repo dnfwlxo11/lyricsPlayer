@@ -55,9 +55,8 @@ router.post('/ranking', (req, res, next) => {
 })
 
 router.post('/info', (req, res, next) => {
-    console.log(req.body)
     const selectMusicInfoWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicInfo(req.body.musicName.replace(/-/g, ' '));
+        const sql = Quries.selectMusicInfo(req.params.musicName.replace(/-/g, ' '));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -65,6 +64,23 @@ router.post('/info', (req, res, next) => {
     });
 
     selectMusicInfoWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
+router.post('/search/:keyword', (req, res, next) => {
+    const selectSearchSongWork = DB.connect(async (conn) => {
+        const sql = Quries.selectSearchSong(req.params.keyword.replace(/-/g, ' '));
+        const rows = await conn.query(sql);
+
+        console.log(rows)
+        if (rows == undefined) return false
+        return rows
+    });
+
+    selectSearchSongWork()
     .then((result) => {
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });

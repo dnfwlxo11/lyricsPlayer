@@ -5,8 +5,8 @@
             <img class="w-100 placeholder-glow" src="@/assets/main.png" alt="메인이미지">
         </div>
         <div class="search w-100 d-flex justify-content-center align-items-center mt-3 mb-3">
-            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="$router.push(`/search` + (keyword == '' ? '' : `?keyword=${keyword}${setParams()}`))" v-model="keyword">
-            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="$router.push(`/search` + (keyword == '' ? '' : `?keyword=${keyword}${setParams()}`))"></button>
+            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="keyword ? $router.push(`/search?keyword=${keyword}${setParams()}`) : null" v-model="keyword">
+            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="keyword ? $router.push(`/search?keyword=${keyword}${setParams()}`) : null"></button>
             <button class="btn btn-outline-primary" @click="moreOption=!moreOption">옵션 보기</button>
             </div>
         
@@ -27,7 +27,7 @@
                             <label class="custom-control-label" for="switch3">뮤지션</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switch4" v-model="searchOption.lyrics">
+                            <input type="checkbox" class="custom-control-input" id="switch4" v-model="searchOption.lyrics" disabled>
                             <label class="custom-control-label" for="switch4">가사</label>
                         </div>
                     </div>
@@ -75,9 +75,9 @@
                 isLogin: false,
                 moreOption: false,
                 searchOption: {
-                    title: true, lyrics: true, musician: true, album: true,
+                    title: true, lyrics: false, musician: true, album: true,
                 },
-                keyword: '',
+                keyword: null,
                 audioPlayer: null,
                 musicState: {
                     name: 'none',
