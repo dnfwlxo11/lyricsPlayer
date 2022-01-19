@@ -130,7 +130,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .musician-img {
     width: 70%;
     min-width: 80px;

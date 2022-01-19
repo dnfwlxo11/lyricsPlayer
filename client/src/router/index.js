@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Music from '../views/music/music.vue'
 import Musician from '../views/musician/musician.vue'
+import Album from '../views/album/album.vue'
 import Search from '../views/search/search.vue'
 
 Vue.use(VueRouter)
@@ -22,6 +23,11 @@ const routes = [
     path: '/musician/:musicianId',
     name: 'Musician',
     component: Musician
+  },
+  {
+    path: '/album/:albumId',
+    name: 'Album',
+    component: Album
   },
   {
     path: '/search',

@@ -3,7 +3,7 @@
         <top :popDialog="isLogin" @not-auth="isLogin=false;"></top>
         <div ref="audios" class="container p-0">
             <div class="profile mb-2">
-                <div v-if="!thumbnailPath" class="d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading" style="font-size: 80px;"></i></div>
+                <div v-if="!thumbnailPath" class="d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
                 <img v-else class="w-100" :src="thumbnailPath" style="height: 700px; object-fit: cover;">
             </div>
             <div class="mb-5">
@@ -192,7 +192,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 progress {
     border-radius: 0;
     color: #3C3D59;

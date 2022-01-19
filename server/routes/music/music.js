@@ -56,7 +56,7 @@ router.post('/ranking', (req, res, next) => {
 
 router.post('/info', (req, res, next) => {
     const selectMusicInfoWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicInfo(req.params.musicName.replace(/-/g, ' '));
+        const sql = Quries.selectMusicInfo(req.body.musicName.replace(/-/g, ' '));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
