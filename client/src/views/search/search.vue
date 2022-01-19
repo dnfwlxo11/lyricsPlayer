@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-md-7 mr-3">
                             <div><strong>{{value.album}}</strong></div>
-                            <div><small>1개의 노래 수록</small></div>
+                            <div><small>{{value.trackLen}} 개의 노래 수록</small></div>
                         </div>
                         <div class="col-md-2">
 
@@ -84,7 +84,7 @@
                         </div>
                         <div class="col-md-7 mr-3">
                             <div><strong>{{value.album}}</strong></div>
-                            <div><small>1개의 노래 수록</small></div>
+                            <div><small>{{value.trackLen}} 개의 노래 수록</small></div>
                         </div>
                         <div class="col-md-2">
 

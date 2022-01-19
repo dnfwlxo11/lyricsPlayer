@@ -30,11 +30,12 @@ module.exports = {
         const sql = [];
 
 
-        sql.push(`SELECT tbMusicians.musician_name as musician, tbAlbums.album_name as album, tbSongs.song_name as song, tbSongs.playtime as duration, tbSongs.thumbnail_path as songImg, tbAlbums.thumbnail_path as albumImg `)
+        sql.push(`SELECT tbMusicians.musician_name as musician, tbAlbums.album_name as album, tbSongs.song_name as song, tbSongs.playtime as duration, tbSongs.thumbnail_path as songImg, tbAlbums.thumbnail_path as albumImg, count(tbAlbums.aid) as trackLen `)
         sql.push(`FROM tb_songs as tbSongs `)
         sql.push(`INNER JOIN tb_albums as tbAlbums ON tbSongs.tb_albums_aid = tbAlbums.aid `)
         sql.push(`INNER JOIN tb_musicians as tbMusicians ON tbAlbums.tb_musicians_mid = tbMusicians.mid `)
-        sql.push(`WHERE song_name = '${keyword}' OR album = '${keyword}'`)
+        sql.push(`WHERE tbSongs.song_name LIKE '%${keyword}%' OR tbAlbums.album_name LIKE '%${keyword}%' OR tbMusicians.musician_name LIKE '%${keyword}%' `)
+        sql.push(`GROUP BY tbAlbums.aid`);
 
         return sql.join('');
     }
