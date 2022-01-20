@@ -3,8 +3,19 @@
         <top :popDialog="isLogin" @not-auth="isLogin=false;"></top>
         <div ref="audios" class="container p-0">
             <div class="profile mb-2">
-                <div v-if="!thumbnailPath" class="d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
-                <img v-else class="w-100" :src="thumbnailPath" style="height: 700px; object-fit: cover;">
+                <div class="row m-0 p-0">
+                    <div v-if="!thumbnailPath" class="col-md-10 mb-2 d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
+                    <div v-else class="col-md-10 mb-2 " style="height: 700px;">
+                        <img :src="thumbnailPath" style="height: 100%; width: 100%; object-fit: cover;">
+                    </div>
+                    <div class="card col-md-2" style="overflow-y: auto; height: 700px;">
+                        <div v-for="(item, idx) of recommandList" :key="idx">
+                            <hr>
+                            {{item}}                            
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
@@ -82,6 +93,7 @@ export default {
     },
     data() {
         return {
+            recommandList: ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'],
             thumbnailPath: null,
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
@@ -193,6 +205,14 @@ export default {
 </script>
 
 <style scoped>
+body {
+    -ms-overflow-style: none; 
+} 
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
 progress {
     border-radius: 0;
     color: #3C3D59;
