@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-md-7 mr-3">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.song}`)">{{value.song}}</strong></div>
-                            <div><small>{{value.album}}</small></div>
+                            <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
                         </div>
                         <div class="col-md-2">
 

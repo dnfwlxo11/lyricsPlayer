@@ -112,13 +112,15 @@ export default {
         init() {
             this.getMusics()
             this.getAlbums()
+
+            console.log(this.musics, 'music')
+            console.log(this.albums, 'album')
         },
 
         async getMusics() {
             let res = await axios.get(`/api/music/songs/${this.$route.params.musicianId}`)
             
             if (res.data.success) this.musics = res.data.musics.map(item => item.replace('.mp3', ''))
-            console.log(this.musics)
         },
 
         async getAlbums() {
