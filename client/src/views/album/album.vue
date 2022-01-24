@@ -10,7 +10,7 @@
                     <div class="col-9 d-flex justify-content-start align-items-center">
                         <div class="text-left">
                             <div><h2>{{albumInfo.album_name.replaceAll('-', ' ')}}</h2></div>
-                            <div><h6>{{albumInfo.musician_name}}</h6></div>
+                            <div><h6 @click="$router.push(`/musician/${albumInfo.musician_name.replaceAll(' ', '-')}`)">{{albumInfo.musician_name}}</h6></div>
                             <div><h6>{{albumTrack.length}}개의 노래</h6></div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ export default {
 .album-img {
     height: 50%;
     min-width: 80px;
-    border-radius: 70%;
+    border-radius: 20%;
     border: 0.1rem lightgrey solid;
 }
 

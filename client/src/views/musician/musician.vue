@@ -20,25 +20,27 @@
                     <span>{{albums.length}} albums</span>
                 </div>
             </div>
-            <div v-if="!Object.keys(albumDummy).length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <div v-if="!albums.length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div v-else v-for="(value, key) in albums" :key="key" class="mb-3">
-                <hr>
-                <div class="row">
-                    <div class="col-md-3">
-                        <img class="song-img" :src="value.albumImg" alt="대추">
-                    </div>
-                    <div class="col-md-9 text-left pt-3 pb-3">
-                        <div class="row h-75 pl-3 pr-3">
-                            <div>
-                                <h5 class="m-0">{{value.album_name}}</h5>
-                                <small>{{value.musician_name}}</small>
-                            </div>
+            <div v-else>
+                <div v-for="(item, albumIdx) of albums" :key="albumIdx" class="mb-3">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img class="song-img" :src="item.albumImg" @click="$router.push(`/album/${item.album_name}`)">
                         </div>
-                        <div class="row h-25 pl-3 pr-3">
-                            <div class="d-flex justify-content-start align-items-end" style="font-size: 15px;">
-                                <div><i class="mdi mdi-likes"></i><span>{{musics.length}}개의 노래 수록</span></div>
+                        <div class="col-md-9 text-left pt-3 pb-3">
+                            <div class="row h-75 pl-3 pr-3">
+                                <div>
+                                    <h5 class="m-0" @click="$router.push(`/album/${item.album_name}`)">{{item.album_name}}</h5>
+                                    <small>{{item.musician_name}}</small>
+                                </div>
+                            </div>
+                            <div class="row h-25 pl-3 pr-3">
+                                <div class="d-flex justify-content-start align-items-end" style="font-size: 15px;">
+                                    <div><i class="mdi mdi-likes"></i><span>{{musics.length}}개의 노래 수록</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,17 +56,17 @@
             <div v-if="!musics.length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div v-else v-for="(item, key) in musics" :key="key" class="mb-3">
+            <div v-else v-for="(item, musicIdx) of musics" :key="musicIdx" class="mb-3">
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="`/images/${musicThumbnail[item.replaceAll(' ', '-')]}.jpg`" alt="대추" @click="$router.push(`/music/${musician}/${item}`)">
+                        <img class="song-img" :src="item.songImg" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
-                                <h5 class="m-0" @click="$router.push(`/music/${musician}/${item}`)">{{item}}</h5>
-                                <small>{{musician.replaceAll('-', ' ')}}</small>
+                                <h5 class="m-0" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">{{item.song_name}}</h5>
+                                <small>{{item.musician_name}}</small>
                             </div>
                         </div>
                         <div class="row h-25 pl-3 pr-3">
@@ -92,11 +94,6 @@ export default {
     },
     data() {
         return {
-            albumDummy: {
-                'album': 'persian'
-            },
-            musicThumbnail: { 'Some-Things-Dont-Change': 'persian', 'Secrets': 'british', 'Passionate-Affair': 'scotish', 'Mas-Alla': 'russian', 'Tread-Lightly': 'siam', 'My-Love': 'regdoll', 
-                'Dont-Throw-Your-Light-Away': 'cat1', 'Everyone-Will-Fall-Down': 'cat2', 'Some-Things-Dont-Change': 'cat3', 'Alone': 'cat4', 'Always-Ever-Be': 'cat5', 'Not-the-One-to-Say-I-Told-You-So': 'cat6' },
             albums: [],
             musics: [],
         }
@@ -110,23 +107,18 @@ export default {
     },
     methods: {
         init() {
-            // this.getMusics()
+            this.getMusicianMusic()
             this.getMusicianAlbum()
-
-            console.log(this.musics, 'music')
-            console.log(this.albums, 'album')
         },
 
         async getMusicianMusic() {
-            let res = await axios.post(`/api/music/songs/${this.$route.params.musicianId}`)
-            console.log(res)
+            let res = await axios.post(`/api/musician/song/${this.$route.params.musicianId}`)
             
-            if (res.data.success) this.musics = res.data.musics.map(item => item.replace('.mp3', ''))
+            if (res.data.success) this.musics = res.data.result
         },
 
         async getMusicianAlbum() {
-            let res = await axios.post(`/api/musician/${this.$route.params.musicianId}`)
-            console.log(res)
+            let res = await axios.post(`/api/musician/album/${this.$route.params.musicianId}`)
             
             if (res.data.success) this.albums = res.data.result
         }
