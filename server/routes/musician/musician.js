@@ -6,23 +6,21 @@ const mariaDB = require('../../modules');
 const path = require('path');
 const DB = mariaDB.Database;
 
-router.get('/:musicians', (req, res, next) => {
-
-    const selectMusicianInfoWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicianInfo(req.body.id);
+router.post('/:musicians', (req, res, next) => {
+    console.log(req.params.musicians.replace(/-/g, ' '))
+    const selectMusicianAlbumWork = DB.connect(async (conn) => {
+        const sql = Quries.selectMusicianAlbum(req.params.musicians.replace(/-/g, ' '));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
         return rows
     });
 
-    selectMusicianInfoWork()
+    selectMusicianAlbumWork()
     .then((result) => {
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });
     });
-
-    res.send({ 'success': true })
 })
 
 module.exports = router

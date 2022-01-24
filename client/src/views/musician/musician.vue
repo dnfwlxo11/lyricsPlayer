@@ -9,7 +9,7 @@
                 <div class="col-9 d-flex justify-content-start align-items-center">
                     <div class="text-left">
                         <div><h2>{{musician.replaceAll('-', ' ')}}</h2></div>
-                        <div><h6>{{Object.keys(albumDummy).length}}개의 앨범</h6></div>
+                        <div><h6>{{albums.length}}개의 앨범</h6></div>
                         <div><h6>{{musics.length}}개의 노래</h6></div>
                     </div>
                 </div>
@@ -17,23 +17,23 @@
             <div>
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-album mr-2" style="font-size: 30px;"></i>
-                    <span>{{Object.keys(albumDummy).length}} albums</span>
+                    <span>{{albums.length}} albums</span>
                 </div>
             </div>
             <div v-if="!Object.keys(albumDummy).length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div v-else v-for="(value, key) in albumDummy" :key="key" class="mb-3">
+            <div v-else v-for="(value, key) in albums" :key="key" class="mb-3">
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="`/images/${value}.jpg`" alt="대추">
+                        <img class="song-img" :src="value.albumImg" alt="대추">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
-                                <h5 class="m-0">{{value}}</h5>
-                                <small>{{musician.replaceAll('-', ' ')}}</small>
+                                <h5 class="m-0">{{value.album_name}}</h5>
+                                <small>{{value.musician_name}}</small>
                             </div>
                         </div>
                         <div class="row h-25 pl-3 pr-3">
@@ -110,23 +110,25 @@ export default {
     },
     methods: {
         init() {
-            this.getMusics()
-            this.getAlbums()
+            // this.getMusics()
+            this.getMusicianAlbum()
 
             console.log(this.musics, 'music')
             console.log(this.albums, 'album')
         },
 
-        async getMusics() {
-            let res = await axios.get(`/api/music/songs/${this.$route.params.musicianId}`)
+        async getMusicianMusic() {
+            let res = await axios.post(`/api/music/songs/${this.$route.params.musicianId}`)
+            console.log(res)
             
             if (res.data.success) this.musics = res.data.musics.map(item => item.replace('.mp3', ''))
         },
 
-        async getAlbums() {
-            let res = await axios.get(`/api/music/albums/${this.$route.params.musicianId}`)
+        async getMusicianAlbum() {
+            let res = await axios.post(`/api/musician/${this.$route.params.musicianId}`)
+            console.log(res)
             
-            if (res.data.success) this.albums = res.data.albums
+            if (res.data.success) this.albums = res.data.result
         }
     },
 }

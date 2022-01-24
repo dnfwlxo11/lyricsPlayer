@@ -6,16 +6,16 @@ const mariaDB = require('../../modules');
 const path = require('path');
 const DB = mariaDB.Database;
 
-router.post('/:albumName', (req, res, next) => {
-    const selectAlbumMusicsWork = DB.connect(async (conn) => {
-        const sql = Quries.selectAlbumMusics(req.params.albumName.replace(/-/g, ' '));
+router.post('/:musician', (req, res, next) => {
+    const selectAlbumsWork = DB.connect(async (conn) => {
+        const sql = Quries.selectAlbums(req.params.albumName.replace(/-/g, ' '));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
         return rows
     });
 
-    selectAlbumMusicsWork()
+    selectAlbumsWork()
     .then((result) => {
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });
