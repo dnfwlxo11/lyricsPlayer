@@ -7,10 +7,13 @@
                     <img class="musician-img" :src="`/images/musician.png`" alt="">
                 </div>
                 <div class="col-9 d-flex justify-content-start align-items-center">
-                    <div class="text-left">
+                    <div v-if="albums.length && albums.length" class="text-left">
                         <div><h2>{{musician.replaceAll('-', ' ')}}</h2></div>
                         <div><h6>{{albums.length}}개의 앨범</h6></div>
                         <div><h6>{{musics.length}}개의 노래</h6></div>
+                    </div>
+                    <div v-else class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>

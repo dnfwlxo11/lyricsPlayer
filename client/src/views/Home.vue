@@ -35,20 +35,29 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
-            <div class="row m-0 p-0">
-                <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx" style="float: left;">
-                    <div class="thumbnail card mb-1">
-                        <img :src="item['thumbnail_path']" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)" >
-                        <div class="overlay d-flex justify-content-center align-items-center">
-                            <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
-                            <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
+            <div v-if="musicRank.length">
+                <div class="row m-0 p-0">
+                    <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx">
+                        <div class="thumbnail card mb-1">
+                            <img :src="item['thumbnail_path']" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)" >
+                            <div class="overlay d-flex justify-content-center align-items-center">
+                                <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
+                                <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <div class="music-info text-left">
+                                <span @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)">{{item['song_name']}}</span> <br>
+                                <span @click="$router.push(`/musician/${item['musician_name'].replaceAll(' ', '-')}`)"><small>{{item['musician_name']}}</small></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-left">
-                        <div class="music-info text-left">
-                            <span @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)">{{item['song_name']}}</span> <br>
-                            <span @click="$router.push(`/musician/${item['musician_name'].replaceAll(' ', '-')}`)"><small>{{item['musician_name']}}</small></span>
-                        </div>
+                </div>
+            </div>
+            <div v-else class="row m-0 p-0">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>

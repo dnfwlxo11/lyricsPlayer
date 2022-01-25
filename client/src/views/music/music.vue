@@ -5,13 +5,22 @@
             <div class="profile mb-2">
                 <div class="row m-0 p-0">
                     <div v-if="!thumbnailPath" class="col-md-10 mb-2 d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
-                    <div v-else class="col-md-10 mb-2 " style="height: 700px;">
+                    <div v-else class="col-md-9 mb-2 " style="height: 700px;">
                         <img :src="thumbnailPath" style="height: 100%; width: 100%; object-fit: cover;">
                     </div>
-                    <div class="card col-md-2" style="overflow-y: auto; height: 700px;">
+                    <!-- <strong style="height: 40px;">Relation List</strong> -->
+                    <div class="card col-md-3" style="overflow-y: auto; height: 700px;">
                         <div v-for="(item, idx) of recommandList" :key="idx">
                             <hr>
-                            {{item}}                            
+                            <div class="row m-0 p-0">
+                                <div class="col-md-3 p-0 m-0 d-flex justify-content-center align-items-center">
+                                    <img class="recommandThumbnail" :src="item.thumbnail_path" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {});">
+                                </div>
+                                <div class="col-md-9 text-left">
+                                    <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
+                                    <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name.replaceAll(' ', '-')}`)">{{item.musician_name}}</small>
+                                </div>
+                            </div>
                         </div>
                         <hr>
                     </div>
@@ -26,7 +35,7 @@
                         <div style="float: left">
                             <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px; float: left" @click="musicControl"></i>
                             <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px; float: left;" @click="musicControl"></i>
-                            <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0">{{currAudioName}}</h3></div>
+                            <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0"><strong>{{currAudioName}}</strong></h3></div>
                             <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician.replaceAll('-', ' ')}}</small></div>
                         </div>
                         <div>
@@ -45,7 +54,7 @@
                         <div class="card text-left w-100 m-0 p-2 mb-3">
                             <div class="row m-0 p-0 mb-1">
                                 <div class="m-0 p-0 col-6 text-left">좋아요</div>
-                                <div class="m-0 p-0 col-6 text-right"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
+                                <div class="m-0 p-0 col-6 text-right" style="font-size: 20px;"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
                                 <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
                             </div>
                             <hr class="m-0 p-0 mb-2">
@@ -57,7 +66,7 @@
                         <div class="card text-left w-100 m-0 p-2">
                             <div class="row m-0 p-0 mb-1">
                                 <div class="m-0 p-0 col-6 text-left">구독</div>
-                                <div class="m-0 p-0 col-6 text-right"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
+                                <div class="m-0 p-0 col-6 text-right" style="font-size: 20px;"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
                                 <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
                             </div>
                             <hr class="m-0 p-0 mb-2">
@@ -93,7 +102,7 @@ export default {
     },
     data() {
         return {
-            recommandList: ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'],
+            recommandList: [],
             thumbnailPath: null,
             likes: [1, 2, 3],
             subscribes: [1, 2, 3],
@@ -121,10 +130,14 @@ export default {
     destroyed() {
     },
     mounted() {
-        this.setMusic();
-        this.getMusicInfo();
+        this.init()
     },
     methods: {
+        init() {
+            this.setMusic();
+            this.getMusicInfo();
+            this.getRankMusic();
+        },
         async getMusicInfo() {
             let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
 
@@ -132,6 +145,12 @@ export default {
                 this.musicState.duration = res.data.result.playtime
                 this.thumbnailPath = res.data.result.thumbnail_path
             }
+        },
+
+        async getRankMusic() {
+            let res = await axios.post('/api/music/ranking')
+
+            if (res.data.success) this.recommandList = res.data.result
         },
 
         setMusic() {
@@ -199,6 +218,16 @@ export default {
     watch: {
         getMusicState(val) {
             this.musicState = val;
+        },
+        '$route': function() {
+            this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
+            this.musicState = this.$store.getters.getMusicState;
+            this.isPlay = this.$store.getters.getPlayState;
+            this.audioPlayer = this.$store.getters.getAudioPlayer;
+
+            window.scrollTo(0, 0);
+
+            this.init();
         }
     }
 }
@@ -250,6 +279,10 @@ ul {
     max-width: 640px;
     height: 480px;
     margin-top: 100px;
+}
+
+.recommandThumbnail {
+    width: 100%;
 }
 
 @media all and (max-width: 767px) {
