@@ -11,14 +11,24 @@
                         <div class="text-left">
                             <div><h2>{{albumInfo.album_name.replaceAll('-', ' ')}}</h2></div>
                             <div><h6 @click="$router.push(`/musician/${albumInfo.musician_name.replaceAll(' ', '-')}`)">{{albumInfo.musician_name}}</h6></div>
-                            <div><h6>{{albumTrack.length}}개의 노래</h6></div>
+                            <div v-if="albumTrack.length">
+                                <h6>{{albumTrack.length}}개의 노래</h6>
+                            </div>
+                            <div v-else>
+                                <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="mb-3 d-flex align-items-center">
                         <i class="mdi mdi-post-outline mr-2" style="font-size: 30px;"></i>
-                        <span>{{albumTrack.length}} songs</span>
+                        <div v-if="albumTrack.length">
+                            <span>{{albumTrack.length}} songs</span>
+                        </div>
+                        <div v-else>
+                            <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                        </div>
                     </div>
                 </div>
                 <div v-for="(item, idx) of albumTrack" :key="idx">

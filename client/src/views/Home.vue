@@ -2,7 +2,7 @@
     <div class="home">
         <top></top>
         <div class="main">
-            <img class="w-100 placeholder-glow" src="@/assets/main.png" alt="메인이미지">
+            <img class="w-100" src="@/assets/main.png" alt="메인이미지" style="height: 500px;">
         </div>
         <div class="search w-100 d-flex justify-content-center align-items-center mt-3 mb-3">
             <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="keyword ? $router.push(`/search?keyword=${keyword}${setParams()}`) : null" v-model="keyword">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
-            <div v-if="musicRank.length">
+            <div v-if="musicRank.length" style="height: 600px;">
                 <div class="row m-0 p-0">
                     <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx">
                         <div class="thumbnail card mb-1">
@@ -54,8 +54,8 @@
                     </div>
                 </div>
             </div>
-            <div v-else class="row m-0 p-0">
-                <div class="d-flex justify-content-center align-items-center">
+            <div v-else class="d-flex justify-content-center align-items-center" style="height: 600px;">
+                <div class="row m-0 p-0">
                     <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>

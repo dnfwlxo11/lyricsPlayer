@@ -7,24 +7,34 @@
                     <img class="musician-img" :src="`/images/musician.png`" alt="">
                 </div>
                 <div class="col-9 d-flex justify-content-start align-items-center">
-                    <div v-if="albums.length && albums.length" class="text-left">
+                    <div class="text-left">
                         <div><h2>{{musician.replaceAll('-', ' ')}}</h2></div>
-                        <div><h6>{{albums.length}}개의 앨범</h6></div>
-                        <div><h6>{{musics.length}}개의 노래</h6></div>
+                        <div v-if="albums.length && albums.length">
+                            <div><h6>{{albums.length}}개의 앨범</h6></div>
+                            <div><h6>{{musics.length}}개의 노래</h6></div>
+                        </div>
+                        <div v-else style="height: 100px;">
+                            <div><i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i></div>
+                            <div><span>Loading...</span></div>
+                        </div>
                     </div>
-                    <div v-else class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+                    
                 </div>
             </div>
             <div>
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-album mr-2" style="font-size: 30px;"></i>
-                    <span>{{albums.length}} albums</span>
+                    <div v-if="albums.length">
+                        <span>{{albums.length}} albums</span>    
+                    </div>
+                    <div v-else>
+                        <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                    </div>
                 </div>
             </div>
-            <div v-if="!albums.length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+            <div v-if="!albums.length" style="height: 200px;">
+                <div><i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i></div>
+                <div><span>Loading...</span></div>
             </div>
             <div v-else>
                 <div v-for="(item, albumIdx) of albums" :key="albumIdx" class="mb-3">
@@ -53,11 +63,17 @@
             <div>
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-post-outline mr-2" style="font-size: 30px;"></i>
-                    <span>{{musics.length}} songs</span>
+                    <div v-if="albums.length">
+                        <span>{{musics.length}} albums</span>    
+                    </div>
+                    <div v-else>
+                        <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                    </div>
                 </div>
             </div>
-            <div v-if="!musics.length" class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+            <div v-if="!musics.length" style="height: 200px;">
+                <div><i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i></div>
+                <div><span>Loading...</span></div>
             </div>
             <div v-else v-for="(item, musicIdx) of musics" :key="musicIdx" class="mb-3">
                 <hr>
