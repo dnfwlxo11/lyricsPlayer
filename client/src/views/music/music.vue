@@ -142,7 +142,7 @@ export default {
             let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
 
             if (res.data.success) {
-                this.musicState.duration = res.data.result.playtime
+                // this.musicState.duration = res.data.result.playtime
                 this.thumbnailPath = res.data.result.thumbnail_path
             }
         },
@@ -184,7 +184,8 @@ export default {
         },
 
         calcTime(time) {
-            return (time/60 < 10 ? '0' + Math.floor(time/60).toString() : Math.floor(time/60).toFixed(0).toString()).toString() + ':' + (time%60 < 10 ? '0' + Math.floor(time%60).toString() : Math.floor(time%60).toString()).toString();
+            console.log(time)
+            return (time/60 < 10 ? '0' + Math.floor(time/60).toString() : Math.floor(time/60).toString()).toString() + ':' + (time%60 < 10 ? '0' + Math.floor(time%60).toString() : Math.floor(time%60).toString()).toString();
         },
 
         timeMove(e) {

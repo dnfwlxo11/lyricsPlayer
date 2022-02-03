@@ -199,35 +199,35 @@ INSERT INTO tb_albums(album_name, tb_musicians_mid, thumbnail_path) VALUES ('RYY
 INSERT INTO tb_albums(album_name, tb_musicians_mid, thumbnail_path) VALUES ('Vince Miranda 1집', (SELECT mid FROM tb_musicians WHERE musician_name='Vince Miranda'), '/images/cat3.jpg');
 
 -- 앨범 및 노래 추가 --
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Always Ever Be', '255', '/images/persian.jpg', (SELECT aid FROM tb_albums WHERE album_name='Cole Powell 1집'), 'Cole Powell');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Always Ever Be', '161', '/images/persian.jpg', (SELECT aid FROM tb_albums WHERE album_name='Cole Powell 1집'), 'Cole Powell');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Always Ever Be'), 0);
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Not the One to Say I Told You So', '255', '/images/british.jpg', (SELECT aid FROM tb_albums WHERE album_name='Cole Powell 1집'), 'Cole Powell');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Not the One to Say I Told You So', '236', '/images/british.jpg', (SELECT aid FROM tb_albums WHERE album_name='Cole Powell 1집'), 'Cole Powell');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Not the One to Say I Told You So'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Alone', '255', '/images/scotish.jpg', (SELECT aid FROM tb_albums WHERE album_name='Color Out 1집'), 'Color Out');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Alone', '236', '/images/scotish.jpg', (SELECT aid FROM tb_albums WHERE album_name='Color Out 1집'), 'Color Out');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Alone'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Some Things Dont Change', '255', '/images/russian.jpg', (SELECT aid FROM tb_albums WHERE album_name='Dylan Emmet 1집'), 'Dylan Emmet');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Some Things Dont Change', '203', '/images/russian.jpg', (SELECT aid FROM tb_albums WHERE album_name='Dylan Emmet 1집'), 'Dylan Emmet');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Some Things Dont Change'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Dont Throw Your Light Away', '255', '/images/siam.jpg', (SELECT aid FROM tb_albums WHERE album_name='Kavi Jezzie Hockaday 1집'), 'Kavi Jezzie Hockaday');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Dont Throw Your Light Away', '183', '/images/siam.jpg', (SELECT aid FROM tb_albums WHERE album_name='Kavi Jezzie Hockaday 1집'), 'Kavi Jezzie Hockaday');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Dont Throw Your Light Away'), 0);
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Everyone Will Fall Down', '255', '/images/regdoll.jpg', (SELECT aid FROM tb_albums WHERE album_name='Kavi Jezzie Hockaday 1집'), 'Kavi Jezzie Hockaday');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Everyone Will Fall Down', '260', '/images/regdoll.jpg', (SELECT aid FROM tb_albums WHERE album_name='Kavi Jezzie Hockaday 1집'), 'Kavi Jezzie Hockaday');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Everyone Will Fall Down'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('My Love', '255', '/images/cat6.jpg', (SELECT aid FROM tb_albums WHERE album_name='MODUS 1집'), 'MODUS');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('My Love', '234', '/images/cat6.jpg', (SELECT aid FROM tb_albums WHERE album_name='MODUS 1집'), 'MODUS');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'My Love'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Tread Lightly', '255', '/images/cat1.jpg', (SELECT aid FROM tb_albums WHERE album_name='Nick Ray 1집'), 'Nick Ray');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Tread Lightly', '189', '/images/cat1.jpg', (SELECT aid FROM tb_albums WHERE album_name='Nick Ray 1집'), 'Nick Ray');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Tread Lightly'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Leave Me Again', '255', '/images/cat2.jpg', (SELECT aid FROM tb_albums WHERE album_name='Niwel 1집'), 'Niwel');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Leave Me Again', '229', '/images/cat2.jpg', (SELECT aid FROM tb_albums WHERE album_name='Niwel 1집'), 'Niwel');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Leave Me Again'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Passionate Affair', '255', '/images/cat3.jpg', (SELECT aid FROM tb_albums WHERE album_name='RYYZN 1집'), 'RYYZN');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Passionate Affair', '147', '/images/cat3.jpg', (SELECT aid FROM tb_albums WHERE album_name='RYYZN 1집'), 'RYYZN');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Passionate Affair'), 0);
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Secrets', '255', '/images/cat4.jpg', (SELECT aid FROM tb_albums WHERE album_name='RYYZN 1집'), 'RYYZN');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Secrets', '163', '/images/cat4.jpg', (SELECT aid FROM tb_albums WHERE album_name='RYYZN 1집'), 'RYYZN');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Secrets'), 0);
 
-INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Mas Alla', '255', '/images/cat5.jpg', (SELECT aid FROM tb_albums WHERE album_name='Vince Miranda 1집'), 'Vince Miranda');
+INSERT INTO tb_songs(song_name, playtime, thumbnail_path, tb_albums_aid, album) VALUES ('Mas Alla', '244', '/images/cat5.jpg', (SELECT aid FROM tb_albums WHERE album_name='Vince Miranda 1집'), 'Vince Miranda');
 INSERT INTO tb_song_likes(tb_songs_sid, cnt) VALUES ((SELECT sid FROM tb_songs WHERE song_name = 'Mas Alla'), 0);

@@ -15,7 +15,14 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="mdi mdi-post-outline mr-2" style="font-size: 30px;"></i>
+                        <span>{{albumTrack.length}} songs</span>
+                    </div>
+                </div>
                 <div v-for="(item, idx) of albumTrack" :key="idx">
+                    <hr>
                     <div class="row">
                         <div class="col-3 d-flex justify-content-center align-items-center">
                             <img class="song-img" :src="item.songImg" @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}`)">
@@ -26,7 +33,6 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
                 </div>
             </div>
             
@@ -75,10 +81,8 @@ export default {
 
 <style scoped>
 .album-img {
-    height: 50%;
-    min-width: 80px;
-    border-radius: 20%;
-    border: 0.1rem lightgrey solid;
+    height: 150px;
+    width: 100%;
 }
 
 .song-img {
