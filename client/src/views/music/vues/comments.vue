@@ -11,16 +11,16 @@
             <div class="text-left m-0 p-0">
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-message mr-2" style="font-size: 30px;"></i>
-                    <span>3 comments</span>
+                    <span>{{comments.length}} comments</span>
                 </div>
                 <hr>
-                <div class="h-100" v-for="(item, idx) of comments" :key="idx">
+                <div class="h-100" v-for="(value, key) in comments" :key="key">
                     <div class="row mb-3">
                         <div class="col-1 m-auto">
                             <img class="comment-img" :src="`/images/user.png`" alt="대추">
                         </div>
                         <div class="col-9 m-auto">
-                            안녕하세요 노래가 너무 좋아요
+                            {{value.comment}}
                         </div>
                         <div class="col-2 h-100 text-right">
                             <i class="mdi mdi-pencil-outline"></i>
@@ -36,17 +36,46 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Comments',
     data() {
         return {
-            comments: ['hi', 'good', 'hello'],
-            comment: ''
+            comments: [],
+            comment: '',
         }
     },
+    mounted() {
+        this.getComments();
+    },
     methods: {
-        submitComment() {
+        async getComments() {
+            let res = await axios.post('/api/comment/comments', { 'songName': this.$route.params.musicName.replaceAll('-', ' ') })
+
+            if (res.data.success) {
+                console.log(res.data)
+                this.comments = res.data.result;
+            }
+        },
+
+        async submitComment() {
             if (sessionStorage.getItem('x_auth') != null) {
+                if (this.comment == '') return true;
+
+                let sendData = {
+                    songName: this.$route.params.musicName.replaceAll('-', ' '),
+                    userId: 1,
+                    content: this.comment,
+                };
+
+                let res = await axios.post('/api/comment/submit', sendData);
+
+                if (res.data.success) {
+                    this.comment = '';
+                    this.getComments();
+                }
+
                 return true;
             } else {
                 this.$emit('on-login');

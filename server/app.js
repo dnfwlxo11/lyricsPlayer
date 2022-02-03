@@ -14,6 +14,7 @@ const userRouter = require('./routes/user/user.js');
 const musicRouter = require('./routes/music/music.js');
 const musicianRouter = require('./routes/musician/musician.js');
 const albumRouter = require('./routes/album/album.js');
+const commentRouter = require('./routes/comment/comment.js');
 
 app.set('view engine', 'jade');
 
@@ -22,12 +23,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/api/play/*', express.static(path.join(__dirname, 'music')));
 
 app.use('/', indexRouter);
 app.use('/api/user', userRouter);
 app.use('/api/music', musicRouter);
 app.use('/api/musician', musicianRouter);
 app.use('/api/album', albumRouter);
+app.use('/api/comment', commentRouter);
 
 module.exports = app;

@@ -138,6 +138,9 @@ export default {
             this.getMusicInfo();
             this.getRankMusic();
         },
+
+        
+
         async getMusicInfo() {
             let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
 

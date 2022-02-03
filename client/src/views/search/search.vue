@@ -7,11 +7,15 @@
             </div>
             <div v-if="this.options.title" class="text-left mb-5">
                 <div class="mb-3">
-                    <h5><strong>Title</strong></h5>
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
+                        <strong style="font-size: 20px;">Title</strong>
+                    </div>
                     <small>Found {{titleResult.length}} songs.</small>
                 </div>
 
                 <div v-for="(value, key) in titleResult" :key="key">
+                    <hr>
                     <div class="row">
                         <div class="col-md-3 mr-3">
                             <img class="searchImg" :src="value.songImg" @click="$router.push(`/music/${value.musician}/${value.song}`)">
@@ -24,12 +28,14 @@
 
                         </div>
                     </div>
-                    <hr>
                 </div>
             </div>
             <div v-if="this.options.lyrics" class="text-left mb-5">
                 <div class="mb-3">
-                    <h5><strong>Lyrics</strong></h5>
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
+                        <strong style="font-size: 20px;">Lyrics</strong>
+                    </div>
                     <small>Found {{lyricsResult.length}} songs.</small>
                 </div>
 
@@ -51,11 +57,15 @@
             </div>
             <div v-if="this.options.album" class="text-left mb-5">
                 <div class="mb-3">
-                    <h5><strong>Album</strong></h5>
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-album" style="font-size: 30px;"></i>&nbsp;
+                        <strong style="font-size: 20px;">Album</strong>
+                    </div>
                     <small>Found {{albumResult.length}} albums.</small>
                 </div>
 
                 <div v-for="(value, key) in albumResult" :key="key">
+                    <hr>
                     <div class="row">
                         <div class="col-md-3 mr-3">
                             <img class="searchImg" :src="value.songImg" @click="$router.push(`/album/${value.album}`)">
@@ -68,16 +78,19 @@
 
                         </div>
                     </div>
-                    <hr>
                 </div>
             </div>
             <div v-if="this.options.musician" class="text-left mb-5">
                 <div class="mb-3">
-                    <h5><strong>Musician</strong></h5>
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-account-circle" style="font-size: 30px;"></i>&nbsp;
+                        <strong style="font-size: 20px;">Musician</strong>
+                    </div>
                     <small>Found {{musicianResult.length}} musicians.</small>
                 </div>
 
                 <div v-for="(value, key) in musicianResult" :key="key">
+                    <hr>
                     <div class="row">
                         <div class="col-md-3 mr-3">
                             <img class="searchImg" :src="value.songImg" @click="$router.push(`/musician/${value.musician}`)">
@@ -89,7 +102,6 @@
 
                         </div>
                     </div>
-                    <hr>
                 </div>
             </div>
         </div>

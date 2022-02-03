@@ -55,9 +55,11 @@
         },
         methods: {
             async checkId() {
-                let res = await axios.post('/api/user/check', { 'id': this.registerData.id })
+                if (this.registerData.id) {
+                    let res = await axios.post('/api/user/check', { 'id': this.registerData.id })
 
-                if (!res.data.success) this.isDuplication = true;
+                    if (!res.data.success) this.isDuplication = true;
+                }
             },
             checkRule() {
                 if (this.registerData.password == this.registerData.check_password && this.isDuplication 
