@@ -17,21 +17,24 @@
                         </div>
                         
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <div class="ml-3" style="height: 100px;">
+                    <div class="modal-body h-100">
+                        <div class="row ml-3" style="height: 120px;">
+                            <div class="col-3 mr-0 pr-0">
                                 <img class="like-img mr-3" src="/images/british.jpg" style="float: left;">
-                                <div class="h-100 text-left">
-                                    <div><h3><strong>{{title}}</strong></h3></div>
-                                    <div><h5><small>{{musician}}</small></h5></div>
-                                </div>
                             </div>
-                            <hr>
+                            <div class="col-9 text-left">
+                                <div><h3><strong>{{title}}</strong></h3></div>
+                                <div><h5><small>{{musician}}</small></h5></div>
+                            </div>
                         </div>
-                        <div class="row" style="overflow-y: auto;max-height: 250px;">
-                            <div class="col-md-2 mb-2" v-for="(item, idx) of likeDummy" :key="idx">
-                                <img class="like-user-img m-1" src="/images/user.png" alt="">
-                                {{item}}
+                        <hr>
+                        <div class="row" style="overflow-y: auto;height: 100%;">
+                            <div v-if="likePeople == null" class="w-100 d-flex justify-content-center" >
+                                <div><i class="spinner-border" style="width: 4rem; height: 4rem;" role="status"></i></div>
+                            </div>
+                            <div v-else class="col-md-2 mb-2" v-for="(item, idx) of likePeople" :key="idx">
+                                <img class="like-user-img m-1" src="/images/user.png" alt=""> <br>
+                                {{item.id}}
                             </div>
                         </div>
                     </div>
@@ -60,6 +63,8 @@ export default {
         return {
             likeDummy: ['신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통'],
             likePeople: null,
+            currPage: 0,
+            pageSize: 10,
         }
     },
     mounted() {
@@ -67,14 +72,17 @@ export default {
     },
     methods: {
         async getLikeCount() {
-            let res = await axios.post('/api/music/likeCnt', { songName: this.$route.params.musicName.replaceAll('-', ' ') });
-
-            if (res.data.success) {
-                console.log(res.data..as)
-                this.likePeople = res.data.result.likeCnt;
+            let sendData = {
+                songName: this.$route.params.musicName.replaceAll('-', ' '),
+                pageSize: this.pageSize,
+                currPage: this.currPage,
             }
 
-            console.log(this.likePeople)
+            let res = await axios.post('/api/music/likeCnt', sendData);
+
+            if (res.data.success) {
+                this.likePeople = res.data.result;
+            }
         }
     }
 }
@@ -83,12 +91,18 @@ export default {
 <style scoped>
 .like-img {
     border-radius: 0;
-    height: 100px;
-    width: 100px;
+    height: 110px;
+    width: 110px;
 }
 
 .like-user-img {
     height: 60px;
     width: 60px;
+}
+
+.modal-container {
+    max-width: 600px;
+    height: 500px;
+    margin-top: 100px;
 }
 </style>

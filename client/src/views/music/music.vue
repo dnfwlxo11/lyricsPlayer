@@ -50,17 +50,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 h-100 p-0">
-                        <div class="card text-left h-100 w-100 m-0 p-2">
+                    <div class="col-md-2 p-0">
+                        <div class="card text-left w-100 m-0 p-2" style="min-height: 110px;">
                             <div class="row m-0 p-0 mb-1">
                                 <div class="m-0 p-0 col-6 text-left">좋아요</div>
                                 <div class="m-0 p-0 col-6 text-right" style="font-size: 20px;"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
                                 <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
                             </div>
                             <hr class="m-0 p-0 mb-2">
-                            <div class="d-flex justify-content-start align-items-center">
-                                <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
-                                <div><i class="more mdi mdi-plus" @click="showLikes=true;"></i></div>
+                            <div class="d-flex justify-content-start align-items-center" @click="showLikes=true;">
+                                <div v-if="likes == null">
+                                    <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                                </div>
+                                <div v-else>
+                                    <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" >
+                                </div>
+                                <div v-if="likes != null && likes.length > 3">
+                                    <i class="more mdi mdi-plus"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -89,8 +96,7 @@ export default {
         return {
             recommandList: [],
             thumbnailPath: null,
-            likes: [1, 2, 3],
-            subscribes: [1, 2, 3],
+            likes: null,
             isLogin: false,
             showLikes: false,
             showSubscribes: false,
@@ -122,6 +128,7 @@ export default {
             this.setMusic();
             this.getMusicInfo();
             this.getRankMusic();
+            this.getLikeCount();
         },
 
         async getMusicInfo() {
@@ -194,11 +201,25 @@ export default {
                 }
 
                 let res = await axios.post('/api/music/like', sendData);
-                console.log('like', res);
+                this.getLikeCount();
             } else {
                 this.mustLogin();
             }
         },
+
+        async getLikeCount() {
+            let sendData = {
+                songName: this.$route.params.musicName.replaceAll('-', ' '),
+                pageSize: 3,
+                currPage: 0,
+            }
+
+            let res = await axios.post('/api/music/likeCnt', sendData);
+
+            if (res.data.success) {
+                this.likes = res.data.result;
+            }
+        }
     },
     computed: {
         getMusicState() {

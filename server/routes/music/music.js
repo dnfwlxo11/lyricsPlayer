@@ -116,12 +116,14 @@ router.post('/like', (req, res, next) => {
 })
 
 router.post('/likeCnt', (req, res, next) => {
+    console.log(req.body);
+
     const selectLikeCountWork = DB.connect(async (conn) => {
-        const sql = Quries.selectLikeCount(req.body.songName);
+        const sql = Quries.selectLikeCount(req.body);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
-        return rows[0]
+        return rows
     });
 
     selectLikeCountWork()

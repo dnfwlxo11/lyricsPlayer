@@ -24,10 +24,18 @@
                             <h6 class="text-left">아이디</h6>
                             <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="id" disabled>
                         </div>
+                        <div class="mb-3">
+                            <h6 class="text-left">기존 비밀번호</h6>
+                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" disabled>
+                        </div>
                         <div class="mb-5">
-                            <h6 class="text-left">비밀번호</h6>
-                            <input class="pl-3 pass-input" type="password" style="height: 35px; width: 80%" :value="password" disabled>
-                            <button class="btn pass-btn" style="width: 20%; height: 35px">변경</button>
+                            <h6 class="text-left">새로운 비밀번호</h6>
+                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" disabled>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-sm" @click="login()" style="width: 90%; height: 40px;">
+                                적용
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -42,7 +50,8 @@ export default {
     data() {
         return {
             id: 'xxxxx',
-            password: '1234'
+            beforePass: '1234',
+            afterPass: '1234',
         }
     }
 }

@@ -58,11 +58,15 @@ module.exports = {
     },
 
     selectLikeCount(params) {
+        const songName = params.songName;
+        const currPage = params.currPage;
+        const pageSize = params.pageSize;
         const sql = [];
 
-        sql.push(`SELECT COUNT(tbSongLikes.tb_songs_sid) as likeCnt, tbUsers.id `);
+        sql.push(`SELECT tbUsers.id `);
         sql.push(`FROM tb_song_likes as tbSongLikes, tb_users as tbUsers `);
-        sql.push(`WHERE tbSongLikes.tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${params}")`);
+        sql.push(`WHERE tbSongLikes.tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
+        sql.push(`LIMIT ${currPage * pageSize}, ${pageSize}`);
 
         return sql.join('');
     },
