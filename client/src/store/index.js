@@ -63,7 +63,7 @@ const vuex = new Vuex.Store({
     },
     getPlayState(state) {
       return state.isPlay;
-    }
+    },
   }
 })
 

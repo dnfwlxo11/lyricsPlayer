@@ -27,7 +27,6 @@ module.exports = {
         const keyword = params;
         const sql = [];
 
-
         sql.push(`SELECT tbMusicians.musician_name as musician, tbAlbums.album_name as album, tbSongs.song_name as song, tbSongs.playtime as duration, tbSongs.thumbnail_path as songImg, tbAlbums.thumbnail_path as albumImg, count(tbAlbums.aid) as trackLen `)
         sql.push(`FROM tb_songs as tbSongs `)
         sql.push(`INNER JOIN tb_albums as tbAlbums ON tbSongs.tb_albums_aid = tbAlbums.aid `)
@@ -36,5 +35,47 @@ module.exports = {
         sql.push(`GROUP BY tbAlbums.aid`);
 
         return sql.join('');
-    }
+    },
+
+    deleteLikeSong(params) {
+        const sql = [];
+
+        sql.push(`DELETE `);
+        sql.push(`FROM tb_song_likes `);
+        sql.push(`WHERE tb_users_uid = ${params}`);
+
+        return sql.join('');
+    },
+
+    selectLikeSong(params) {
+        const sql = [];
+
+        sql.push(`SELECT tb_users_uid `);
+        sql.push(`FROM tb_song_likes `);
+        sql.push(`WHERE tb_users_uid = ${params}`);
+
+        return sql.join('');
+    },
+
+    selectLikeCount(params) {
+        const sql = [];
+
+        sql.push(`SELECT COUNT(tbSongLikes.tb_songs_sid) as likeCnt, tbUsers.id `);
+        sql.push(`FROM tb_song_likes as tbSongLikes, tb_users as tbUsers `);
+        sql.push(`WHERE tbSongLikes.tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${params}")`);
+
+        return sql.join('');
+    },
+
+    insertLikeSong(params) {
+        const songName = params.songName;
+        const userId = params.userId;
+        const sql = [];
+
+        sql.push(`INSERT INTO `);
+        sql.push(`tb_song_likes(tb_songs_sid, tb_users_uid) `);
+        sql.push(`VALUES((SELECT sid FROM tb_songs WHERE song_name = "${songName}"), ${userId})`);
+
+        return sql.join('');
+    },
 }

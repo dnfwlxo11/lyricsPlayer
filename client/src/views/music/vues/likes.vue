@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Likes',
     props: {    
@@ -56,7 +58,23 @@ export default {
     },
     data() {
         return {
-            likeDummy: ['신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통']
+            likeDummy: ['신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통', '신뢰성', '확장성', '부하', '발전소', '항공', '교통'],
+            likePeople: null,
+        }
+    },
+    mounted() {
+        this.getLikeCount();
+    },
+    methods: {
+        async getLikeCount() {
+            let res = await axios.post('/api/music/likeCnt', { songName: this.$route.params.musicName.replaceAll('-', ' ') });
+
+            if (res.data.success) {
+                console.log(res.data..as)
+                this.likePeople = res.data.result.likeCnt;
+            }
+
+            console.log(this.likePeople)
         }
     }
 }

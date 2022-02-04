@@ -6,7 +6,7 @@
                 <div class="row m-0 p-0">
                     <div v-if="!thumbnailPath" class="col-md-10 mb-2 d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
                     <div v-else class="col-md-9 mb-2 " style="height: 700px;">
-                        <img :src="thumbnailPath" style="height: 100%; width: 100%; object-fit: cover;">
+                        <img :src="thumbnailPath" style="height: 100%; width: 100%; object-fit: cover;" loading="lazy">
                     </div>
                     <!-- <strong style="height: 40px;">Relation List</strong> -->
                     <div class="card col-md-3" style="overflow-y: auto; height: 700px;">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 h-100 p-0">
-                        <div class="card text-left w-100 m-0 p-2 mb-3">
+                        <div class="card text-left h-100 w-100 m-0 p-2">
                             <div class="row m-0 p-0 mb-1">
                                 <div class="m-0 p-0 col-6 text-left">좋아요</div>
                                 <div class="m-0 p-0 col-6 text-right" style="font-size: 20px;"><i class="mdi mdi-thumb-up-outline" @click="like"></i></div>
@@ -63,24 +63,11 @@
                                 <div><i class="more mdi mdi-plus" @click="showLikes=true;"></i></div>
                             </div>
                         </div>
-                        <div class="card text-left w-100 m-0 p-2">
-                            <div class="row m-0 p-0 mb-1">
-                                <div class="m-0 p-0 col-6 text-left">구독</div>
-                                <div class="m-0 p-0 col-6 text-right" style="font-size: 20px;"><i class="mdi mdi-thumb-up-outline" @click="subscribe"></i></div>
-                                <!-- <div class="col-5"><i class="mdi mdi-thumb-up"></i></div> -->
-                            </div>
-                            <hr class="m-0 p-0 mb-2">
-                            <div class="d-flex justify-content-start align-items-center">
-                                <img v-for="(item, idx) in subscribes" :key="idx" class="subscriber-img mr-1 w-25" :src="`/images/user.png`" alt="대추">
-                                <div><i class="more mdi mdi-plus" @click="showSubscribes=true;"></i></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
-            <comments @on-login="mustLogin"></comments>
+            <comments ref="comments" @on-login="mustLogin"></comments>
             <likeModal v-if="showLikes" @on-login="mustLogin" @click="showLikes=true;" @on-close="showLikes=false;" :title="$route.params.musicName.replaceAll('-', ' ')" :musician="$route.params.musician.replaceAll('-', ' ')"></likeModal>
-            <subscribeModal v-if="showSubscribes" @on-login="mustLogin" @click="showSubscribes=true;" @on-close="showSubscribes=false;" :title="$route.params.musicName.replaceAll('-', ' ')" :musician="$route.params.musician.replaceAll('-', ' ')"></subscribeModal>
         </div>
     </div>
 </template>
@@ -90,7 +77,6 @@ import axios from 'axios'
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
 import likeModal from '@/views/music/vues/likes.vue'
-import subscribeModal from '@/views/music/vues/subscribes.vue'
 
 export default {
     name: 'Music',
@@ -98,7 +84,6 @@ export default {
         top,
         comments,
         likeModal,
-        subscribeModal
     },
     data() {
         return {
@@ -125,7 +110,7 @@ export default {
         this.isPlay = this.$store.getters.getPlayState;
         this.audioPlayer = this.$store.getters.getAudioPlayer;
 
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
     },
     destroyed() {
     },
@@ -138,8 +123,6 @@ export default {
             this.getMusicInfo();
             this.getRankMusic();
         },
-
-        
 
         async getMusicInfo() {
             let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
@@ -187,7 +170,6 @@ export default {
         },
 
         calcTime(time) {
-            console.log(time)
             return (time/60 < 10 ? '0' + Math.floor(time/60).toString() : Math.floor(time/60).toString()).toString() + ':' + (time%60 < 10 ? '0' + Math.floor(time%60).toString() : Math.floor(time%60).toString()).toString();
         },
 
@@ -204,13 +186,19 @@ export default {
             this.audioPlayer.play();
         },
 
-        like() {
-            console.log('like')
-        },
+        async like() {
+            if (sessionStorage.getItem('x_auth') != null) {
+                let sendData = {
+                    songName: this.$route.params.musicName.replaceAll('-', ' '),
+                    userId: 1,
+                }
 
-        subscribe() {
-            console.log('subscribe')
-        }
+                let res = await axios.post('/api/music/like', sendData);
+                console.log('like', res);
+            } else {
+                this.mustLogin();
+            }
+        },
     },
     computed: {
         getMusicState() {
@@ -229,9 +217,9 @@ export default {
             this.isPlay = this.$store.getters.getPlayState;
             this.audioPlayer = this.$store.getters.getAudioPlayer;
 
-            window.scrollTo(0, 0);
 
             this.init();
+            this.$refs.comments.getComments();
         }
     }
 }
@@ -268,6 +256,7 @@ progress::-webkit-progress-bar {
 .musician-img {
     width: 85%;
     border-radius: 70%;
+    border: 1px solid lightgray;
 }
 
 ul {

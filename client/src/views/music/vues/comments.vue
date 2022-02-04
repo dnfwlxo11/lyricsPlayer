@@ -11,25 +11,44 @@
             <div class="text-left m-0 p-0">
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-message mr-2" style="font-size: 30px;"></i>
-                    <span>{{comments.length}} comments</span>
+                    <div v-if="comments == null">
+                        <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                    </div>
+                    <div v-else>
+                        <span>{{comments.length}} comments</span>
+                    </div>
+                    
                 </div>
                 <hr>
-                <div class="h-100" v-for="(value, key) in comments" :key="key">
-                    <div class="row mb-3">
-                        <div class="col-1 m-auto">
-                            <img class="comment-img" :src="`/images/user.png`" alt="대추">
-                        </div>
-                        <div class="col-9 m-auto">
-                            {{value.comment}}
-                        </div>
-                        <div class="col-2 h-100 text-right">
-                            <i class="mdi mdi-pencil-outline"></i>
-                            <i class="mdi mdi-delete-outline"></i>
-                            <div><small>1 hours ago</small></div>
-                        </div>
+                <div v-if="comments == null" class="text-center">
+                    <div class="pt-3">
+                        <i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i>
                     </div>
-                    <hr>
                 </div>
+                <div v-else class="h-100">
+                    <div v-for="(value, key) in comments" :key="key">
+                        <div class="row mb-3">
+                            <div class="col-1 m-auto">
+                                <img class="comment-img" :src="`/images/user.png`" alt="대추">
+                            </div>
+                            <div class="col-9 m-auto">
+                                <div>
+                                    <strong>{{value.userName}}</strong>&nbsp;
+                                    <small>1 hours ago</small>
+                                </div>
+                                <div>
+                                    <small>{{value.comment}}</small>
+                                </div>
+                            </div>
+                            <div class="col-2 h-100 text-right">
+                                <i class="mdi mdi-pencil-outline" style="font-size: 20px;"></i>
+                                <i class="mdi mdi-delete-outline" style="font-size: 20px;"></i>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -42,7 +61,7 @@ export default {
     name: 'Comments',
     data() {
         return {
-            comments: [],
+            comments: null,
             comment: '',
         }
     },
@@ -54,7 +73,6 @@ export default {
             let res = await axios.post('/api/comment/comments', { 'songName': this.$route.params.musicName.replaceAll('-', ' ') })
 
             if (res.data.success) {
-                console.log(res.data)
                 this.comments = res.data.result;
             }
         },
@@ -67,6 +85,7 @@ export default {
                     songName: this.$route.params.musicName.replaceAll('-', ' '),
                     userId: 1,
                     content: this.comment,
+                    submitDate: (new Date).getTime(),
                 };
 
                 let res = await axios.post('/api/comment/submit', sendData);

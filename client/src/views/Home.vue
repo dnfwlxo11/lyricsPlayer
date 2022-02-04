@@ -47,7 +47,7 @@
                         </div>
                         <div class="text-left">
                             <div class="music-info text-left">
-                                <span @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)">{{item['song_name']}}</span> <br>
+                                <strong><span @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)">{{item['song_name']}}</span></strong> <br>
                                 <span @click="$router.push(`/musician/${item['musician_name'].replaceAll(' ', '-')}`)"><small>{{item['musician_name']}}</small></span>
                             </div>
                         </div>
@@ -107,8 +107,6 @@
             },
 
             musicControl(musician, music) {
-                console.log(musician, music)
-
                 if (this.musicState.name != music) {
                     this.$store.commit('setCurrMusic', music);
                     this.$store.commit('setMusicSrc', `/api/music/play/${musician}/${music}.mp3`);
@@ -131,7 +129,6 @@
                 let res = await axios.post('/api/music/ranking')
 
                 if (res.data.success) this.musicRank = res.data.result
-                console.log(res.data.result)
             }
         }
     }

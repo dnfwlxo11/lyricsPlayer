@@ -72,4 +72,63 @@ router.post('/search/:keyword', (req, res, next) => {
     });
 })
 
+router.post('/like', (req, res, next) => {
+    const selectLikeSongWork = DB.connect(async (conn) => {
+        const sql = Quries.selectLikeSong(req.body.userId);
+        const rows = await conn.query(sql);
+
+        if (rows == undefined) return false
+        return rows
+    });
+
+    selectLikeSongWork()
+    .then((result) => {
+        if (result.length) {
+            const deleteLikeSongWork = DB.connect(async (conn) => {
+                const sql = Quries.deleteLikeSong(req.body.userId);
+                const result = await conn.query(sql);
+        
+                if (result == undefined) return false
+                return result
+            });
+        
+            deleteLikeSongWork()
+            .then((result) => {
+                if (!result) res.send({ 'success': false });
+                else res.send({ 'success': true, result });
+            });
+        } else {
+            const insertLikeSongWork = DB.connect(async (conn) => {
+                const sql = Quries.insertLikeSong(req.body);
+                const result = await conn.query(sql);
+        
+                if (result == undefined) return false
+                return result
+            });
+        
+            insertLikeSongWork()
+            .then((result) => {
+                if (!result) res.send({ 'success': false });
+                else res.send({ 'success': true, result });
+            });
+        }
+    });
+})
+
+router.post('/likeCnt', (req, res, next) => {
+    const selectLikeCountWork = DB.connect(async (conn) => {
+        const sql = Quries.selectLikeCount(req.body.songName);
+        const rows = await conn.query(sql);
+
+        if (rows == undefined) return false
+        return rows[0]
+    });
+
+    selectLikeCountWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
 module.exports = router

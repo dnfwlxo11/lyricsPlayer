@@ -4,7 +4,7 @@ module.exports = {
 
         const sql = [];
 
-        sql.push(`SELECT comment `);
+        sql.push(`SELECT (SELECT id FROM tb_users WHERE uid = tb_users_uid) as userName, comment `);
         sql.push(`FROM tb_comments `);
         sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}")`);
 
@@ -15,6 +15,7 @@ module.exports = {
         const songName = params.songName;
         const userId = params.userId;
         const content = params.content;
+        const submitDate = params.submitDate;
 
         const sql = [];
 

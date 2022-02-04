@@ -142,11 +142,8 @@ export default {
     methods: {
         async searchData() {
             let res = await axios.post(`/api/music/search/${this.keyword.replaceAll(' ', '-')}`)
-            console.log(res)
             if (res.data.success) {
                 res.data.result.map(item => {
-                    console.log(item)
-                    console.log(this.keyword)
                     if (item.album.toLowerCase().includes(this.keyword.toLowerCase())) this.albumResult.push(item)
                     if (item.song.toLowerCase().includes(this.keyword.toLowerCase())) this.titleResult.push(item)
                     if (item.musician.toLowerCase().includes(this.keyword.toLowerCase())) this.musicianResult.push(item)
