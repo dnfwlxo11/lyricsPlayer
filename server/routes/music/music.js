@@ -5,6 +5,7 @@ const Quries = require('./Queries/query');
 const mariaDB = require('../../modules');
 const path = require('path');
 const DB = mariaDB.Database;
+const { auth } = require('../../modules/auth');
 
 router.get('/play/:musician/:musicName', (req, res, next) => {
     let musicianName = req.params.musician.replace(/-/g, ' ');
@@ -23,7 +24,9 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
     audioStream.pipe(res);
 })
 
-router.post('/ranking', (req, res, next) => {
+router.post('/ranking', auth, (req, res, next) => {
+    console.log(req.cookies)
+
     const selectMusicRankingWork = DB.connect(async (conn) => {
         const sql = Quries.selectMusicRanking(req.body.id);
         const rows = await conn.query(sql);

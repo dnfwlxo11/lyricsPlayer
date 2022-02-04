@@ -62,6 +62,9 @@
                                 <div v-if="likes == null">
                                     <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
                                 </div>
+                                <div class="h-100 w-100 text-center" v-else-if="likes != null && !likes.length">
+                                    <strong>첫 좋아요를 눌러보세요!</strong>
+                                </div>
                                 <div v-else>
                                     <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" >
                                 </div>
@@ -136,7 +139,8 @@ export default {
 
             if (res.data.success) {
                 // this.musicState.duration = res.data.result.playtime
-                this.thumbnailPath = res.data.result.thumbnail_path
+                this.thumbnailPath = res.data.result.thumbnail_path;
+                this.musicState['duration'] = res.data.result.playtime;
             }
         },
 
@@ -201,7 +205,8 @@ export default {
                 }
 
                 let res = await axios.post('/api/music/like', sendData);
-                this.getLikeCount();
+
+                if (res.data.success) this.getLikeCount();
             } else {
                 this.mustLogin();
             }
@@ -238,9 +243,10 @@ export default {
             this.isPlay = this.$store.getters.getPlayState;
             this.audioPlayer = this.$store.getters.getAudioPlayer;
 
-
             this.init();
             this.$refs.comments.getComments();
+            
+            window.scrollTo(0, 0);
         }
     }
 }

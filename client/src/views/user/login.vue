@@ -61,7 +61,7 @@ export default {
             let res = await axios.post('/api/user/login', this.registerData);
             if (res.data.success) {
                 sessionStorage.setItem('x_auth', res.data.token);
-                // Vue.$cookies.set('x_auth', res.data.token, '10s')
+                this.$cookies.set('x_auth', res.data.token, `${3600*1}s`);
                 this.loginErr = false;
                 this.$emit('on-confirm', true)
             } else {
