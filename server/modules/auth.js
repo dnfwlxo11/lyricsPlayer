@@ -2,37 +2,33 @@ const User = require('../routes/user/models');
 const mariaDB = require('./mariadb');
 const DB = new mariaDB();
 
-let auth = (req, res, next) => {
+let auth = async (req, res, next) => {
     let token = req.cookies.x_auth;
+
     if (token == undefined) {
-        req.success = false ;
-    };
+        req.success = false;
+    } else {
+        let verifyToken = User.verifyToken(token);
 
-    let verifyToken = User.verifyToken(token);
+        const verifyUserWork = DB.connect(async (conn) => {
+            const sql = `SELECT uid, password FROM tb_users WHERE id = "${'qwe'}"`;
+            const rows = await conn.query(sql);
 
-    const verifyUserWork = DB.connect(async (conn) => {
-        const sql = `SELECT uid, password FROM tb_users WHERE id = "${'qwe'}"`;
-        const rows = await conn.query(sql);
+            if (!rows.length) return false;
 
-        console.log(rows, 'rows');
+            if (rows[0].password == verifyToken) return rows[0];
+            else return false;
+        });
 
-        if (!rows.length) return false;
-
-        if (rows[0].password == verifyToken) return rows[0];
-        else return false;
-    });
-
-    verifyUserWork()
-    .then((result) => {
-        console.log(result, 'query result');
-        console.log(!result)
-        if (!result) {
-            res.send({ success: false });
+        let response = await verifyUserWork()
+        
+        if (!response) {
+            res.success = false;
         } else { 
             req.success = true;
-            req.user = result
+            req.user = response;
         };
-    });
+    }
 
     next();
 }

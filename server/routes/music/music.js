@@ -25,8 +25,6 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
 })
 
 router.post('/ranking', (req, res, next) => {
-    console.log(req.cookies)
-
     const selectMusicRankingWork = DB.connect(async (conn) => {
         const sql = Quries.selectMusicRanking(req.body.id);
         const rows = await conn.query(sql);
@@ -63,7 +61,6 @@ router.post('/search/:keyword', (req, res, next) => {
         const sql = Quries.selectSearchSong(req.params.keyword.replace(/-/g, ' '));
         const rows = await conn.query(sql);
 
-        console.log(rows)
         if (rows == undefined) return false
         return rows
     });
@@ -76,6 +73,8 @@ router.post('/search/:keyword', (req, res, next) => {
 })
 
 router.post('/like', auth, (req, res, next) => {
+    if (!req.success) res.send({ 'success': false });
+
     const selectLikeSongWork = DB.connect(async (conn) => {
         const sql = Quries.selectLikeSong(req.body.userId);
         const rows = await conn.query(sql);
@@ -119,8 +118,6 @@ router.post('/like', auth, (req, res, next) => {
 })
 
 router.post('/likeCnt', auth, (req, res, next) => {
-    console.log(req.user, 'req');
-
     const selectLikeCountWork = DB.connect(async (conn) => {
         const sql = Quries.selectLikeCount(req.body);
         const rows = await conn.query(sql);

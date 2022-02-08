@@ -63,8 +63,9 @@ module.exports = {
         const pageSize = params.pageSize;
         const sql = [];
 
-        sql.push(`SELECT tbUsers.id `);
-        sql.push(`FROM tb_song_likes as tbSongLikes, tb_users as tbUsers `);
+        sql.push(`SELECT tbUsers.uid `);
+        sql.push(`FROM tb_song_likes as tbSongLikes `);
+        sql.push(`LEFT JOIN tb_users as tbUsers ON tbSongLikes.tb_users_uid = tbUsers.id `)
         sql.push(`WHERE tbSongLikes.tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
         sql.push(`LIMIT ${currPage * pageSize}, ${pageSize}`);
 
