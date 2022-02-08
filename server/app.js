@@ -10,6 +10,7 @@ global._modules = require(path.join(__dirname, 'modules'));
 global._workDir = path.join(__dirname);
 
 const indexRouter = require('./routes/index.js');
+const errRouter = require('./routes/authErr.js');
 const userRouter = require('./routes/user/user.js');
 const musicRouter = require('./routes/music/music.js');
 const musicianRouter = require('./routes/musician/musician.js');
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/err', errRouter);
 app.use('/api/user', userRouter);
 app.use('/api/music', musicRouter);
 app.use('/api/musician', musicianRouter);

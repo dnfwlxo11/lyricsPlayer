@@ -68,7 +68,7 @@
                                 <div v-else>
                                     <img v-for="(item, idx) in likes" :key="idx" class="like-img mr-1 w-25" :src="`/images/user.png`" >
                                 </div>
-                                <div v-if="likes != null && likes.length > 3">
+                                <div v-if="likes != null && likes.length == 3">
                                     <i class="more mdi mdi-plus"></i>
                                 </div>
                             </div>

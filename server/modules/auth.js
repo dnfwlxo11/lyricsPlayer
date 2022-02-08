@@ -4,26 +4,34 @@ const DB = new mariaDB();
 
 let auth = (req, res, next) => {
     let token = req.cookies.x_auth;
+    if (token == undefined) {
+        req.success = false ;
+    };
 
     let verifyToken = User.verifyToken(token);
 
-    console.log(DB)
-
     const verifyUserWork = DB.connect(async (conn) => {
-        const sql = `SELECT password FROM tb_users WHERE id = "${'qwe'}"`;
+        const sql = `SELECT uid, password FROM tb_users WHERE id = "${'qwe'}"`;
         const rows = await conn.query(sql);
 
-        if (rows[0] == undefined) return false;
+        console.log(rows, 'rows');
 
-        console.log()
-        if (rows[0] == verifyToken) return true;
+        if (!rows.length) return false;
+
+        if (rows[0].password == verifyToken) return rows[0];
         else return false;
     });
 
     verifyUserWork()
     .then((result) => {
-        if (!result) req.success = false;
-        else req.success = true;
+        console.log(result, 'query result');
+        console.log(!result)
+        if (!result) {
+            res.send({ success: false });
+        } else { 
+            req.success = true;
+            req.user = result
+        };
     });
 
     next();

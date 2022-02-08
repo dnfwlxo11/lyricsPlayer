@@ -24,7 +24,7 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
     audioStream.pipe(res);
 })
 
-router.post('/ranking', auth, (req, res, next) => {
+router.post('/ranking', (req, res, next) => {
     console.log(req.cookies)
 
     const selectMusicRankingWork = DB.connect(async (conn) => {
@@ -75,7 +75,7 @@ router.post('/search/:keyword', (req, res, next) => {
     });
 })
 
-router.post('/like', (req, res, next) => {
+router.post('/like', auth, (req, res, next) => {
     const selectLikeSongWork = DB.connect(async (conn) => {
         const sql = Quries.selectLikeSong(req.body.userId);
         const rows = await conn.query(sql);
@@ -118,8 +118,8 @@ router.post('/like', (req, res, next) => {
     });
 })
 
-router.post('/likeCnt', (req, res, next) => {
-    console.log(req.body);
+router.post('/likeCnt', auth, (req, res, next) => {
+    console.log(req.user, 'req');
 
     const selectLikeCountWork = DB.connect(async (conn) => {
         const sql = Quries.selectLikeCount(req.body);
