@@ -114,11 +114,12 @@ export default {
         }
     },
     created() {
+        this.audioPlayer = window._globalAudio;
         this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
         this.musicState = this.$store.getters.getMusicState;
         this.isPlay = this.$store.getters.getPlayState;
-        this.audioPlayer = this.$store.getters.getAudioPlayer;
-
+        
+        console.log(this.audioPlayer)
         // window.scrollTo(0, 0);
     },
     destroyed() {
@@ -152,14 +153,14 @@ export default {
 
         setMusic() {
             if (this.musicState['name'] == 'none') {
+                window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
                 this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
-                this.$store.commit('setMusicSrc', `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`);
             }
         },
 
         musicControl() {
             if (this.musicState['name'] != this.currAudioName) {
-                this.$store.commit('setMusicSrc', `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`);
+                window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
                 this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
             } 
             
@@ -187,13 +188,13 @@ export default {
         timeMove(e) {
             if (e == undefined) return;
             if (this.musicState['name'] != this.currAudioName) {
-                this.$store.commit('setMusicSrc', `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`);
+                window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
                 this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
             }
 
             let time = Math.floor(this.musicState['duration'] * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
             
-            this.$store.commit('setMusicTime', time);
+            window._globalAudio.currentTime = time
             this.audioPlayer.play();
         },
 
@@ -241,7 +242,7 @@ export default {
             this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
             this.musicState = this.$store.getters.getMusicState;
             this.isPlay = this.$store.getters.getPlayState;
-            this.audioPlayer = this.$store.getters.getAudioPlayer;
+            this.audioPlayer = window._globalAudio;
 
             this.init();
             this.$refs.comments.getComments();

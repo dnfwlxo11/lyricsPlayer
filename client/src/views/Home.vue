@@ -97,7 +97,7 @@
         },
         mounted() {
             this.musicState = this.$store.getters.getMusicState;
-            this.audioPlayer = this.$store.getters.getAudioPlayer;
+            this.audioPlayer = window._globalAudio;
             this.getRankMusic()
         },
         methods: {
@@ -108,8 +108,9 @@
 
             musicControl(musician, music) {
                 if (this.musicState.name != music) {
+                    window._globalAudio.src = `/api/music/play/${musician}/${music}.mp3`;
+
                     this.$store.commit('setCurrMusic', music);
-                    this.$store.commit('setMusicSrc', `/api/music/play/${musician}/${music}.mp3`);
                     this.$store.commit('setPlayState', true);
                     this.musicState = this.$store.getters.getMusicState
                     this.audioPlayer.play();

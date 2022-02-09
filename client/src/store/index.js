@@ -44,11 +44,11 @@ const vuex = new Vuex.Store({
     setCurrMusic(state, name) {
       Vue.set(state.currMusic, 'name', name);
     },
-    setMusicSrc(state, src) {
-      Vue.set(state.audioPlayer, 'src', src);
+    setDuration(state, duration) {
+      Vue.set(state.currMusic, 'duration', duration);
     },
-    setMusicTime(state, time) {
-      Vue.set(state.audioPlayer, 'currentTime', time);
+    setCurrentTime(state, currentTime) {
+      Vue.set(state.currMusic, 'currentTime', currentTime);
     },
     setPlayState(state, playState) {
       state.isPlay = playState;
