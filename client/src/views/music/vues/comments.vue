@@ -78,7 +78,7 @@ export default {
         },
 
         async submitComment() {
-            if (sessionStorage.getItem('x_auth') != null) {
+            if (this.$cookies.get('x_auth') != null) {
                 if (this.comment == '') return true;
 
                 let sendData = {

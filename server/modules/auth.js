@@ -9,14 +9,15 @@ let auth = async (req, res, next) => {
         req.success = false;
     } else {
         let verifyToken = User.verifyToken(token);
+        console.log(verifyToken, 'verifyToken')
 
         const verifyUserWork = DB.connect(async (conn) => {
-            const sql = `SELECT uid, password FROM tb_users WHERE id = "${'qwe'}"`;
+            const sql = `SELECT uid FROM tb_users WHERE id = "${verifyToken.id}"`;
             const rows = await conn.query(sql);
 
             if (!rows.length) return false;
 
-            if (rows[0].password == verifyToken) return rows[0];
+            if (rows[0].uid == verifyToken.uid) return rows[0];
             else return false;
         });
 

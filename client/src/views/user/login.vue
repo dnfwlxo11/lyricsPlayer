@@ -54,16 +54,21 @@ export default {
         return {
             registerData: {},
             loginErr: false,
+            redirect: null,
         }
+    },
+    mounted() {
+        this.redirect = this.$route.query.redirect;
     },
     methods: {
         async login() {
             let res = await axios.post('/api/user/login', this.registerData);
             if (res.data.success) {
-                sessionStorage.setItem('x_auth', res.data.token);
-                this.$cookies.set('x_auth', res.data.token, `${3600*1}s`);
+                this.$cookies.set('x_auth', res.data.token);
                 this.loginErr = false;
-                this.$emit('on-confirm', true)
+
+                if (this.redirect) this.$router.push({ path: this.redirect});
+                else this.$emit('on-confirm', true)
             } else {
                 this.loginErr = true;
             }

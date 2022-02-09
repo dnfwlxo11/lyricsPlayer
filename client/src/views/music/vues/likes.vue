@@ -83,8 +83,6 @@ export default {
 
             let res = await axios.post('/api/music/likeCnt', sendData);
 
-            console.log(res);
-
             if (res.data.success) {
                 console.log(res.data)
                 this.likePeople = res.data.result;

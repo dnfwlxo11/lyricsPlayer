@@ -139,7 +139,6 @@ export default {
             let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
 
             if (res.data.success) {
-                // this.musicState.duration = res.data.result.playtime
                 this.thumbnailPath = res.data.result.thumbnail_path;
                 this.musicState['duration'] = res.data.result.playtime;
             }
@@ -199,13 +198,10 @@ export default {
         },
 
         async like() {
-            if (sessionStorage.getItem('x_auth') != null) {
-                let sendData = {
+            if (this.$cookies.get('x_auth') != null) {
+                let res = await axios.post('/api/music/like', {
                     songName: this.$route.params.musicName.replaceAll('-', ' '),
-                    userId: 1,
-                }
-
-                let res = await axios.post('/api/music/like', sendData);
+                });
 
                 if (res.data.success) this.getLikeCount();
             } else {

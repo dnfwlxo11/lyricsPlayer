@@ -6,8 +6,8 @@ function verifyToken(token) {
     return verifyToken;
 }
 
-function generateToken(pass) {
-    let token = jwt.sign(pass, process.env.SECRET_TOKEN);
+function generateToken(obj) {
+    let token = jwt.sign(obj, process.env.SECRET_TOKEN);
 
     return token;
 }

@@ -5,8 +5,8 @@
             <img class="w-100" src="@/assets/main.png" alt="메인이미지" style="height: 500px;">
         </div>
         <div class="search w-100 d-flex justify-content-center align-items-center mt-3 mb-3">
-            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="keyword ? $router.push(`/search?keyword=${keyword}${setParams()}`) : null" v-model="keyword">
-            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="keyword ? $router.push(`/search?keyword=${keyword}${setParams()}`) : null"></button>
+            <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="keyword ? $router.push({ path: `/search?keyword=${keyword}${setParams()}`}, () => {}) : null" v-model="keyword">
+            <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="keyword ? $router.push({ path: `/search?keyword=${keyword}${setParams()}`}, () => {}) : null"></button>
             <button class="btn btn-outline-primary" @click="moreOption=!moreOption">옵션 보기</button>
             </div>
         

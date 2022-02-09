@@ -72,7 +72,8 @@
             },
 
             logout() {
-                sessionStorage.removeItem('x_auth');
+                console.log(this.$cookies)
+                // this.$cookie.delete('x_auth');
                 this.$router.push('/', () => {}, () => {
                     window.location.reload();
                 });
@@ -83,7 +84,7 @@
             },
 
             checkAuth() {
-                let token = sessionStorage.getItem('x_auth');
+                let token = this.$cookies.get('x_auth');
                 
                 if (token != null) this.loginState = true;
                 else this.loginState = false;

@@ -26,7 +26,7 @@ module.exports = {
         const id = params;
         const sql = [];
 
-        sql.push(`SELECT id, password `)
+        sql.push(`SELECT uid, id, password `)
         sql.push(`FROM tb_users `)
         sql.push(`WHERE id="${id}"`)
         

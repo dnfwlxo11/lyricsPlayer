@@ -73,10 +73,13 @@ router.post('/search/:keyword', (req, res, next) => {
 })
 
 router.post('/like', auth, (req, res, next) => {
+    console.log(req.user);
+    console.log(req.body)
+
     if (!req.success) res.send({ 'success': false });
 
     const selectLikeSongWork = DB.connect(async (conn) => {
-        const sql = Quries.selectLikeSong(req.body.userId);
+        const sql = Quries.selectLikeSong(req.user.uid);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -87,7 +90,7 @@ router.post('/like', auth, (req, res, next) => {
     .then((result) => {
         if (result.length) {
             const deleteLikeSongWork = DB.connect(async (conn) => {
-                const sql = Quries.deleteLikeSong(req.body.userId);
+                const sql = Quries.deleteLikeSong(req.user.uid);
                 const result = await conn.query(sql);
         
                 if (result == undefined) return false
@@ -101,7 +104,10 @@ router.post('/like', auth, (req, res, next) => {
             });
         } else {
             const insertLikeSongWork = DB.connect(async (conn) => {
-                const sql = Quries.insertLikeSong(req.body);
+                const sql = Quries.insertLikeSong({
+                    'songName': req.body.songName,
+                    'userId': req.user.uid,
+                });
                 const result = await conn.query(sql);
         
                 if (result == undefined) return false
@@ -128,6 +134,7 @@ router.post('/likeCnt', auth, (req, res, next) => {
 
     selectLikeCountWork()
     .then((result) => {
+        console.log(result, 'likeCnt')
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });
     });

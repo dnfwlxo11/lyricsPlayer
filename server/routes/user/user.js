@@ -4,6 +4,7 @@ const Quries = require('./Queries/query');
 const mariaDB = require('../../modules');
 const User = require('./models')
 const DB = mariaDB.Database;
+const { auth } = require('../../modules/auth');
 
 router.post('/register', (req, res, next) => {
     const insertUserWork = DB.connect(async (conn) => {
@@ -38,7 +39,7 @@ router.post('/check', (req, res, next) => {
     });
 })
 
-router.post('/login', (req, res, next) => { 
+router.post('/login', (req, res, next) => {
     const selectUserInfoWork = DB.connect(async (conn) => {
         const sql = Quries.selectUserInfo(req.body.id);
         const rows = await conn.query(sql);
@@ -46,7 +47,10 @@ router.post('/login', (req, res, next) => {
         if (rows[0] == undefined) return false
         else {
             if (rows[0].password == req.body.password) {
-                return User.generateToken(req.body.password);
+                return User.generateToken({
+                    'uid': rows[0].uid,
+                    'id': rows[0].id,
+                });
             } else return false;
         }
     })
@@ -55,6 +59,23 @@ router.post('/login', (req, res, next) => {
     .then((result) => {
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, 'token': result })
+    })
+})
+
+router.post('/authenticate', auth, (req, res, next) => {
+    const selectUserInfoWork = DB.connect(async (conn) => {
+        const sql = `SELECT uid, id FROM tb_users WHERE uid = "${req.user.uid}"`;
+        const rows = await conn.query(sql);
+
+        if (!rows.length) return false;
+
+        return rows[0];
+    });
+
+    selectUserInfoWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result })
     })
 })
 
