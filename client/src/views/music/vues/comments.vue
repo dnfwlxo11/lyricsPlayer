@@ -34,7 +34,7 @@
                             <div class="col-9 m-auto">
                                 <div>
                                     <strong>{{value.userName}}</strong>&nbsp;
-                                    <small>1 hours ago</small>
+                                    <small>{{$Utils.dateFormat(new Date(value.time), 'yyyy.MM.dd HH:mm:ss')}}</small>
                                 </div>
                                 <div>
                                     <small>{{value.comment}}</small>
@@ -67,6 +67,7 @@ export default {
     },
     mounted() {
         this.getComments();
+        console.log(this.$Utils)
     },
     methods: {
         async getComments() {
@@ -98,7 +99,7 @@ export default {
             } else {
                 this.$emit('on-login');
             }
-        }
+        },
     }
 }
 </script>

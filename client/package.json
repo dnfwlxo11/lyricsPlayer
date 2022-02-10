@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "date-fns": "^2.28.0",
     "sass": "^1.45.2",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
