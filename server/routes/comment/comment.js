@@ -3,9 +3,11 @@ const router = express.Router();
 const Queries = require('./Queries/query');
 const mariaDB = require('../../modules');
 const path = require('path');
+const { auth } = require('../../modules/auth');
 const DB = mariaDB.Database;
 
 router.post('/comments', (req, res, next) => {
+    
     const selectCommentsWork = DB.connect(async (conn) => {
         const sql = Queries.selectComments(req.body.songName);
         const rows = await conn.query(sql);
@@ -22,7 +24,10 @@ router.post('/comments', (req, res, next) => {
     });
 })
 
-router.post('/submit', (req, res, next) => {
+router.post('/submit', auth, (req, res, next) => {
+    let params = req.body;
+    params.userId = req.user.uid;
+
     const insertCommentWork = DB.connect(async (conn) => {
         const sql = Queries.insertComment(req.body);
         const result = await conn.query(sql);

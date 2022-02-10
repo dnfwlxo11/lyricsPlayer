@@ -83,7 +83,6 @@ export default {
 
                 let sendData = {
                     songName: this.$route.params.musicName.replaceAll('-', ' '),
-                    userId: 1,
                     content: this.comment,
                     submitDate: (new Date).getTime(),
                 };

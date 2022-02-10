@@ -73,9 +73,6 @@ router.post('/search/:keyword', (req, res, next) => {
 })
 
 router.post('/like', auth, (req, res, next) => {
-    console.log(req.user);
-    console.log(req.body)
-
     if (!req.success) res.send({ 'success': false });
 
     const selectLikeSongWork = DB.connect(async (conn) => {
@@ -123,7 +120,7 @@ router.post('/like', auth, (req, res, next) => {
     });
 })
 
-router.post('/likeCnt', auth, (req, res, next) => {
+router.post('/likeCnt', (req, res, next) => {
     const selectLikeCountWork = DB.connect(async (conn) => {
         const sql = Quries.selectLikeCount(req.body);
         const rows = await conn.query(sql);
@@ -134,7 +131,6 @@ router.post('/likeCnt', auth, (req, res, next) => {
 
     selectLikeCountWork()
     .then((result) => {
-        console.log(result, 'likeCnt')
         if (!result) res.send({ 'success': false });
         else res.send({ 'success': true, result });
     });

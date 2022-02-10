@@ -72,8 +72,7 @@
             },
 
             logout() {
-                console.log(this.$cookies)
-                // this.$cookie.delete('x_auth');
+                this.$cookies.remove('x_auth');
                 this.$router.push('/', () => {}, () => {
                     window.location.reload();
                 });

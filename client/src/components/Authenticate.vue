@@ -35,9 +35,9 @@ export default {
 
             if (res.data.success) {
                 this.$store.commit('setUserProfile', res.data.result);
-                this.$router.replace(this.redirect);
+                this.$router.push(this.redirect);
             } else {
-                this.$router.replace('/');
+                this.$router.push('/');
             }
         }
     }
