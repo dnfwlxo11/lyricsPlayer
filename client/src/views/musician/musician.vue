@@ -64,7 +64,7 @@
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-post-outline mr-2" style="font-size: 30px;"></i>
                     <div v-if="albums.length">
-                        <span>{{musics.length}} albums</span>    
+                        <span>{{musics.length}} musics</span>    
                     </div>
                     <div v-else>
                         <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
@@ -90,8 +90,7 @@
                         </div>
                         <div class="row h-25 pl-3 pr-3">
                             <div class="d-flex justify-content-start align-items-end" style="font-size: 15px;">
-                                <div><i class="mdi mdi-likes"></i><span>좋아요🙆‍♀️🙆‍♂️ 780개</span></div>,&nbsp;
-                                <div><span>구독👆 70개</span></div>    
+                                <div><i class="mdi mdi-likes"></i><span>🙆‍♀️ 좋아요 {{item.likes}}개 🙆‍♂️</span></div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +131,7 @@ export default {
 
         async getMusicianMusic() {
             let res = await axios.post(`/api/musician/song/${this.$route.params.musicianId}`)
-            
+            console.log(res.data.result)
             if (res.data.success) this.musics = res.data.result
         },
 

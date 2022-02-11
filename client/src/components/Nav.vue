@@ -17,6 +17,7 @@
                         <button class="nav-item btn" @click="isLogin=true">로그인</button>
                     </div>
                     <div v-else class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
+                        <button class="nav-item btn mr-3" >노래 올리기</button>
                         <button class="nav-item btn mr-3" @click="showMypage">내 정보</button>
                         <button class="nav-item btn mr-3" @click="logout">로그아웃</button>
                     </div>

@@ -48,11 +48,14 @@ module.exports = {
     },
 
     selectLikeSong(params) {
+        const songName = params.songName;
+        const userId = params.userId;
         const sql = [];
 
         sql.push(`SELECT tb_users_uid `);
         sql.push(`FROM tb_song_likes `);
-        sql.push(`WHERE tb_users_uid = ${params}`);
+        sql.push(`WHERE tb_users_uid = ${userId} `);
+        sql.push(`AND tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}")`);
 
         return sql.join('');
     },

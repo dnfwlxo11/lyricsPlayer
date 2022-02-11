@@ -73,10 +73,13 @@ router.post('/search/:keyword', (req, res, next) => {
 })
 
 router.post('/like', auth, (req, res, next) => {
-    if (!req.success) res.send({ 'success': false });
+    let params = {
+        songName: req.body.songName,
+        userId: req.user.uid,
+    };
 
     const selectLikeSongWork = DB.connect(async (conn) => {
-        const sql = Quries.selectLikeSong(req.user.uid);
+        const sql = Quries.selectLikeSong(params);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -101,10 +104,7 @@ router.post('/like', auth, (req, res, next) => {
             });
         } else {
             const insertLikeSongWork = DB.connect(async (conn) => {
-                const sql = Quries.insertLikeSong({
-                    'songName': req.body.songName,
-                    'userId': req.user.uid,
-                });
+                const sql = Quries.insertLikeSong(params);
                 const result = await conn.query(sql);
         
                 if (result == undefined) return false

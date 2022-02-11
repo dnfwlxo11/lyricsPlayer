@@ -20,22 +20,30 @@
                         <div class="mt-4 mb-5">
                             <h5>뒤에 누가 쳐다보는거 같은데? 🤷‍♂️</h5>
                         </div>
-                        <div class="mb-3">
-                            <h6 class="text-left">아이디</h6>
-                            <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="userInfo.id" disabled>
+                        <div v-if="userInfo">
+                            <div class="mb-3">
+                                <h6 class="text-left">아이디</h6>
+                                <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="userInfo.id" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="text-left">기존 비밀번호</h6>
+                                <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" placeholder="기존 비밀번호를 입력해주세요.">
+                            </div>
+                            <div class="mb-5">
+                                <h6 class="text-left">새로운 비밀번호</h6>
+                                <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" placeholder="변경할 비밀번호를 입력해주세요.">
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-sm" @click="$emit('on-close')" style="width: 90%; height: 40px;">
+                                    적용
+                                </button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <h6 class="text-left">기존 비밀번호</h6>
-                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" placeholder="기존 비밀번호를 입력해주세요.">
-                        </div>
-                        <div class="mb-5">
-                            <h6 class="text-left">새로운 비밀번호</h6>
-                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" placeholder="변경할 비밀번호를 입력해주세요.">
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-sm" @click="console.log('적용')" style="width: 90%; height: 40px;">
-                                적용
-                            </button>
+                        <div v-else>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-loading mdi-spin" style="font-size: 24px;"></i>
+                                <span>정보 조회 중</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,9 +59,7 @@ export default {
     name: 'Mypage',
     data() {
         return {
-            userInfo: {
-                id: null,
-            },
+            userInfo: null,
             id: 'xxxxx',
             beforePass: null,
             afterPass: null,
