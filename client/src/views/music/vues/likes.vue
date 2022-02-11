@@ -33,7 +33,7 @@
                                 <div><i class="spinner-border" style="width: 4rem; height: 4rem;" role="status"></i></div>
                             </div>
                             <div class="text-center w-100" v-else-if="likePeople != null && !likePeople.length">
-                                <strong style="font-size: 20px;">좋아하는 사람이 아무도 없어 🥲</strong>
+                                <strong style="font-size: 20px;">좋아하는 사람이 아무도 없어😥</strong>
                             </div>
                             <div v-else class="col-md-2 mb-2" v-for="(item, idx) of likePeople" :key="idx">
                                 <img class="like-user-img m-1" src="/images/user.png" alt=""> <br>
@@ -84,7 +84,6 @@ export default {
             let res = await axios.post('/api/music/likeCnt', sendData);
 
             if (res.data.success) {
-                console.log(res.data)
                 this.likePeople = res.data.result;
             }
         }

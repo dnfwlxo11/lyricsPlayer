@@ -9,8 +9,7 @@ let auth = async (req, res, next) => {
         req.success = false;
     } else {
         let verifyToken = User.verifyToken(token);
-        console.log(verifyToken, 'verifyToken')
-
+        
         const verifyUserWork = DB.connect(async (conn) => {
             const sql = `SELECT uid FROM tb_users WHERE id = "${verifyToken.id}"`;
             const rows = await conn.query(sql);

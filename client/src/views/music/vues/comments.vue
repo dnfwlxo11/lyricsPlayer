@@ -67,7 +67,6 @@ export default {
     },
     mounted() {
         this.getComments();
-        console.log(this.$Utils)
     },
     methods: {
         async getComments() {

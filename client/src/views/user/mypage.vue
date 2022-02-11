@@ -22,18 +22,18 @@
                         </div>
                         <div class="mb-3">
                             <h6 class="text-left">아이디</h6>
-                            <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="id" disabled>
+                            <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="userInfo.id" disabled>
                         </div>
                         <div class="mb-3">
                             <h6 class="text-left">기존 비밀번호</h6>
-                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" disabled>
+                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" placeholder="기존 비밀번호를 입력해주세요.">
                         </div>
                         <div class="mb-5">
                             <h6 class="text-left">새로운 비밀번호</h6>
-                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" disabled>
+                            <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" placeholder="변경할 비밀번호를 입력해주세요.">
                         </div>
                         <div>
-                            <button type="button" class="btn btn-sm" @click="login()" style="width: 90%; height: 40px;">
+                            <button type="button" class="btn btn-sm" @click="console.log('적용')" style="width: 90%; height: 40px;">
                                 적용
                             </button>
                         </div>
@@ -45,13 +45,30 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'Mypage',
     data() {
         return {
+            userInfo: {
+                id: null,
+            },
             id: 'xxxxx',
-            beforePass: '1234',
-            afterPass: '1234',
+            beforePass: null,
+            afterPass: null,
+        }
+    },
+    mounted() {
+        this.loadProfile();
+    },
+    methods: {
+        async loadProfile() {
+            let res = await axios.post('/api/user/authenticate');
+
+            if (res.data.success) {
+                this.userInfo = res.data.result;
+            }
         }
     }
 }

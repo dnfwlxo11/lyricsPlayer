@@ -118,9 +118,6 @@ export default {
         this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
         this.musicState = this.$store.getters.getMusicState;
         this.isPlay = this.$store.getters.getPlayState;
-        
-        console.log(this.audioPlayer)
-        // window.scrollTo(0, 0);
     },
     destroyed() {
     },
@@ -177,7 +174,6 @@ export default {
 
         mustLogin() {
             this.isLogin = true;
-            console.log('로그인해!');
         },
 
         calcTime(time) {
