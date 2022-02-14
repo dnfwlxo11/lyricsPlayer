@@ -15,13 +15,29 @@ module.exports = {
         const songName = params.songName;
         const userId = params.userId;
         const content = params.content;
-        const submitDate = params.submitDate;
 
         const sql = [];
 
         sql.push(`INSERT INTO `);
         sql.push(`tb_comments(tb_songs_sid, tb_users_uid, comment) `);
         sql.push(`VALUES((SELECT sid FROM tb_songs WHERE song_name = "${songName}"), ${userId}, "${content}")`);
+
+        return sql.join('');
+    },
+
+    updateComment(params) {
+        const cid = params.cid;
+        const userId = params.userId;
+        const songName = params.songName;
+        const modifyComment = params.modifyComment;
+
+        const sql = [];
+
+        sql.push(`UPDATE tb_comments `);
+        sql.push(`SET comment = "${modifyComment}" `);
+        sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
+        sql.push(`AND tb_users_uid = ${userId} `);
+        sql.push(`AND cid = ${cid}`);
 
         return sql.join('');
     },

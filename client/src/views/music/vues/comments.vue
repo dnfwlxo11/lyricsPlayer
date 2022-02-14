@@ -31,20 +31,31 @@
                             <div class="col-1 m-auto">
                                 <img class="comment-img" :src="`/images/user.png`" alt="대추">
                             </div>
-                            <div class="col-9 m-auto">
+                            <div class="col-10 m-auto">
                                 <div>
                                     <strong>{{value.userName}}</strong>&nbsp;
                                     <small>{{$Utils.dateFormat(new Date(value.time), 'yyyy.MM.dd HH:mm:ss')}}</small>
                                 </div>
                                 <div>
-                                    <small>{{value.comment}}</small>
+                                    <div v-if="isEdit && targetCid == value.cid">
+                                        <div class="h-100">
+                                            <textarea class="p-2 comment-input" style="width: 100%;" type="text" v-model="value.comment" />
+                                        </div>
+                                        <div class="text-right">
+                                            <button class="mr-3 btn btn-danger" @click="isEdit=false">취소</button>
+                                            <button class="mr-3 btn btn-primary" @click="modifyComment(value.cid, value.comment)">수정</button>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <small>{{value.comment}}</small>
+                                    </div>
                                 </div>
                             </div>
-                            <div v-if="userInfo.uid == value.uid" class="col-2 h-100 text-right">
-                                <i class="mdi mdi-pencil-outline" style="font-size: 20px;"></i>
+                            <div v-if="userInfo.uid == value.uid" class="col-1 h-100 text-right">
+                                <i class="mdi mdi-pencil-outline" style="font-size: 20px;" @click="isEdit=true;targetCid=value.cid"></i>
                                 <i class="mdi mdi-delete-outline" style="font-size: 20px;" @click="deleteComment(value.cid)"></i>
                             </div>
-                            <div v-else class="col-2 h-100 text-right"></div>
+                            <div v-else class="col-1 h-100 text-right"></div>
                         </div>
                         <hr>
                     </div>
@@ -63,6 +74,8 @@ export default {
             userInfo: null,
             comments: null,
             comment: '',
+            isEdit: false,
+            targetCid: null,
         }
     },
     mounted() {
@@ -104,14 +117,34 @@ export default {
             }
         },
 
-        async deleteComment(cid) {
-            let sendData = {
-                'songName': this.$route.params.musicName.replaceAll('-', ' '),
-                'cid': cid,
-            }
+        async modifyComment(cid, comment) {
+            if (this.$cookies.get('x_auth') != null) {
+                let sendData = {
+                    'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                    'cid': cid,
+                    'modifyComment': comment
+                }
 
+                let res = await this.$Api.post('/api/comment/modify', sendData);
+
+                if (res.data.success) {
+                    console.log(res.data)
+                    this.isEdit = false;
+                }
+
+                return true;
+            } else {
+                this.$emit('on-login');
+            }
+        },
+
+        async deleteComment(cid) {
             if (this.$cookies.get('x_auth') != null) {
                 let res = await this.$Api.post('/api/comment/delete', sendData);
+                let sendData = {
+                    'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                    'cid': cid,
+                }
 
                 if (res.data.success) {
                     this.getComments();

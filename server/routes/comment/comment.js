@@ -42,6 +42,24 @@ router.post('/submit', auth, (req, res, next) => {
     });
 })
 
+router.post('/modify', auth, (req, res, next) => {
+    let params = req.body;
+    params.userId = req.user.uid;
+
+    const updateCommentWork = DB.connect(async (conn) => {
+        const sql = Queries.updateComment(params);
+        const result = await conn.query(sql);
+
+        return result
+    });
+
+    updateCommentWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
 router.post('/delete', auth, (req, res, next) => {
     let params = req.body;
     params.userId = req.user.uid;
