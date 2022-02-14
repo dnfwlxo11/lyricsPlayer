@@ -48,8 +48,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     name: 'Likes',
     props: {    
@@ -81,7 +79,7 @@ export default {
                 currPage: this.currPage,
             }
 
-            let res = await axios.post('/api/music/likeCnt', sendData);
+            let res = await this.$Api.post('/api/music/likeCnt', sendData);
 
             if (res.data.success) {
                 this.likePeople = res.data.result;

@@ -42,12 +42,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueCookies from 'vue-cookies';
-import axios from 'axios';
-
-Vue.use(VueCookies);
-
 export default {
     name: 'Login',
     data() {
@@ -62,9 +56,10 @@ export default {
     },
     methods: {
         async login() {
-            let res = await axios.post('/api/user/login', this.registerData);
+            let res = await this.$Api.post('/api/user/login', this.registerData);
             if (res.data.success) {
                 this.$cookies.set('x_auth', res.data.token);
+
                 this.loginErr = false;
 
                 if (this.redirect) this.$router.push({ path: this.redirect});
@@ -72,7 +67,7 @@ export default {
             } else {
                 this.loginErr = true;
             }
-        }
+        },
     },
 }
 </script>

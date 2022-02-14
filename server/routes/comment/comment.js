@@ -42,4 +42,22 @@ router.post('/submit', auth, (req, res, next) => {
     });
 })
 
+router.post('/delete', auth, (req, res, next) => {
+    let params = req.body;
+    params.userId = req.user.uid;
+
+    const deleteCommentWork = DB.connect(async (conn) => {
+        const sql = Queries.deleteComment(params);
+        const result = await conn.query(sql);
+
+        return result
+    });
+
+    deleteCommentWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
 module.exports = router;

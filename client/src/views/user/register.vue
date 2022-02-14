@@ -43,31 +43,29 @@
 </template>
 
 <script>
-    import axios from 'axios';
+export default {
+    name: 'Register',
+    data() {
+        return {
+            registerData: {},
+            isDuplication: false,
+        }
+    },
+    methods: {
+        async checkId() {
+            if (this.registerData.id) {
+                let res = await this.$Api.post('/api/user/check', { 'id': this.registerData.id })
 
-    export default {
-        name: 'Register',
-        data() {
-            return {
-                registerData: {},
-                isDuplication: false,
+                if (!res.data.success) this.isDuplication = true;
             }
         },
-        methods: {
-            async checkId() {
-                if (this.registerData.id) {
-                    let res = await axios.post('/api/user/check', { 'id': this.registerData.id })
-
-                    if (!res.data.success) this.isDuplication = true;
-                }
-            },
-            checkRule() {
-                if (this.registerData.password == this.registerData.check_password && this.isDuplication 
-                    && this.registerData.password != undefined && this.registerData.check_password != undefined) 
-                    this.$emit('on-confirm', this.registerData)
-            }
+        checkRule() {
+            if (this.registerData.password == this.registerData.check_password && this.isDuplication 
+                && this.registerData.password != undefined && this.registerData.check_password != undefined) 
+                this.$emit('on-confirm', this.registerData)
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>  

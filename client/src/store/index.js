@@ -40,6 +40,9 @@ const vuex = new Vuex.Store({
     getPlayState(state) {
       return state.isPlay;
     },
+    getUserProfile(state) {
+      return state.user;
+    }
   }
 })
 

@@ -52,7 +52,6 @@
 
 <script>
 import top from '@/components/Nav.vue'
-import axios from 'axios'
 
 export default {
     name: 'Album',
@@ -75,13 +74,13 @@ export default {
         },
 
         async getAlbumInfo() {
-            let res = await axios.post(`/api/album/info/${this.$route.params.albumId.replaceAll(' ', '-')}`)
+            let res = await this.$Api.post(`/api/album/info/${this.$route.params.albumId.replaceAll(' ', '-')}`)
             
             if (res.data.success) this.albumInfo = res.data.result
         },
 
         async getAlbumMusics() {
-            let res = await axios.post(`/api/album/${this.$route.params.albumId.replaceAll(' ', '-')}`)
+            let res = await this.$Api.post(`/api/album/${this.$route.params.albumId.replaceAll(' ', '-')}`)
             
             if (res.data.success) this.albumTrack = res.data.result
         }

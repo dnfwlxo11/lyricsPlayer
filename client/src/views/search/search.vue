@@ -112,7 +112,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import top from '@/components/Nav.vue'
 
 export default {
@@ -141,7 +140,7 @@ export default {
     },
     methods: {
         async searchData() {
-            let res = await axios.post(`/api/music/search/${this.keyword.replaceAll(' ', '-')}`)
+            let res = await this.$Api.post(`/api/music/search/${this.keyword.replaceAll(' ', '-')}`)
             if (res.data.success) {
                 res.data.result.map(item => {
                     if (item.album.toLowerCase().includes(this.keyword.toLowerCase())) this.albumResult.push(item)

@@ -40,10 +40,11 @@
                                     <small>{{value.comment}}</small>
                                 </div>
                             </div>
-                            <div class="col-2 h-100 text-right">
+                            <div v-if="userInfo.uid == value.uid" class="col-2 h-100 text-right">
                                 <i class="mdi mdi-pencil-outline" style="font-size: 20px;"></i>
-                                <i class="mdi mdi-delete-outline" style="font-size: 20px;"></i>
+                                <i class="mdi mdi-delete-outline" style="font-size: 20px;" @click="deleteComment(value.cid)"></i>
                             </div>
+                            <div v-else class="col-2 h-100 text-right"></div>
                         </div>
                         <hr>
                     </div>
@@ -55,22 +56,25 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     name: 'Comments',
     data() {
         return {
+            userInfo: null,
             comments: null,
             comment: '',
         }
     },
     mounted() {
-        this.getComments();
+        this.init();
     },
     methods: {
+        async init() {
+            await this.loadProfile();
+            await this.getComments();
+        },
         async getComments() {
-            let res = await axios.post('/api/comment/comments', { 'songName': this.$route.params.musicName.replaceAll('-', ' ') })
+            let res = await this.$Api.post('/api/comment/comments', { 'songName': this.$route.params.musicName.replaceAll('-', ' ') })
 
             if (res.data.success) {
                 this.comments = res.data.result;
@@ -87,7 +91,7 @@ export default {
                     submitDate: (new Date).getTime(),
                 };
 
-                let res = await axios.post('/api/comment/submit', sendData);
+                let res = await this.$Api.post('/api/comment/submit', sendData);
 
                 if (res.data.success) {
                     this.comment = '';
@@ -97,6 +101,35 @@ export default {
                 return true;
             } else {
                 this.$emit('on-login');
+            }
+        },
+
+        async deleteComment(cid) {
+            let sendData = {
+                'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                'cid': cid,
+            }
+
+            if (this.$cookies.get('x_auth') != null) {
+                let res = await this.$Api.post('/api/comment/delete', sendData);
+
+                if (res.data.success) {
+                    this.getComments();
+                }
+
+                return true;
+            } else {
+                this.$emit('on-login');
+            }
+        },
+
+        async loadProfile() {
+            let res = await this.$Api.post('/api/user/authenticate');
+
+            if (res.data.success) {
+                this.userInfo = res.data.result;
+            } else {
+                this.userInfo = null;
             }
         },
     }

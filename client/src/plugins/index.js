@@ -2,6 +2,7 @@ import AlertModal from '@/components/modals/alert'
 import ConfirmModal from '@/components/modals/confirm'
 import ProgressModal from '@/components/modals/progress'
 import Utils from './utils'
+import Api from './http'
 
 export default {
     install(Vue) {
@@ -11,5 +12,6 @@ export default {
         Vue.component('progress-modal', ProgressModal)
 
         Vue.prototype.$Utils = Utils
+        Vue.prototype.$Api = Api
     }
 }

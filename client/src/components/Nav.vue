@@ -31,71 +31,69 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import axios from 'axios';
-    import mypage from '@/views/user/mypage.vue';
-    import register from '@/views/user/register.vue';
-    import login from '@/views/user/login.vue';
+import mypage from '@/views/user/mypage.vue';
+import register from '@/views/user/register.vue';
+import login from '@/views/user/login.vue';
 
-    export default {
-        name: 'Nav',
-        props: {
-            popDialog: {
-                type: Boolean,
-                default: false,
-            }
+export default {
+    name: 'Nav',
+    props: {
+        popDialog: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    components: {
+        mypage,
+        register,
+        login,
+    },
+    data() {
+        return {
+            isMypage: false,
+            isLogin: false,
+            isRegister: false,
+            registerData: null,
+            loginState: false,
+            loginErr: false,
+        }
+    },
+    mounted() {
+        this.checkAuth();
+    },
+    methods: {
+        async register(data) {
+            let res = await this.$Api.post('/api/user/register', data);
         },
-        components: {
-            mypage,
-            register,
-            login,
-        },
-        data() {
-            return {
-                isMypage: false,
-                isLogin: false,
-                isRegister: false,
-                registerData: null,
-                loginState: false,
-                loginErr: false,
-            }
-        },
-        mounted() {
-            this.checkAuth();
-        },
-        methods: {
-            async register(data) {
-                let res = await axios.post('/api/user/register', data);
-            },
 
-            login(data) {
-                this.loginState = data;
-            },
-
-            logout() {
-                this.$cookies.remove('x_auth');
-                this.$router.push('/', () => {}, () => {
-                    window.location.reload();
-                });
-            },
-
-            showMypage() {
-                this.isMypage = true;
-            },
-
-            checkAuth() {
-                let token = this.$cookies.get('x_auth');
-                
-                if (token != null) this.loginState = true;
-                else this.loginState = false;
-            },
+        login(data) {
+            this.loginState = data;
         },
-        watch: {
-            popDialog() {
-                this.isLogin = this.popDialog;
-            }
+
+        logout() {
+            this.$cookies.remove('x_auth');
+            this.$router.push('/', () => {}, () => {
+                window.location.reload();
+            });
+        },
+
+        showMypage() {
+            this.isMypage = true;
+        },
+
+        checkAuth() {
+            let token = this.$cookies.get('x_auth');
+            
+            if (token != null) this.loginState = true;
+            else this.loginState = false;
+        },
+    },
+    watch: {
+        popDialog() {
+            this.isLogin = this.popDialog;
         }
     }
+}
 </script>
 
 <style>

@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     name: 'Authenticate',
     data() {
@@ -31,7 +29,7 @@ export default {
 
     methods: {
         async loadProfile() {
-            let res = await axios.post('/api/user/authenticate');
+            let res = await this.$Api.post('/api/user/authenticate');
 
             if (res.data.success) {
                 this.$store.commit('setUserProfile', res.data.result);

@@ -103,7 +103,6 @@
 
 <script>
 import top from '@/components/Nav.vue'
-import axios from 'axios'
 
 export default {
     name: 'Musician',
@@ -130,13 +129,13 @@ export default {
         },
 
         async getMusicianMusic() {
-            let res = await axios.post(`/api/musician/song/${this.$route.params.musicianId}`)
+            let res = await this.$Api.post(`/api/musician/song/${this.$route.params.musicianId}`)
             console.log(res.data.result)
             if (res.data.success) this.musics = res.data.result
         },
 
         async getMusicianAlbum() {
-            let res = await axios.post(`/api/musician/album/${this.$route.params.musicianId}`)
+            let res = await this.$Api.post(`/api/musician/album/${this.$route.params.musicianId}`)
             
             if (res.data.success) this.albums = res.data.result
         }

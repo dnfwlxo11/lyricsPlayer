@@ -67,7 +67,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import top from '@/components/Nav.vue'
     import bottom from '@/components/Footer.vue'
 
@@ -127,7 +126,7 @@
             },
 
             async getRankMusic() {
-                let res = await axios.post('/api/music/ranking')
+                let res = await this.$Api.post('/api/music/ranking')
 
                 if (res.data.success) this.musicRank = res.data.result
             }

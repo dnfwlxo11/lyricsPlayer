@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import top from '@/components/Nav.vue'
 import comments from '@/views/music/vues/comments.vue'
 import likeModal from '@/views/music/vues/likes.vue'
@@ -133,7 +132,7 @@ export default {
         },
 
         async getMusicInfo() {
-            let res = await axios.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
+            let res = await this.$Api.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
 
             if (res.data.success) {
                 this.thumbnailPath = res.data.result.thumbnail_path;
@@ -142,7 +141,7 @@ export default {
         },
 
         async getRankMusic() {
-            let res = await axios.post('/api/music/ranking')
+            let res = await this.$Api.post('/api/music/ranking')
 
             if (res.data.success) this.recommandList = res.data.result
         },
@@ -195,7 +194,7 @@ export default {
 
         async like() {
             if (this.$cookies.get('x_auth') != null) {
-                let res = await axios.post('/api/music/like', {
+                let res = await this.$Api.post('/api/music/like', {
                     songName: this.$route.params.musicName.replaceAll('-', ' '),
                 });
 
@@ -212,7 +211,7 @@ export default {
                 currPage: 0,
             }
 
-            let res = await axios.post('/api/music/likeCnt', sendData);
+            let res = await this.$Api.post('/api/music/likeCnt', sendData);
 
             if (res.data.success) {
                 this.likes = res.data.result;

@@ -21,17 +21,9 @@
                             <h5>뒤에 누가 쳐다보는거 같은데? 🤷‍♂️</h5>
                         </div>
                         <div v-if="userInfo">
-                            <div class="mb-3">
+                            <div class="mb-5">
                                 <h6 class="text-left">아이디</h6>
                                 <input class="pl-3 id-input w-100" type="text" style="height: 35px;" :value="userInfo.id" disabled>
-                            </div>
-                            <div class="mb-3">
-                                <h6 class="text-left">기존 비밀번호</h6>
-                                <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="beforePass" placeholder="기존 비밀번호를 입력해주세요.">
-                            </div>
-                            <div class="mb-5">
-                                <h6 class="text-left">새로운 비밀번호</h6>
-                                <input class="pl-3 pass-input w-100" type="password" style="height: 35px;" :value="afterPass" placeholder="변경할 비밀번호를 입력해주세요.">
                             </div>
                             <div>
                                 <button type="button" class="btn btn-sm" @click="$emit('on-close')" style="width: 90%; height: 40px;">
@@ -53,8 +45,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
     name: 'Mypage',
     data() {
@@ -70,12 +60,14 @@ export default {
     },
     methods: {
         async loadProfile() {
-            let res = await axios.post('/api/user/authenticate');
+            let res = await this.$Api.post('/api/user/authenticate');
 
             if (res.data.success) {
                 this.userInfo = res.data.result;
+            } else {
+                this.userInfo = null;
             }
-        }
+        },
     }
 }
 </script>
