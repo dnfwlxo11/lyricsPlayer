@@ -6,10 +6,26 @@ const path = require('path');
 const { auth } = require('../../modules/auth');
 const DB = mariaDB.Database;
 
+router.post('/commentCnt', (req, res, next) => {
+    const selectCommentCntWork = DB.connect(async (conn) => {
+        const sql = Queries.selectCntComments(req.body);
+        const rows = await conn.query(sql);
+
+        if (rows == undefined) return false
+
+        return rows[0]
+    });
+
+    selectCommentCntWork()
+    .then((result) => {
+        if (!result) res.send({ 'success': false });
+        else res.send({ 'success': true, result });
+    });
+})
+
 router.post('/comments', (req, res, next) => {
-    
     const selectCommentsWork = DB.connect(async (conn) => {
-        const sql = Queries.selectComments(req.body.songName);
+        const sql = Queries.selectComments(req.body);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false

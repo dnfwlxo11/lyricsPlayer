@@ -1,12 +1,27 @@
 module.exports = {
-    selectComments(params) {
-        const songName = params;
+    selectCntComments(params) {
+        const songName = params.songName;
 
         const sql = [];
 
-        sql.push(`SELECT (SELECT id FROM tb_users WHERE uid = tb_users_uid) as userName, comment, create_time as time, cid, tb_users_uid as uid `);
+        sql.push(`SELECT count(cid) as commentLen `);
         sql.push(`FROM tb_comments `);
         sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}")`);
+
+        return sql.join('');
+    },
+
+    selectComments(params) {
+        const songName = params.songName;
+        const currPage = params.currPage;
+        const pageSize = params.pageSize;
+
+        const sql = [];
+
+        sql.push(`SELECT (SELECT id FROM tb_users WHERE uid = tb_users_uid) as userName, comment, create_time as time, cid, tb_users_uid as uid, is_edited `);
+        sql.push(`FROM tb_comments `);
+        sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
+        sql.push(`LIMIT ${currPage * pageSize}, ${pageSize}`)
 
         return sql.join('');
     },
@@ -34,7 +49,7 @@ module.exports = {
         const sql = [];
 
         sql.push(`UPDATE tb_comments `);
-        sql.push(`SET comment = "${modifyComment}" `);
+        sql.push(`SET comment = "${modifyComment}", is_edited = 1 `);
         sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
         sql.push(`AND tb_users_uid = ${userId} `);
         sql.push(`AND cid = ${cid}`);
@@ -43,6 +58,8 @@ module.exports = {
     },
 
     deleteComment(params) {
+        console.log(params)
+
         const userId = params.userId;
         const songName = params.songName;
         const cid = params.cid;

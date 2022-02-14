@@ -11,16 +11,16 @@
             <div class="text-left m-0 p-0">
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-message mr-2" style="font-size: 30px;"></i>
-                    <div v-if="comments == null">
+                    <div v-if="!comments.length">
                         <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
                     </div>
                     <div v-else>
-                        <span>{{comments.length}} comments</span>
+                        <span>{{commentLen}} comments</span>
                     </div>
                     
                 </div>
                 <hr>
-                <div v-if="comments == null" class="text-center">
+                <div v-if="!comments.length" class="text-center">
                     <div class="pt-3">
                         <i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i>
                     </div>
@@ -35,6 +35,7 @@
                                 <div>
                                     <strong>{{value.userName}}</strong>&nbsp;
                                     <small>{{$Utils.dateFormat(new Date(value.time), 'yyyy.MM.dd HH:mm:ss')}}</small>
+                                    <small v-if="value.is_edited == '1'"> (수정됨)</small>
                                 </div>
                                 <div>
                                     <div v-if="isEdit && targetCid == value.cid">
@@ -59,6 +60,10 @@
                         </div>
                         <hr>
                     </div>
+                    <div v-if="commentLen != comments.length" class="h-100 text-center mb-3">
+                        <div v-if="isLoading"><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
+                        <button v-else class="btn btn-primary" @click="currPage+=1;getComments()">더보기</button>
+                    </div>
                 </div>
                 
             </div>
@@ -72,10 +77,14 @@ export default {
     data() {
         return {
             userInfo: null,
-            comments: null,
+            commentLen: null,
+            comments: [],
             comment: '',
             isEdit: false,
+            isLoading: false,
             targetCid: null,
+            pageSize: 5,
+            currPage: 0,
         }
     },
     mounted() {
@@ -84,14 +93,35 @@ export default {
     methods: {
         async init() {
             await this.loadProfile();
+            await this.getCommentCnt();
             await this.getComments();
         },
+
+        async getCommentCnt() {
+            let sendData = { 
+                'songName': this.$route.params.musicName.replaceAll('-', ' '),
+            }
+
+            let res = await this.$Api.post('/api/comment/commentCnt', sendData)
+
+            if (res.data.success) this.commentLen = res.data.result.commentLen;
+        },
+
         async getComments() {
-            let res = await this.$Api.post('/api/comment/comments', { 'songName': this.$route.params.musicName.replaceAll('-', ' ') })
+            this.isLoading = true;
+
+            let sendData = { 
+                'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                'pageSize': this.pageSize,
+                'currPage': this.currPage,
+            }
+            let res = await this.$Api.post('/api/comment/comments', sendData)
 
             if (res.data.success) {
-                this.comments = res.data.result;
+                this.comments = this.comments.concat(res.data.result);
             }
+
+            this.isLoading = false;
         },
 
         async submitComment() {
@@ -140,14 +170,16 @@ export default {
 
         async deleteComment(cid) {
             if (this.$cookies.get('x_auth') != null) {
-                let res = await this.$Api.post('/api/comment/delete', sendData);
                 let sendData = {
                     'songName': this.$route.params.musicName.replaceAll('-', ' '),
                     'cid': cid,
                 }
 
+                let res = await this.$Api.post('/api/comment/delete', sendData);
+
                 if (res.data.success) {
-                    this.getComments();
+                    await this.getCommentCnt();
+                    await this.getComments();
                 }
 
                 return true;
