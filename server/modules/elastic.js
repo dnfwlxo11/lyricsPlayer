@@ -19,8 +19,8 @@ class Elastic {
         console.log(result.body.hits.hits[0])
     }
 
-    putSongData() {
-
+    async putSongData(query) {
+        await this.client.index(query)
     }
 
     updataSongData() {

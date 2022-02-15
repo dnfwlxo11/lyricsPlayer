@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const dummyData = require('./dummy.js')
 
 const app = express();
 
@@ -25,16 +26,26 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
-global._modules.Elastic.searchData({
-    index: 'kibana_sample_data_flights',
-    body: {
-        'query': {
-            'match': {
-                '_id': 'VIpR_H4BG4siApVmFZYO'
-            }
-        }
-    }
-})
+console.log(dummyData)
+
+// for await (const item of dummyData) {
+    // global._modules.Elastic.putSongData({
+    //     index: 'song',
+    //     document: item
+    // })
+    // console.log(`${idx}번째 데이터 입력 완료`)
+// }
+
+// global._modules.Elastic.searchData({
+//     index: 'kibana_sample_data_flights',
+//     body: {
+//         'query': {
+//             'match': {
+//                 '_id': 'VIpR_H4BG4siApVmFZYO'
+//             }
+//         }
+//     }
+// })
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);
