@@ -1,0 +1,55 @@
+version: '3'
+services:
+  audio_db:
+    build: 
+      context: ./mariadb
+      dockerfile: Dockerfile
+    image: mariadb
+    container_name: daein_mariadb
+    restart: always
+    environment: 
+      - MYSQL_ROOT_PASSWORD=daein
+      - TZ=Asia/Seoul
+    ports:
+      - "15000:3306"
+    volumes:
+      - ./mariadb/app/db:/var/lib/mysql
+      - ./mariadb/app/backup:/backup
+  elasticsearch:
+    build: 
+      context: ./elasticsearch
+      dockerfile: Dockerfile
+    image: elastic
+    container_name: daein_elastic
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx4g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elastic
+  kibana:
+    build: 
+      context: ./kibana
+      dockerfile: Dockerfile
+    image: kibana
+    container_name: daein_kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - daein_elastic
+    networks:
+      - elastic
+
+volumes:
+  esdata01:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

@@ -52,11 +52,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="userInfo.uid == value.uid" class="col-1 h-100 text-right">
+                            <div v-if="isEdit && targetCid == value.cid" class="col-1 h-100 text-right"></div>
+                            <div v-else-if="(userInfo.uid == value.uid)" class="col-1 h-100 text-right">
                                 <i class="mdi mdi-pencil-outline" style="font-size: 20px;" @click="isEdit=true;targetCid=value.cid"></i>
                                 <i class="mdi mdi-delete-outline" style="font-size: 20px;" @click="deleteComment(value.cid)"></i>
                             </div>
-                            <div v-else class="col-1 h-100 text-right"></div>
                         </div>
                         <hr>
                     </div>
@@ -65,7 +65,6 @@
                         <button v-else class="btn btn-primary" @click="currPage+=1;getComments()">더보기</button>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -91,6 +90,13 @@ export default {
         this.init();
     },
     methods: {
+        test() {
+            this.comments = this.comments.reduce((acc, item) => {
+                if (item.cid != 1) acc.push(item)
+                return acc
+            }, [])
+        },
+
         async init() {
             await this.loadProfile();
             await this.getCommentCnt();
@@ -114,8 +120,10 @@ export default {
                 'songName': this.$route.params.musicName.replaceAll('-', ' '),
                 'pageSize': this.pageSize,
                 'currPage': this.currPage,
+                'cid': this.comments.length ? this.comments[this.comments.length - 1].cid : 0,
             }
-            let res = await this.$Api.post('/api/comment/comments', sendData)
+
+            let res = await this.$Api.post('/api/comment/comments', sendData);
 
             if (res.data.success) {
                 this.comments = this.comments.concat(res.data.result);
@@ -138,7 +146,7 @@ export default {
 
                 if (res.data.success) {
                     this.comment = '';
-                    this.getComments();
+                    this.getCommentCnt();
                 }
 
                 return true;
@@ -158,7 +166,6 @@ export default {
                 let res = await this.$Api.post('/api/comment/modify', sendData);
 
                 if (res.data.success) {
-                    console.log(res.data)
                     this.isEdit = false;
                 }
 
@@ -178,8 +185,12 @@ export default {
                 let res = await this.$Api.post('/api/comment/delete', sendData);
 
                 if (res.data.success) {
+                    this.comments = this.comments.reduce((acc, item) => {
+                        if (item.cid != cid) acc.push(item)
+                        return acc
+                    }, [])
+
                     await this.getCommentCnt();
-                    await this.getComments();
                 }
 
                 return true;

@@ -15,13 +15,15 @@ module.exports = {
         const songName = params.songName;
         const currPage = params.currPage;
         const pageSize = params.pageSize;
+        const cid = params.cid;
 
         const sql = [];
 
         sql.push(`SELECT (SELECT id FROM tb_users WHERE uid = tb_users_uid) as userName, comment, create_time as time, cid, tb_users_uid as uid, is_edited `);
         sql.push(`FROM tb_comments `);
         sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
-        sql.push(`LIMIT ${currPage * pageSize}, ${pageSize}`)
+        sql.push(`AND cid > ${cid} `);
+        sql.push(`LIMIT ${pageSize}`);
 
         return sql.join('');
     },

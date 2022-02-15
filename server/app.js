@@ -25,6 +25,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
+console.log(global._modules.Es.fingTest());
+
 app.use('/', indexRouter);
 app.use('/err', errRouter);
 app.use('/api/user', userRouter);
