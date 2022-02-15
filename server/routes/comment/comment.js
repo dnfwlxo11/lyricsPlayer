@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Queries = require('./Queries/query');
-const mariaDB = require('../../modules');
-const path = require('path');
 const { auth } = require('../../modules/auth');
-const DB = mariaDB.Database;
+const DB = global._modules.Database;
 
 router.post('/commentCnt', (req, res, next) => {
     const selectCommentCntWork = DB.connect(async (conn) => {

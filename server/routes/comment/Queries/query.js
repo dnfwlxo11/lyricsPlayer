@@ -13,7 +13,6 @@ module.exports = {
 
     selectComments(params) {
         const songName = params.songName;
-        const currPage = params.currPage;
         const pageSize = params.pageSize;
         const cid = params.cid;
 
@@ -60,8 +59,6 @@ module.exports = {
     },
 
     deleteComment(params) {
-        console.log(params)
-
         const userId = params.userId;
         const songName = params.songName;
         const cid = params.cid;

@@ -7,10 +7,10 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^7.9.1",
     "cookie-parser": "^1.4.6",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
-    "elasticsearch": "^16.7.2",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",

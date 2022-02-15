@@ -1,9 +1,9 @@
 const Database = require('./mariadb')
-const Es = require('./elastic')
+const Elastic = require('./elastic')
 const { auth } = require('./auth')
 
 module.exports = {
     Database: new Database,
-    Es: new Es,
+    Elastic: new Elastic,
     Auth: auth
 }

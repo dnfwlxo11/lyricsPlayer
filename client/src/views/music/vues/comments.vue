@@ -53,10 +53,11 @@
                                 </div>
                             </div>
                             <div v-if="isEdit && targetCid == value.cid" class="col-1 h-100 text-right"></div>
-                            <div v-else-if="(userInfo.uid == value.uid)" class="col-1 h-100 text-right">
+                            <div v-else-if="(userInfo && userInfo.uid == value.uid)" class="col-1 h-100 text-right">
                                 <i class="mdi mdi-pencil-outline" style="font-size: 20px;" @click="isEdit=true;targetCid=value.cid"></i>
                                 <i class="mdi mdi-delete-outline" style="font-size: 20px;" @click="deleteComment(value.cid)"></i>
                             </div>
+                            <div v-else class="col-1 h-100"></div>
                         </div>
                         <hr>
                     </div>

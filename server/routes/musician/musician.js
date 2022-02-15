@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
 const Quries = require('./Queries/query');
-const mariaDB = require('../../modules');
-const path = require('path');
-const DB = mariaDB.Database;
+const DB = global._modules.Database;
 
 router.post('/album/:musicians', (req, res, next) => {
     const selectMusicianAlbumsWork = DB.connect(async (conn) => {

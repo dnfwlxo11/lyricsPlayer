@@ -130,7 +130,7 @@ export default {
 
         async getMusicianMusic() {
             let res = await this.$Api.post(`/api/musician/song/${this.$route.params.musicianId}`)
-            console.log(res.data.result)
+            
             if (res.data.success) this.musics = res.data.result
         },
 

@@ -1,27 +1,35 @@
-const elasticsearch = require('elasticsearch');
+const { Client } = require('@elastic/elasticsearch');
 
-class Es {
+class Elastic {
     constructor() {
         this.init();
     }
 
     init() {
-        this.client = new elasticsearch.Client({
-            host: 'localhost:9200',
-            log: 'trace',
-            apiVersion: '7.x'
-        });
+        this.client = new Client({ node: 'http://localhost:9200' });
     }
 
-    fingTest() {
-        this.client.ping({ requestTimeout: 1000 }, (err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('All is well');
-            }
-        });
+    async refreshClient() {
+        await this.client.indices.refresh({ index: 'kibana_sample_data_flights' })
+    }
+
+    async searchData(query) {
+        const result = await this.client.search(query)
+
+        console.log(result.body.hits.hits[0])
+    }
+
+    putSongData() {
+
+    }
+
+    updataSongData() {
+
+    }
+
+    deleteSongData() {
+
     }
 }
 
-module.exports = Es;
+module.exports = Elastic;

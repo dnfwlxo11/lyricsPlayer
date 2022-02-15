@@ -25,7 +25,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
-console.log(global._modules.Es.fingTest());
+global._modules.Elastic.searchData({
+    index: 'kibana_sample_data_flights',
+    body: {
+        'query': {
+            'match': {
+                '_id': 'VIpR_H4BG4siApVmFZYO'
+            }
+        }
+    }
+})
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);

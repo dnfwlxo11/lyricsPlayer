@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const Quries = require('./Queries/query');
-const mariaDB = require('../../modules');
 const path = require('path');
-const DB = mariaDB.Database;
+const DB = global._modules.Database;
 const { auth } = require('../../modules/auth');
 
 router.get('/play/:musician/:musicName', (req, res, next) => {
