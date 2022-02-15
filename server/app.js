@@ -26,26 +26,45 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
-console.log(dummyData)
+async function initDummy() {
+    let body = {
+        "properties": {
+            "songname": { "type": "text" },
+            "lyrics": { "type": "text" },
+            "author": { "type": "text" },
+            "album": { "type": "text" },
+        }
+    };
 
-// for await (const item of dummyData) {
-    // global._modules.Elastic.putSongData({
-    //     index: 'song',
-    //     document: item
-    // })
-    // console.log(`${idx}번째 데이터 입력 완료`)
-// }
+    await global._modules.Elastic.createIndex('song', JSON.stringify(body));
 
-// global._modules.Elastic.searchData({
-//     index: 'kibana_sample_data_flights',
-//     body: {
-//         'query': {
-//             'match': {
-//                 '_id': 'VIpR_H4BG4siApVmFZYO'
-//             }
-//         }
-//     }
-// })
+    for await (let item of dummyData) {
+        console.log(item)
+        let inputData = {
+            index: 'song',
+            body: item
+        };
+
+        await global._modules.Elastic.putSongData(inputData);
+    }
+
+    let searchQuery = {
+        index: "song",
+        body: {
+            "query": {
+                "match" : {
+                    "songname":"Alone"
+                }
+            }
+        }
+    }
+
+    await global._modules.Elastic.searchData(JSON.stringify(searchQuery));
+
+    await global._modules.Elastic.refreshClient();
+}
+
+initDummy().catch(console.log);
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);

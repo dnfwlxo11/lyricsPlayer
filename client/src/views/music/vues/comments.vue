@@ -11,7 +11,7 @@
             <div class="text-left m-0 p-0">
                 <div class="mb-3 d-flex align-items-center">
                     <i class="mdi mdi-message mr-2" style="font-size: 30px;"></i>
-                    <div v-if="!comments.length">
+                    <div v-if="commentLen == null">
                         <div><i class="spinner-border" style="width: 1rem; height: 1rem;" role="status"></i></div>
                     </div>
                     <div v-else>
@@ -20,7 +20,7 @@
                     
                 </div>
                 <hr>
-                <div v-if="!comments.length" class="text-center">
+                <div v-if="commentLen == null" class="text-center">
                     <div class="pt-3">
                         <i class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></i>
                     </div>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <div v-if="isEdit && targetCid == value.cid" class="col-1 h-100 text-right"></div>
-                            <div v-else-if="(userInfo && userInfo.uid == value.uid)" class="col-1 h-100 text-right">
+                            <div v-else-if="userInfo && (userInfo.uid == value.uid)" class="col-1 h-100 text-right">
                                 <i class="mdi mdi-pencil-outline" style="font-size: 20px;" @click="isEdit=true;targetCid=value.cid"></i>
                                 <i class="mdi mdi-delete-outline" style="font-size: 20px;" @click="deleteComment(value.cid)"></i>
                             </div>
@@ -91,13 +91,6 @@ export default {
         this.init();
     },
     methods: {
-        test() {
-            this.comments = this.comments.reduce((acc, item) => {
-                if (item.cid != 1) acc.push(item)
-                return acc
-            }, [])
-        },
-
         async init() {
             await this.loadProfile();
             await this.getCommentCnt();
@@ -112,6 +105,7 @@ export default {
             let res = await this.$Api.post('/api/comment/commentCnt', sendData)
 
             if (res.data.success) this.commentLen = res.data.result.commentLen;
+            console.log(this.commentLen)
         },
 
         async getComments() {
@@ -147,6 +141,7 @@ export default {
 
                 if (res.data.success) {
                     this.comment = '';
+                    this.getComments();
                     this.getCommentCnt();
                 }
 

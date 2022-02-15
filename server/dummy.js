@@ -309,31 +309,224 @@ let dummyData = [
     },
     {
         'songname': 'Tread Lightly',
-        'lyrics': '',
+        'lyrics': 'Take a look inside my head to see what troubles me, \
+        we have a long way to go and we will never be the same, \
+        I can feel all this emptyness drowning in my soul and \
+        I dont need no ones sympathy, I just wish that someone would understand me \
+        You can let me down but tread lightly on me \
+        or I will build up all of this walls \
+        You can let me down but tread lightly on me \
+        or I will build up all of this walls \
+        Before you lay me down there is one thing I need, \
+        Can leave me to my own devices \
+        We get down on ourselves for no reason most of the time, \
+        In todays new society, you better keep up or youll die, \
+        I can feel all this emptyness drowning in my soul and \
+        I dont need no ones sympathy, I just wish that someone would understand me \
+        You can let me down but tread lightly on me \
+        or I will build up all of this walls \
+        You can let me down but tread lightly on me \
+        or I will build up all of this walls \
+        Before you lay me down there is one thing I need, \
+        Can leave me to my own devices',
         'author': 'Nick Ray',
         'album': 'Nick Ray 1집',
     },
     {
         'songname': 'Leave Me Again',
-        'lyrics': '',
+        'lyrics': 'I\'m still alone \
+        Since you left me nothin\' has been to sing \
+        There\'s no time for regret \
+        But I remember how us let me your chest \
+        I want to forget it \
+        Take a breath and leave you away, away \
+        That is not the easy \
+        Cause you make me miss you again, again \
+        If you on this town, If you on this town \
+        Don\'t leave me again, leave me again \
+        If you on this town, If you on this town \
+        Don\'t leave me again, leave me again \
+        I\'m still alone \
+        Since you left me nothin\' has been to sing \
+        There\'s no time for regret \
+        But I remember how us let me your chest \
+        I want to forget it \
+        Take a breath and leave you away, away \
+        That is not the easy \
+        Cause you make me miss you again, again \
+        If you on this town, If you on this town \
+        Don\'t leave me again, leave me again \
+        If you on this town, If you on this town \
+        Don\'t leave me again, leave me again \
+        Leave me again, leave me again \
+        Don\'t leave me again, leave me again',
         'author': 'Niwel',
         'album': 'Niwel 1집',
     },
     {
         'songname': 'Passionate Affair',
-        'lyrics': '',
+        'lyrics': 'Take my hand you\'ll be okay \
+        Take my hand let come what may \
+        Take my hand you\'ll be okay \
+        Maybe we\'ll go there \
+        Passionate affair \
+        Yah I\'m on the track and I hit it fantastic \
+        Gonna sell ‘em all gonna get that mad plastic \
+        Yah stuck inside and I feel a tad spastic \
+        Hunger never satisfied \
+        Such a fat bastard \
+        Raining never stopping \
+        We stuck inside always poppin’ \
+        We made a lot of predictions \
+        And most of them we are toppin’ \
+        We coming up with some more \
+        We don\'t got the time to tour \
+        In a couple years I\'m hoping that maybe we aren\'t as poor \
+        We built enough to know \
+        We had to start again \
+        To see the end, yeah \
+        To see the end, yeah \
+        Woah \
+        You still won’t believe it though \
+        They called your bluff again \
+        So don’t pretend, yeah \
+        So don’t pretend, yeah \
+        Woah \
+        Take my hand you\'ll be okay \
+        Take my hand let come what may \
+        Take my hand you\'ll be okay \
+        Maybe we\'ll go there \
+        Passionate affair \
+        Yah they takin’ hands takin’ hands yah take ‘em all \
+        Make a hundred bands hundred bands yah we make ‘em all \
+        Never understand understand need tylenol \
+        Lying on the gram on the gram gon\' find ‘em all \
+        Yah gettin’ messed up getting back up \
+        Feeling more pain makin’ more rain \
+        My attacks up \
+        Rack ups won\'t pass up \
+        What I got here \
+        Bad cop so damn hot \
+        He don\'t got fear \
+        Passionate ration it \
+        Bad for it mad for it \
+        Overboard overlord \
+        Show himself \
+        On a poster board \
+        We built enough to know \
+        We had to start again \
+        To see the end, yeah \
+        To see the end, yeah \
+        Woah \
+        You still won’t believe it though \
+        They called your bluff again \
+        So don’t pretend, yeah \
+        So don’t pretend, yeah \
+        Woah \
+        Take my hand you\'ll be okay \
+        Take my hand let come what may \
+        Take my hand you\'ll be okay \
+        Maybe we\'ll go there \
+        Passionate affair',
         'author': 'RYYZN',
         'album': 'RYYZN 1집',
     },
     {
         'songname': 'Secrets',
-        'lyrics': '',
+        'lyrics': 'I\'ll never tell \
+        Never tell \
+        Just trust \
+        That I\'ll keep it locked in a cell \
+        Never revealing those \
+        Secrets you\'re keeping \
+        These promises strong as a spell I\'ll never tell \
+        Yah I like you \
+        That\'s for sure \
+        Never have to close the door \
+        Been a long time \
+        A year or four \
+        And I\'m missing you so bad \
+        Gone away a \
+        Month or more \
+        Every show I call before \
+        Need to hear that voice \
+        \'Cause right now feel\'s like it\'s been too long \
+        I could never let let you go \
+        Or go on thinking about \
+        Those secrets true \
+        And I would never bet \
+        Bet the world that I will find anyone like you \
+        I\'ll never tell \
+        Never tell \
+        Just trust \
+        That I\'ll keep it locked in a cell \
+        Never revealing those \
+        Secrets you\'re keeping \
+        These promises strong as a spell I\'ll never tell \
+        You\'re an angel \
+        That\'s for sure \
+        With some devil \
+        Hear ya roar \
+        But I like it we on the floor \
+        In my ear you be whispering \
+        Used to have fun now I\'m bored \
+        Do I miss you? \
+        Yes of course \
+        Think about that time \
+        When we stayed up all night talking \
+        I could never let let you go \
+        Or go on thinking about \
+        Those secrets true \
+        And I would never bet \
+        Bet the world \
+        That I will find anyone like you \
+        I\'ll never tell \
+        Never tell \
+        Just trust \
+        That I\'ll keep it locked in a cell \
+        Never revealing those \
+        Secrets you\'re keeping \
+        These promises strong as a spell I\'ll never tell',
         'author': 'RYYZN',
         'album': 'RYYZN 1집',
     },
     {
         'songname': 'Mas Alla',
-        'lyrics': '',
+        'lyrics': 'Hear the cry of your will \
+        As he asks with all his might for freedom \
+        Name your happiness \
+        What takes you away and sleep? and is drawing \
+        A part of you, in the book of the end of time \
+        open the door start walking \
+        Don\'t choose a course, just let yourself go \
+        If you have a hand, offer it to someone else \
+        If you have a heart, teach him what to love \
+        It\'s more than a beautiful moment, it\'s like a child \
+        Running, screaming in the wind I love you, I love you \
+        na nara na na \
+        It is the voice that sings to freedom \
+        na nara nana \
+        It\'s time to speak up and tell the truth \
+        na nara nana \
+        Give yourself the opportunity to go further \
+        Tell me if you remember when it was \
+        That last morning that you felt a great desire to live, to live love \
+        Tell me if you\'ve been in love \
+        And the music has led you to write a song \
+        From the depths of your heart \
+        That magical moment when your soul becomes one with the universe \
+        na nara na na \
+        It is the voice that sings to freedom \
+        na nara nana \
+        It\'s time to speak up and tell the truth \
+        na nara nana \
+        Give yourself the opportunity to go further \
+        na nara na na \
+        It is the voice that sings to freedom \
+        na nara nana \
+        It\'s time to speak up and tell the truth \
+        na nara nana \
+        Give yourself the opportunity to go further',
         'author': 'Vince Miranda',
         'album': 'Vince Miranda 1집',
     },
