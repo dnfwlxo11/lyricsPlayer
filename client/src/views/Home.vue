@@ -15,7 +15,7 @@
                 <div class="card h-100 d-flex justify-content-center align-items-center">
                     <div class="row w-100" @change="setParams">
                         <div class="col-md-3 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switch1" v-model="searchOption.title">
+                            <input type="checkbox" class="custom-control-input" id="switch1" v-model="searchOption.songname">
                             <label class="custom-control-label" for="switch1">제목</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
@@ -23,7 +23,7 @@
                             <label class="custom-control-label" for="switch2">앨범</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switch3" v-model="searchOption.musician">
+                            <input type="checkbox" class="custom-control-input" id="switch3" v-model="searchOption.author">
                             <label class="custom-control-label" for="switch3">뮤지션</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
@@ -83,7 +83,7 @@
                 isLogin: false,
                 moreOption: false,
                 searchOption: {
-                    title: true, lyrics: false, musician: true, album: true,
+                    songname: true, lyrics: false, author: true, album: true,
                 },
                 keyword: null,
                 audioPlayer: null,
@@ -101,7 +101,7 @@
         },
         methods: {
             setParams() {
-                let params = `${this.searchOption.title ? '&title=true' : ''}${this.searchOption.lyrics ? '&lyrics=true' : ''}${this.searchOption.musician ? '&musician=true' : ''}${this.searchOption.album ? '&album=true' : ''}`
+                let params = `${this.searchOption.songname ? '&songname=true' : ''}${this.searchOption.lyrics ? '&lyrics=true' : ''}${this.searchOption.author ? '&author=true' : ''}${this.searchOption.album ? '&album=true' : ''}`
                 return params
             },
 

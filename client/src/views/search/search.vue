@@ -5,7 +5,7 @@
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
-            <div v-if="this.options.title" class="text-left mb-5">
+            <div v-if="this.options.songname" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="this.options.musician" class="text-left mb-5">
+            <div v-if="this.options.author" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-account-circle" style="font-size: 30px;"></i>&nbsp;
@@ -140,15 +140,20 @@ export default {
     },
     methods: {
         async searchData() {
+            console.log(this.$route.fullPath)
+            let res2 = await this.$Api.post(`/api/search${this.$route.fullPath}`)
             let res = await this.$Api.post(`/api/music/search/${this.keyword.replaceAll(' ', '-')}`)
             if (res.data.success) {
                 res.data.result.map(item => {
+                    console.log(item)
                     if (item.album.toLowerCase().includes(this.keyword.toLowerCase())) this.albumResult.push(item)
                     if (item.song.toLowerCase().includes(this.keyword.toLowerCase())) this.titleResult.push(item)
                     if (item.musician.toLowerCase().includes(this.keyword.toLowerCase())) this.musicianResult.push(item)
                     // if (item.song.toLowerCase() == this.keyword.toLowerCase()) this.titleResult.push(item)
                 })
             }
+
+            console.log(res2)
         }
     }
 }

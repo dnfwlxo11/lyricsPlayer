@@ -14,22 +14,26 @@ class Elastic {
         if (res.body) await this.client.indices.delete({ index: name });
 
         await this.client.indices.create({
-            index: name
+            index: name,
+            body: body
         });
-
-        // await this.client.indices.putMapping({
-        //     index: name,
-        //     body: JSON.parse(body)
-        // });
     }
 
     async refreshClient() {
         await this.client.indices.refresh({ index: 'song' });
     }
 
-    async searchData(query) {
-        const result = await this.client.search(query);
-        console.log(JSON.stringify(result.body.hits))
+    async searchData(name, query) {
+        // const result = await this.client.search({ 
+        //     index: name,
+        //     body: query
+        // });
+
+        const result = await this.client.msearch({ 
+            body: JSON.parse(query)
+        });
+        
+        return result;
     }
 
     async putSongData(query) {

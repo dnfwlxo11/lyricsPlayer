@@ -17,6 +17,7 @@ const musicRouter = require('./routes/music/music.js');
 const musicianRouter = require('./routes/musician/musician.js');
 const albumRouter = require('./routes/album/album.js');
 const commentRouter = require('./routes/comment/comment.js');
+const searchRouter = require('./routes/search/search.js');
 
 app.set('view engine', 'jade');
 
@@ -28,18 +29,44 @@ app.use(cookieParser());
 
 async function initDummy() {
     let body = {
-        "properties": {
-            "songname": { "type": "text" },
-            "lyrics": { "type": "text" },
-            "author": { "type": "text" },
-            "album": { "type": "text" },
+        "settings": {
+            "analysis": {
+                "filter": {
+                    "shingle_filter": {
+                        "type": "shingle",
+                        "min_shingle_size": 3,
+                        "max_shingle_size": 2,
+                        "output_unigrams": true
+                    }
+                },
+            }
+        },
+        "mappings": {
+            "properties": {
+                "songname": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "lyrics": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "author": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "album": {
+                    "type": "text",
+                    "analyzer": "english"
+                }
+            }
         }
     };
 
     await global._modules.Elastic.createIndex('song', JSON.stringify(body));
 
+
     for await (let item of dummyData) {
-        console.log(item)
         let inputData = {
             index: 'song',
             body: item
@@ -48,20 +75,18 @@ async function initDummy() {
         await global._modules.Elastic.putSongData(inputData);
     }
 
-    let searchQuery = {
-        index: "song",
-        body: {
-            "query": {
-                "match" : {
-                    "songname":"Alone"
-                }
-            }
-        }
-    }
+    // let searchQuery = {
+    //     "query": {
+    //         "match_phrase": {
+    //             "lyrics": {
+    //                 "query": "love",
+    //                 "slop": 3
+    //             }
+    //         }
+    //     }
+    // }
 
-    await global._modules.Elastic.searchData(JSON.stringify(searchQuery));
-
-    await global._modules.Elastic.refreshClient();
+    // await global._modules.Elastic.searchData('song', JSON.stringify(searchQuery)).catch(e => console.log(JSON.stringify(e)));
 }
 
 initDummy().catch(console.log);
@@ -73,5 +98,6 @@ app.use('/api/music', musicRouter);
 app.use('/api/musician', musicianRouter);
 app.use('/api/album', albumRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/search', searchRouter);
 
 module.exports = app;
