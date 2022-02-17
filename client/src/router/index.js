@@ -16,8 +16,6 @@ const authenticate = (to, from, next) => {
 
   if (!token) {
     next({ path: '/login', query: { redirect: to.fullPath }});
-  } else if (!userInfo) {
-    next({ path: '/authenticate', query: { redirect: to.fullPath }});
   } else {
     next();
   }
