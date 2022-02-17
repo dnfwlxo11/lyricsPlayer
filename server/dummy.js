@@ -1,6 +1,11 @@
 let dummyData = [
     {
+        'albumImg': '/cover/alwayseverbe_cover.jpg',
+        'musicianImg': '/cover/alwayseverbe_cover.jpg',
+        'songImg': '/cover/alwayseverbe_cover.jpg',
         'songname': 'Always Ever Be',
+        'musician': 'Cole Powell',
+        'album': 'Cole Powell 1집',
         'lyrics': 'So, here we sit again \
         Just you and me and no more friends \
         So it suits you to begin \
@@ -60,11 +65,14 @@ let dummyData = [
         Cliche in the book \
         I\'ll write you to show you you\'ll \
         Always ever be my love',
-        'author': 'Cole Powell',
-        'album': 'Cole Powell 1집',
     },
     {
+        'albumImg': '/cover/alwayseverbe_cover.jpg',
+        'musicianImg': '/cover/alwayseverbe_cover.jpg',
+        'songImg': '/cover/nottheonetosay_cover.jpg',
         'songname': 'Not the One to Say I Told You So',
+        'musician': 'Cole Powell',
+        'album': 'Cole Powell 1집',
         'lyrics': 'You wake up this morning, rain is falling \
         You don\'t know why he didn\'t say goodbye \
         Your phone keeps ringing, but it\'s not him calling \
@@ -119,11 +127,14 @@ let dummyData = [
         Won\'t say it, I \
         Won\'t say it \
         Oh, no, no, no',
-        'author': 'Cole Powell',
-        'album': 'Cole Powell 1집',
     },
     {
+        'albumImg': '/cover/alone_cover.jpg',
+        'musicianImg': '/cover/alone_cover.jpg',
+        'songImg': '/cover/alone_cover.jpg',
         'songname': 'Alone',
+        'musician': 'Color Out',
+        'album': 'Color Out 1집',
         'lyrics': 'This place \
         Why would anybody wanna stay? \
         Out of all the choices you could make \
@@ -134,16 +145,13 @@ let dummyData = [
         I wouldn\'t understand what makes it great \
         But my dear, I\'m so sad to say \
         That I can\'t wait to leave this place \
-          \
         When there is no where else for you to go \
         Don\'t call on me \
         These streets and empty bars will guide you home \
-          \
         Cause I know just what it means to leave \
         Tell me when you go to sleep \
         Do you ever think of me? \
         Don\'t you ever wish you weren\'t alone? \
-          \
         Some days \
         I still wonder if we\'ll meet again \
         And would we hit it off or just pretend \
@@ -154,19 +162,20 @@ let dummyData = [
         Play it off like everything is great \
         Confuse this all for fate \
         Like stars have never aligned so straight \
-          \
         But I know this was never meant to be \
         Tell me when you go to sleep \
         Do you ever dream of me? \
         Don\'t you ever wish you weren\'t alone? \
-          \
         I feel like I\'ve \
         Been here so many times before',
-        'author': 'Color Out',
-        'album': 'Color Out 1집',
     },
     {
+        'albumImg': '/cover/somethingsdontchange_cover.jpg',
+        'musicianImg': '/cover/somethingsdontchange_cover.jpg',
+        'songImg': '/cover/somethingsdontchange_cover.jpg',
         'songname': 'Some Things Dont Change',
+        'musician': 'Dylan Emmet',
+        'album': 'Dylan Emmet 1집',
         'lyrics': 'Waking up this morning \
         The last thing I thought I\'d be \
         Thinking about would be you \
@@ -222,11 +231,14 @@ let dummyData = [
         Nothing can tear us apart \
         Like nothing \
         Nothing can tear us apart',
-        'author': 'Dylan Emmet',
-        'album': 'Dylan Emmet 1집',
     },
     {
+        'albumImg': '/cover/everyonewillfalldown_cover.jpg',
+        'musicianImg': '/cover/everyonewillfalldown_cover.jpg',
+        'songImg': '/cover/dontthrowyourlight_cover.jpg',
         'songname': 'Dont Throw Your Light Away',
+        'musician': 'Kavi Jezzie Hockaday',
+        'album': 'Kavi Jezzie Hockaday 1집',
         'lyrics': 'The hardest thing is falling \
         You don\'t know where you\'ll land \
         Your mind will tell you anything \
@@ -255,11 +267,14 @@ let dummyData = [
         That\'s all you need to know \
         Freedom is just a calling \
         That\'s all you need to know',
-        'author': 'Kavi Jezzie Hockaday',
-        'album': 'Kavi Jezzie Hockaday 1집',
     },
     {
+        'albumImg': '/cover/everyonewillfalldown_cover.jpg',
+        'musicianImg': '/cover/everyonewillfalldown_cover.jpg',
+        'songImg': '/cover/everyonewillfalldown_cover.jpg',
         'songname': 'Everyone Will Fall Down',
+        'musician': 'Kavi Jezzie Hockaday',
+        'album': 'Kavi Jezzie Hockaday 1집',
         'lyrics': 'Fall down \
         I think I\'m gonna fall down \
         Through sound \
@@ -283,10 +298,13 @@ let dummyData = [
         I think I\'ll fall down \
         And every one will fall down now \
         I think I\'ll fall.',
-        'author': 'Kavi Jezzie Hockaday',
-        'album': 'Kavi Jezzie Hockaday 1집',
     },
     {
+        'albumImg': '/cover/mylove_cover.jpg',
+        'musicianImg': '/cover/mylove_cover.jpg',
+        'songImg': '/cover/mylove_cover.jpg',
+        'musician': 'MODUS',
+        'album': 'MODUS 1집',
         'songname': 'My Love',
         'lyrics': 'My every single breath is based on you \
         My heart caught an arrow \
@@ -304,11 +322,14 @@ let dummyData = [
         My sunrise fire \
         You gave me understanding of the life \
         I\'m inspired',
-        'author': 'MODUS',
-        'album': 'MODUS 1집',
     },
     {
+        'albumImg': '/cover/treadlightly_cover.jpg',
+        'musicianImg': '/cover/treadlightly_cover.jpg',
+        'songImg': '/cover/treadlightly_cover.jpg',
         'songname': 'Tread Lightly',
+        'musician': 'Nick Ray',
+        'album': 'Nick Ray 1집',
         'lyrics': 'Take a look inside my head to see what troubles me, \
         we have a long way to go and we will never be the same, \
         I can feel all this emptyness drowning in my soul and \
@@ -329,11 +350,14 @@ let dummyData = [
         or I will build up all of this walls \
         Before you lay me down there is one thing I need, \
         Can leave me to my own devices',
-        'author': 'Nick Ray',
-        'album': 'Nick Ray 1집',
     },
     {
+        'albumImg': '/images/cat2.jpg',
+        'musicianImg': '/images/cat2.jpg',
+        'songImg': '/images/cat2.jpg',
         'songname': 'Leave Me Again',
+        'musician': 'Niwel',
+        'album': 'Niwel 1집',
         'lyrics': 'I\'m still alone \
         Since you left me nothin\' has been to sing \
         There\'s no time for regret \
@@ -360,11 +384,14 @@ let dummyData = [
         Don\'t leave me again, leave me again \
         Leave me again, leave me again \
         Don\'t leave me again, leave me again',
-        'author': 'Niwel',
-        'album': 'Niwel 1집',
     },
     {
+        'albumImg': '/cover/secrets_cover.jpg',
+        'musicianImg': '/cover/secrets_cover.jpg',
+        'songImg': '/cover/passionateaffair_cover.jpg',
         'songname': 'Passionate Affair',
+        'musician': 'RYYZN',
+        'album': 'RYYZN 1집',
         'lyrics': 'Take my hand you\'ll be okay \
         Take my hand let come what may \
         Take my hand you\'ll be okay \
@@ -428,11 +455,14 @@ let dummyData = [
         Take my hand you\'ll be okay \
         Maybe we\'ll go there \
         Passionate affair',
-        'author': 'RYYZN',
-        'album': 'RYYZN 1집',
     },
     {
+        'albumImg': '/cover/secrets_cover.jpg',
+        'musicianImg': '/cover/secrets_cover.jpg',
+        'songImg': '/cover/secrets_cover.jpg',
         'songname': 'Secrets',
+        'musician': 'RYYZN',
+        'album': 'RYYZN 1집',
         'lyrics': 'I\'ll never tell \
         Never tell \
         Just trust \
@@ -487,11 +517,14 @@ let dummyData = [
         Never revealing those \
         Secrets you\'re keeping \
         These promises strong as a spell I\'ll never tell',
-        'author': 'RYYZN',
-        'album': 'RYYZN 1집',
     },
     {
+        'albumImg': '/cover/masalla_cover.jpg',
+        'musicianImg': '/cover/masalla_cover.jpg',
+        'songImg': '/cover/masalla_cover.jpg',
         'songname': 'Mas Alla',
+        'musician': 'Vince Miranda',
+        'album': 'Vince Miranda 1집',
         'lyrics': 'Hear the cry of your will \
         As he asks with all his might for freedom \
         Name your happiness \
@@ -526,9 +559,7 @@ let dummyData = [
         na nara nana \
         It\'s time to speak up and tell the truth \
         na nara nana \
-        Give yourself the opportunity to go further',
-        'author': 'Vince Miranda',
-        'album': 'Vince Miranda 1집',
+        Give yourself the opportunity to go further',  
     },
 ]
 

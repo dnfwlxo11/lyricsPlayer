@@ -3,31 +3,52 @@ const router = express.Router();
 const { auth } = require('../../modules/auth');
 
 router.post('/:keyword', auth, async (req, res, next) => {
-    console.log(req.query);
-    let keyword = req.query.keyword;
-
-    let searchQuery = []
+    let querys = req.query;
+    let keyword = querys.keyword;
+    let searchQuery = [];
+    let options = Object.keys(querys).reduce((acc, item) => {
+        if (item != 'keyword' && querys[item]) acc.push(item)
+        return acc
+    }, [])
     
-    // { "query": { "match_phrase": { "lyrics": { "query": keyword, "slop": 3 }}}}
+    options.forEach((item, idx) => {
+        let baseQuery = { "from": 0, "size": 5, "query": { "bool": { "should": [] }}};
+        
 
-    Object.keys(req.query).forEach((item, idx) => {
-        if (item != 'keyword') {
-            let baseQuery = { "query": { "match_phrase": {}}};
+        if (req.query[item]) {
+            let match_phrase = {}
+            let wildcard = {}
 
-            console.log(req.query[item])
+            match_phrase[item] = { "query": keyword, "slop": 3 }
+            wildcard[item] = `*${keyword}*`
 
-            if (req.query[item]) {
-                baseQuery['query']['match_phrase'][item] = { "query": keyword, "slop": 3 }
-                searchQuery.push({ 'index': 'song'})
-                searchQuery.push(baseQuery)
-            }
+            baseQuery["query"]["bool"]["should"].push({ "match_phrase": match_phrase})
+            baseQuery["query"]["bool"]["should"].push({ "wildcard": wildcard})
+            searchQuery.push({ "index": "song"})
+            searchQuery.push(baseQuery)
         }
     })
 
-    console.log(searchQuery)
-
     const searchResult = await global._modules.Elastic.searchData('song', JSON.stringify(searchQuery));
-    res.send({ 'success': true, searchResult });
+    let result = searchResult.body.responses;
+
+    result = result.reduce((acc, item, idx) => {
+        let searchData = item.hits.hits;
+        let hitsData = [];
+
+        searchData.forEach((data) => {
+            hitsData.push(data._source);
+
+            let pushData = {}
+            pushData[options[idx]] = hitsData;
+
+            acc.push( pushData)
+        })
+            
+        return acc
+    }, [])
+
+    res.send({ 'success': true, result });
 })
 
 module.exports = router

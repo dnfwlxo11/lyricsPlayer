@@ -24,11 +24,6 @@ class Elastic {
     }
 
     async searchData(name, query) {
-        // const result = await this.client.search({ 
-        //     index: name,
-        //     body: query
-        // });
-
         const result = await this.client.msearch({ 
             body: JSON.parse(query)
         });

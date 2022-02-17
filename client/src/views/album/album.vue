@@ -5,7 +5,7 @@
             <div v-if="albumInfo">
                 <div class="row" style="height: 250px;">
                     <div class="col-3 d-flex justify-content-center align-items-center">
-                        <img class="album-img" :src="albumInfo.thumbnail_path" alt="">
+                        <img class="album-img" :src="`http://192.168.0.125:3000${albumInfo.thumbnail_path}`" alt="">
                     </div>
                     <div class="col-9 d-flex justify-content-start align-items-center">
                         <div class="text-left">
@@ -35,7 +35,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-3 d-flex justify-content-center align-items-center">
-                            <img class="song-img" :src="item.songImg" @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}`)">
+                            <img class="song-img" :src="`http://192.168.0.125:3000${item.songImg}`" @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}`)">
                         </div>
                         <div class="col-9 d-flex justify-content-start align-items-center">
                             <div class="text-left">
@@ -96,7 +96,7 @@ export default {
 
 .song-img {
     object-fit: cover;
-    height: 100px;
+    height: 150px;
     width: 100%;
 }
 </style>

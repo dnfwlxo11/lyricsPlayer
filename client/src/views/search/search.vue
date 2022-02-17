@@ -1,11 +1,11 @@
 <template>
     <div class="search">
         <top></top>
-        <div v-if="this.keyword" class="container pt-5 pb-5">
+        <div v-if="keyword" class="container pt-5 pb-5">
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
-            <div v-if="this.options.songname" class="text-left mb-5">
+            <div v-if="searchOptions.songname" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
@@ -17,11 +17,11 @@
                 <div v-for="(value, key) in titleResult" :key="key">
                     <hr>
                     <div class="row">
-                        <div class="col-md-3 mr-3">
-                            <img class="searchImg" :src="value.songImg" @click="$router.push(`/music/${value.musician}/${value.song}`)">
+                        <div class="col-md-3">
+                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
-                        <div class="col-md-7 mr-3">
-                            <div><strong @click="$router.push(`/music/${value.musician}/${value.song}`)">{{value.song}}</strong></div>
+                        <div class="col-md-7">
+                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
                             <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
                         </div>
                         <div class="col-md-2">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="this.options.lyrics" class="text-left mb-5">
+            <div v-if="searchOptions.lyrics" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
@@ -41,12 +41,12 @@
 
                 <div v-for="(value, key) in lyricsResult" :key="key">
                     <div class="row">
-                        <div class="col-md-3 mr-3">
-                            <img class="searchImg" :src="value.songImg">
+                        <div class="col-md-3">
+                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
-                        <div class="col-md-7 mr-3">
-                            <div><strong>{{value.song}}</strong></div>
-                            <div><small>{{value.album}}</small></div>
+                        <div class="col-md-7">
+                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
+                            <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
                         </div>
                         <div class="col-md-2">
 
@@ -55,7 +55,7 @@
                     <hr>
                 </div>
             </div>
-            <div v-if="this.options.album" class="text-left mb-5">
+            <div v-if="searchOptions.album" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-album" style="font-size: 30px;"></i>&nbsp;
@@ -67,12 +67,12 @@
                 <div v-for="(value, key) in albumResult" :key="key">
                     <hr>
                     <div class="row">
-                        <div class="col-md-3 mr-3">
-                            <img class="searchImg" :src="value.songImg" @click="$router.push(`/album/${value.album}`)">
+                        <div class="col-md-3">
+                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.albumImg}`" @click="$router.push(`/album/${value.album}`)">
                         </div>
-                        <div class="col-md-7 mr-3">
+                        <div class="col-md-7">
                             <div><strong @click="$router.push(`/album/${value.album}`)">{{value.album}}</strong></div>
-                            <div><small>{{value.trackLen}} 개의 노래 수록</small></div>
+                            <!-- <div><small>{{value.trackLen}} 개의 노래 수록</small></div> -->
                         </div>
                         <div class="col-md-2">
 
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="this.options.author" class="text-left mb-5">
+            <div v-if="searchOptions.author" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-account-circle" style="font-size: 30px;"></i>&nbsp;
@@ -92,10 +92,10 @@
                 <div v-for="(value, key) in musicianResult" :key="key">
                     <hr>
                     <div class="row">
-                        <div class="col-md-3 mr-3">
-                            <img class="searchImg" :src="value.songImg" @click="$router.push(`/musician/${value.musician}`)">
+                        <div class="col-md-3">
+                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.musicianImglo}`" @click="$router.push(`/musician/${value.musician}`)">
                         </div>
-                        <div class="col-md-7 mr-3">
+                        <div class="col-md-7">
                             <div><strong @click="$router.push(`/musician/${value.musician}`)">{{value.musician}}</strong></div>
                         </div>
                         <div class="col-md-2">
@@ -126,7 +126,7 @@ export default {
             lyrics: 0,
             albums: 0,
             musicians: 0,
-            options: {},
+            searchOptions: {},
             titleResult: [],
             lyricsResult: [],
             albumResult: [],
@@ -135,25 +135,25 @@ export default {
     },
     mounted() {
         if (this.$route.query['keyword'] != undefined) this.keyword = this.$route.query['keyword']
-        this.options = this.$route.query
+        this.searchOptions = this.$route.query
         this.searchData()
     },
     methods: {
         async searchData() {
-            console.log(this.$route.fullPath)
-            let res2 = await this.$Api.post(`/api/search${this.$route.fullPath}`)
-            let res = await this.$Api.post(`/api/music/search/${this.keyword.replaceAll(' ', '-')}`)
-            if (res.data.success) {
-                res.data.result.map(item => {
-                    console.log(item)
-                    if (item.album.toLowerCase().includes(this.keyword.toLowerCase())) this.albumResult.push(item)
-                    if (item.song.toLowerCase().includes(this.keyword.toLowerCase())) this.titleResult.push(item)
-                    if (item.musician.toLowerCase().includes(this.keyword.toLowerCase())) this.musicianResult.push(item)
-                    // if (item.song.toLowerCase() == this.keyword.toLowerCase()) this.titleResult.push(item)
-                })
-            }
+            let res = await this.$Api.post(`/api/search${this.$route.fullPath}`)
 
-            console.log(res2)
+            if (res.data.success) {
+                if (res.data.success) {
+                    res.data.result.map(item => {
+                        const _key = Object.keys(item)[0]
+
+                        if (_key == 'album') this.albumResult = item[_key]
+                        if (_key == 'songname') this.titleResult = item[_key]
+                        if (_key == 'author') this.musicianResult = item[_key]
+                        if (_key == 'lyrics') this.lyricsResult = item[_key]
+                    })
+                }
+            }
         }
     }
 }
@@ -162,7 +162,7 @@ export default {
 <style scoped>
 .searchImg {
     object-fit: cover;
-    height: 100px;
+    height: 150px;
     width: 100%;
 }
 </style>

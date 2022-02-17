@@ -25,6 +25,7 @@ app.use(logger('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/cover', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
 
 async function initDummy() {
@@ -38,7 +39,7 @@ async function initDummy() {
                         "max_shingle_size": 2,
                         "output_unigrams": true
                     }
-                },
+                }
             }
         },
         "mappings": {
@@ -74,22 +75,9 @@ async function initDummy() {
 
         await global._modules.Elastic.putSongData(inputData);
     }
-
-    // let searchQuery = {
-    //     "query": {
-    //         "match_phrase": {
-    //             "lyrics": {
-    //                 "query": "love",
-    //                 "slop": 3
-    //             }
-    //         }
-    //     }
-    // }
-
-    // await global._modules.Elastic.searchData('song', JSON.stringify(searchQuery)).catch(e => console.log(JSON.stringify(e)));
 }
 
-initDummy().catch(console.log);
+initDummy();
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);

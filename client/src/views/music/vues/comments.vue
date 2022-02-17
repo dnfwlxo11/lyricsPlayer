@@ -105,7 +105,6 @@ export default {
             let res = await this.$Api.post('/api/comment/commentCnt', sendData)
 
             if (res.data.success) this.commentLen = res.data.result.commentLen;
-            console.log(this.commentLen)
         },
 
         async getComments() {
