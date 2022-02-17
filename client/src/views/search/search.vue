@@ -18,14 +18,11 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
                             <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
-                        </div>
-                        <div class="col-md-2">
-
                         </div>
                     </div>
                 </div>
@@ -42,14 +39,14 @@
                 <div v-for="(value, key) in lyricsResult" :key="key">
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
-                            <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
-                        </div>
-                        <div class="col-md-2">
-
+                            <div class="mb-3"><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
+                            <div class="mb-3"><span style="font-size: 14px;text-justify: newspaper">{{ (targetName == value.songname) && more ? value.lyrics : value.lyrics.substr(0, 200) + '.....'}} </span></div>
+                            <div v-if="targetName == value.songname && more" class="text-right"><i class="mdi mdi-chevron-double-up" style="font-size: 20px;" @click="more=false;targetName=value.songname"></i></div>
+                            <div v-else class="text-right"><i class="mdi mdi-chevron-double-down" style="font-size: 20px;" @click="more=true;targetName=value.songname"></i></div>
                         </div>
                     </div>
                     <hr>
@@ -68,14 +65,11 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.albumImg}`" @click="$router.push(`/album/${value.album}`)">
+                            <img class="searchImg" :src="`${value.albumImg}`" @click="$router.push(`/album/${value.album}`)">
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-9">
                             <div><strong @click="$router.push(`/album/${value.album}`)">{{value.album}}</strong></div>
                             <!-- <div><small>{{value.trackLen}} 개의 노래 수록</small></div> -->
-                        </div>
-                        <div class="col-md-2">
-
                         </div>
                     </div>
                 </div>
@@ -93,13 +87,10 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`http://192.168.0.125:3000${value.musicianImglo}`" @click="$router.push(`/musician/${value.musician}`)">
+                            <img class="searchImg" :src="`${value.musicianImglo}`" @click="$router.push(`/musician/${value.musician}`)">
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-9">
                             <div><strong @click="$router.push(`/musician/${value.musician}`)">{{value.musician}}</strong></div>
-                        </div>
-                        <div class="col-md-2">
-
                         </div>
                     </div>
                 </div>
@@ -126,6 +117,8 @@ export default {
             lyrics: 0,
             albums: 0,
             musicians: 0,
+            targetName: null,
+            more: false,
             searchOptions: {},
             titleResult: [],
             lyricsResult: [],

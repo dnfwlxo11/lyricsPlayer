@@ -71,6 +71,23 @@ export default {
         color: #3C3D59;
     }
 
+    .btn-reverse {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        color: white;
+        background-color: #F2D4C9;
+        border: none;
+        color: #3C3D59;
+    }
+
+    .btn-reverse:hover {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        color: white;
+        background-color: #6872A6;
+        border: none;
+    }
+
     input {
         background-color: #F2F2F2;
         color: #A599B0;

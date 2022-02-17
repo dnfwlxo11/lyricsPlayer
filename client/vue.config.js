@@ -13,6 +13,9 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://localhost:3000/'
+            },
+            '/cover': {
+                target: 'http://localhost:3000/'
             }
         },
         overlay: true,

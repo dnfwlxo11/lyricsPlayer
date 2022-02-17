@@ -5,7 +5,7 @@
             <div class="row" style="height: 250px;">
                 <div class="col-3 d-flex justify-content-center align-items-center">
                     <div v-if="albums[0]">
-                        <img class="musician-img" :src="`http://192.168.0.125:3000${albums[0].thumbnail_path}`" alt="">
+                        <img class="musician-img" :src="`${albums[0].thumbnail_path}`" alt="">
                     </div>
                 </div>
                 <div class="col-9 d-flex justify-content-start align-items-center">
@@ -43,7 +43,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="song-img" :src="`http://192.168.0.125:3000${item.albumImg}`" @click="$router.push(`/album/${item.album_name}`)">
+                            <img class="song-img" :src="`${item.albumImg}`" @click="$router.push(`/album/${item.album_name}`)">
                         </div>
                         <div class="col-md-9 text-left pt-3 pb-3">
                             <div class="row h-75 pl-3 pr-3">
@@ -81,7 +81,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="`http://192.168.0.125:3000${item.songImg}`" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">
+                        <img class="song-img" :src="`${item.songImg}`" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
@@ -140,7 +140,6 @@ export default {
             let res = await this.$Api.post(`/api/musician/album/${this.$route.params.musicianId}`)
             
             if (res.data.success) this.albums = res.data.result
-            console.log(this.albums)
         }
     },
 }

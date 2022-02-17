@@ -5,6 +5,19 @@ const Quries = require('./Queries/query');
 const path = require('path');
 const DB = global._modules.Database;
 const { auth } = require('../../modules/auth');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'tmpDir/');
+    },
+
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+})
+
+const upload = multer({ storage: storage });
 
 router.get('/play/:musician/:musicName', (req, res, next) => {
     let musicianName = req.params.musician.replace(/-/g, ' ');
@@ -135,4 +148,21 @@ router.post('/likeCnt', (req, res, next) => {
     });
 })
 
-module.exports = router
+router.post('/upload', auth, upload.single('song'), (req, res, next) => {
+    let fileMeta = JSON.parse(req.body.metadata);
+    let thumbnail = req.body.thumbnail.replace('data:image/jpeg;base64,', "");
+
+    if (!fs.existsSync(path.join('music', fileMeta.artist))) fs.mkdirSync(path.join('music', fileMeta.artist));
+
+    // 썸네일 비동기 저장
+    if (req.body.thumbnail) fs.writeFileSync(path.join('images', fileMeta.title + '.jpg'), thumbnail, 'base64');
+
+    // 노래 비동기 이동
+    fs.rename(req.file.path, path.join('music', fileMeta.artist, req.file.originalname), (err) => {
+        console.log(err)
+    });
+
+    res.send({ 'success': true });
+})
+
+module.exports = router;

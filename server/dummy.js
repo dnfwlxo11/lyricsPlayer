@@ -235,7 +235,7 @@ let dummyData = [
     {
         'albumImg': '/cover/everyonewillfalldown_cover.jpg',
         'musicianImg': '/cover/everyonewillfalldown_cover.jpg',
-        'songImg': '/cover/dontthrowyourlight_cover.jpg',
+        'songImg': '/cover/dontthrowyourlightaway_cover.jpg',
         'songname': 'Dont Throw Your Light Away',
         'musician': 'Kavi Jezzie Hockaday',
         'album': 'Kavi Jezzie Hockaday 1집',

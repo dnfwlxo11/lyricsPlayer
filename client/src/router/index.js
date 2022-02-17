@@ -7,6 +7,7 @@ import Album from '../views/album/album.vue'
 import Search from '../views/search/search.vue'
 import Authenticate from '../components/Authenticate.vue'
 import Login from '../views/user/login.vue'
+import Upload from '../views/user/upload.vue'
 import store from '@/store'
 
 const authenticate = (to, from, next) => {
@@ -49,6 +50,12 @@ const routes = [
     path: '/album/:albumId',
     name: 'Album',
     component: Album
+  },
+  {
+    path: '/upload',
+    name: 'Upload',
+    component: Upload,
+    beforeEnter: authenticate,
   },
   {
     path: '/search',

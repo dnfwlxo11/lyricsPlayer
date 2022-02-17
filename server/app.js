@@ -22,10 +22,11 @@ const searchRouter = require('./routes/search/search.js');
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/cover', express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'music')));
 app.use(cookieParser());
 
 async function initDummy() {

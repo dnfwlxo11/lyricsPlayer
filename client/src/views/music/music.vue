@@ -6,7 +6,7 @@
                 <div class="row m-0 p-0">
                     <div v-if="!thumbnailPath" class="col-md-10 mb-2 d-flex justify-content-center align-items-center" style="height: 700px;"><i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i></div>
                     <div v-else class="col-md-9 mb-2 " style="height: 700px;">
-                        <img :src="`http://192.168.0.125:3000${thumbnailPath}`" style="height: 100%; width: 100%; object-fit: cover;" loading="lazy">
+                        <img :src="`${thumbnailPath}`" style="height: 100%; width: 100%; object-fit: cover;" loading="lazy">
                     </div>
                     <!-- <strong style="height: 40px;">Relation List</strong> -->
                     <div class="card col-md-3" style="overflow-y: auto; height: 700px;">
@@ -14,7 +14,7 @@
                             <hr>
                             <div class="row m-0 p-0">
                                 <div class="col-md-3 p-0 m-0 d-flex justify-content-center align-items-center">
-                                    <img class="recommandThumbnail" :src="`http://192.168.0.125:3000${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {});">
+                                    <img class="recommandThumbnail" :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {});">
                                 </div>
                                 <div class="col-md-9 text-left">
                                     <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {})">{{item.song_name}}</strong> <br>

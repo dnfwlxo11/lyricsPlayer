@@ -39,7 +39,7 @@
                 <div class="row m-0 p-0">
                     <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx">
                         <div class="thumbnail card mb-1">
-                            <img :src="`http://192.168.0.125:3000${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)" >
+                            <img :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name'].replaceAll(' ', '-')}/${item['song_name'].replaceAll(' ', '-')}`)" >
                             <div class="overlay d-flex justify-content-center align-items-center">
                                 <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
                                 <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
@@ -129,7 +129,6 @@
                 let res = await this.$Api.post('/api/music/ranking')
 
                 if (res.data.success) this.musicRank = res.data.result
-                console.log(this.musicRank)
             }
         }
     }
