@@ -36,6 +36,12 @@ export default {
 </script>
 
 <style lang="scss">
+    html, body, #app {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+
     #app {
         font-family: 'Noto Sans KR', sans-serif;
         // font-family: Avenir, Helvetica, Arial, sans-serif;

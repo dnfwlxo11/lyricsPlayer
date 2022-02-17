@@ -1,6 +1,6 @@
 <template>
-    <div class="Authenticate">
-        <div>
+    <div class="authenticate h-100">
+        <div class="h-100 d-flex justify-content-center align-items-center">
             <i class="mdi mdi-loading mdi-spin"></i>
             <strong>사용자 인증 중...</strong>
         </div>
@@ -21,9 +21,6 @@ export default {
         this.redirect = this.$route.query.redirect || '/';
         this.token = this.$cookies.get('x_auth');
 
-        if (!this.token) this.$router.replace('/');
-
-
         this.loadProfile();
     },
 
@@ -33,9 +30,9 @@ export default {
 
             if (res.data.success) {
                 this.$store.commit('setUserProfile', res.data.result);
-                this.$router.push(this.redirect);
+                this.$router.replace(this.redirect);
             } else {
-                this.$router.push('/');
+                this.$router.replace('/');
             }
         }
     }

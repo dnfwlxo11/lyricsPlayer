@@ -161,8 +161,10 @@ export default {
         async submitSong() {
             this.isProgress = true;
 
-            if (!this.song) return false;
-            if (!this.metadata.title || !this.metadata.artist || !this.metadata.album) return false;
+            if (!this.song || !this.metadata.title || !this.metadata.artist || !this.metadata.album) {
+                this.isProgress = false;
+                return false;
+            }
 
             let formData = new FormData();
             formData.append('song', this.song);

@@ -72,7 +72,7 @@ export default {
 
         logout() {
             this.$cookies.remove('x_auth');
-            this.$router.push('/', () => {}, () => {
+            this.$router.replace('/', () => {}, () => {
                 window.location.reload();
             });
         },
