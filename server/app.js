@@ -29,7 +29,7 @@ app.use('/cover', express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'music')));
 app.use(cookieParser());
 
-async function initDummy() {
+async function init() {
     let body = {
         "settings": {
             "analysis": {
@@ -68,17 +68,17 @@ async function initDummy() {
     await global._modules.Elastic.createIndex('song', JSON.stringify(body));
 
 
-    for await (let item of dummyData) {
-        let inputData = {
-            index: 'song',
-            body: item
-        };
+    // for await (let item of dummyData) {
+    //     let inputData = {
+    //         index: 'song',
+    //         body: item
+    //     };
 
-        await global._modules.Elastic.putSongData(inputData);
-    }
+    //     await global._modules.Elastic.putSongData(inputData);
+    // }
 }
 
-initDummy();
+init();
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);

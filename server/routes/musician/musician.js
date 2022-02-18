@@ -5,7 +5,7 @@ const DB = global._modules.Database;
 
 router.post('/album/:musicians', (req, res, next) => {
     const selectMusicianAlbumsWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicianAlbums(req.params.musicians.replace(/-/g, ' '));
+        const sql = Quries.selectMusicianAlbums(decodeURI(req.params.musicians));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -21,7 +21,7 @@ router.post('/album/:musicians', (req, res, next) => {
 
 router.post('/song/:musicians', (req, res, next) => {
     const selectMusicianSongsWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicianSongs(req.params.musicians.replace(/-/g, ' '));
+        const sql = Quries.selectMusicianSongs(decodeURI(req.params.musicians));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false

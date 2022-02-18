@@ -1,4 +1,4 @@
 FROM kibana:7.9.0
 
-ENV ELASTICSEARCH_URL="http://daein_elastic:9200" \
-    ELASTICSEARCH_HOSTS="http://daein_elastic:9200"
+ENV ELASTICSEARCH_URL="http://daein-elastic:9200" \
+    ELASTICSEARCH_HOSTS="http://daein-elastic:9200"

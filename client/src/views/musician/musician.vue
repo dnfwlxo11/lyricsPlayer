@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-9 d-flex justify-content-start align-items-center">
                     <div class="text-left">
-                        <div><h2>{{musician.replaceAll('-', ' ')}}</h2></div>
+                        <div><h2>{{musician}}</h2></div>
                         <div v-if="albums.length && albums.length">
                             <div><h6>{{albums.length}}개의 앨범</h6></div>
                             <div><h6>{{musics.length}}개의 노래</h6></div>

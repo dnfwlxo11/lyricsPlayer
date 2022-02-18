@@ -14,11 +14,11 @@
                             <hr>
                             <div class="row m-0 p-0">
                                 <div class="col-md-3 p-0 m-0 d-flex justify-content-center align-items-center">
-                                    <img class="recommandThumbnail" :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {});">
+                                    <img class="recommandThumbnail" :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`, () => {}, () => {});">
                                 </div>
                                 <div class="col-md-9 text-left">
-                                    <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name.replaceAll(' ', '-')}/${item.song_name.replaceAll(' ', '-')}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
-                                    <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name.replaceAll(' ', '-')}`)">{{item.musician_name}}</small>
+                                    <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
+                                    <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name}`)">{{item.musician_name}}</small>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px; float: left" @click="musicControl"></i>
                             <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px; float: left;" @click="musicControl"></i>
                             <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0"><strong>{{currAudioName}}</strong></h3></div>
-                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician.replaceAll('-', ' ')}}</small></div>
+                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician}}</small></div>
                         </div>
                         <div>
                             <progress ref="progress" :value="(musicState['name'] == currAudioName ? musicState['currentTime']/musicState['duration'] : 0)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <comments ref="comments" @on-login="mustLogin"></comments>
-            <likeModal v-if="showLikes" @on-login="mustLogin" @click="showLikes=true;" @on-close="showLikes=false;" :title="$route.params.musicName.replaceAll('-', ' ')" :musician="$route.params.musician.replaceAll('-', ' ')"></likeModal>
+            <likeModal v-if="showLikes" @on-login="mustLogin" @click="showLikes=true;" @on-close="showLikes=false;" :title="$route.params.musicName" :musician="$route.params.musician"></likeModal>
         </div>
     </div>
 </template>
@@ -114,7 +114,7 @@ export default {
     },
     created() {
         this.audioPlayer = window._globalAudio;
-        this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
+        this.currAudioName = decodeURI(this.$route.params.musicName);
         this.musicState = this.$store.getters.getMusicState;
         this.isPlay = this.$store.getters.getPlayState;
     },
@@ -149,14 +149,14 @@ export default {
         setMusic() {
             if (this.musicState['name'] == 'none') {
                 window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
-                this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
+                this.$store.commit('setCurrMusic', decodeURI(this.$route.params.musicName));
             }
         },
 
         musicControl() {
             if (this.musicState['name'] != this.currAudioName) {
                 window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
-                this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
+                this.$store.commit('setCurrMusic', decodeURI(this.$route.params.musicName));
             } 
             
             if (this.audioPlayer.paused) {
@@ -183,7 +183,7 @@ export default {
             if (e == undefined) return;
             if (this.musicState['name'] != this.currAudioName) {
                 window._globalAudio.src = `/api/music/play/${this.$route.params.musician}/${this.$route.params.musicName}.mp3`;
-                this.$store.commit('setCurrMusic', this.$route.params.musicName.replaceAll('-', ' '));
+                this.$store.commit('setCurrMusic', decodeURI(this.$route.params.musicName));
             }
 
             let time = Math.floor(this.musicState['duration'] * (e.offsetX / this.$refs.progress.offsetWidth)).toString();
@@ -195,7 +195,7 @@ export default {
         async like() {
             if (this.$cookies.get('x_auth') != null) {
                 let res = await this.$Api.post('/api/music/like', {
-                    songName: this.$route.params.musicName.replaceAll('-', ' '),
+                    songName: decodeURI(this.$route.params.musicName),
                 });
 
                 if (res.data.success) this.getLikeCount();
@@ -206,7 +206,7 @@ export default {
 
         async getLikeCount() {
             let sendData = {
-                songName: this.$route.params.musicName.replaceAll('-', ' '),
+                songName: decodeURI(this.$route.params.musicName),
                 pageSize: 3,
                 currPage: 0,
             }
@@ -230,7 +230,7 @@ export default {
             this.musicState = val;
         },
         '$route': function() {
-            this.currAudioName = this.$route.params.musicName.replaceAll('-', ' ');
+            this.currAudioName = decodeURI(this.$route.params.musicName);
             this.musicState = this.$store.getters.getMusicState;
             this.isPlay = this.$store.getters.getPlayState;
             this.audioPlayer = window._globalAudio;

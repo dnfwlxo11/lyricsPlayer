@@ -77,18 +77,24 @@ export default {
     },
     data() {
         return {
+            tmpAudio: null,
             isProgress: false,
             isDragged: false,
             song: null,
             thumbnail: null,
             metadata: {
                 title: null,
+                duration: null,
                 genre: null,
                 artist: null,
                 album: null,
                 lyrics: null,
             }
         }
+    },
+    beforeDestoy() {
+        if (this.tmpAudio) this.tmpAudio.removeEventListener('loadedmetadata');
+        this.tmpAudio = null;
     },
     methods: {
         onSongClick() {
@@ -119,16 +125,34 @@ export default {
 
         },
 
-        onSongChange(e) {
+        loadAudioMetadata() {
+            return new Promise((resolve, reject) => {
+                let audioBlob = window.URL.createObjectURL(this.song);
+                this.tmpAudio = new Audio();
+
+                this.tmpAudio.addEventListener("loadedmetadata", () => {
+                    resolve(this.tmpAudio.duration);
+                })
+
+                this.tmpAudio.src = audioBlob;
+            })
+        },
+
+        async onSongChange(e) {
+            console.log('노래 변경')
+
             this.thumbnail = null;
             const file = e.target.files;
 
             if (file.length) {
                 this.song = file[0];
                 this.metadata.title = this.song.name.split('.')[0];
+
+                this.metadata.duration = Math.floor(await this.loadAudioMetadata());
+
                 e.target.value = '';
             }
-        },
+        },        
 
         async onThumbChange(e) {
             const file = e.target.files;
@@ -144,6 +168,8 @@ export default {
         removeSong() {
             this.song = null;
             this.thumbnail = null;
+            this.metadata.title = null;
+            this.tmpAudio = null;
         },
 
         async readFile(file) {

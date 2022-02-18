@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/play/:musician/:musicName', (req, res, next) => {
-    let musicianName = req.params.musician.replace(/-/g, ' ');
-    let musicName = req.params.musicName.replace(/-/g, ' ');
+    let musicianName = decodeURI(req.params.musician);
+    let musicName = decodeURI(req.params.musicName);
     let musicPath = path.join(_workDir, 'music', musicianName, musicName);
 
     let musicFile = fs.statSync(musicPath);
@@ -70,7 +70,7 @@ router.post('/info', (req, res, next) => {
 
 router.post('/search/:keyword', (req, res, next) => {
     const selectSearchSongWork = DB.connect(async (conn) => {
-        const sql = Quries.selectSearchSong(req.params.keyword.replace(/-/g, ' '));
+        const sql = Quries.selectSearchSong(decoedURI(req.params.keyword));
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -148,21 +148,108 @@ router.post('/likeCnt', (req, res, next) => {
     });
 })
 
-router.post('/upload', auth, upload.single('song'), (req, res, next) => {
-    let fileMeta = JSON.parse(req.body.metadata);
-    let thumbnail = req.body.thumbnail.replace('data:image/jpeg;base64,', "");
+router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
+    try {
+        let fileMeta = JSON.parse(req.body.metadata);
+        let thumbnail = req.body.thumbnail != 'null' ? req.body.thumbnail.replace('data:image/jpeg;base64,', "") : null;
 
-    if (!fs.existsSync(path.join('music', fileMeta.artist))) fs.mkdirSync(path.join('music', fileMeta.artist));
+        console.log(thumbnail == null, thumbnail == 'null', thumbnail == true)
+        console.log(fileMeta)
+        let params = {
+            'path': thumbnail ? `/cover/${fileMeta.title}.jpg` : `/cover/musician.png`,
+            // 'title': fileMeta.title,
+            // 'artist': fileMeta.artist,
+            // 'duration': fileMeta.duration,
+            // 'genre': fileMeta.genre,
+            // 'album': fileMeta.album,
+            // 'lyrics': fileMeta.lyrics,
+            'title': fileMeta.title.replace(/'/g, "\'"),
+            'artist': fileMeta.artist.replace(/'/g, "\'"),
+            'duration': fileMeta.duration,
+            'genre': fileMeta.genre.replace(/'/g, "\'"),
+            'album': fileMeta.album.replace(/'/g, "\'"),
+            'lyrics': fileMeta.lyrics.replace(/'/g, "\'"),
+            'userId': req.user.uid,
+        };
 
-    // 썸네일 비동기 저장
-    if (req.body.thumbnail) fs.writeFileSync(path.join('images', fileMeta.title + '.jpg'), thumbnail, 'base64');
+        console.log(params.path)
 
-    // 노래 비동기 이동
-    fs.rename(req.file.path, path.join('music', fileMeta.artist, req.file.originalname), (err) => {
+        if (!fs.existsSync(path.join('music', fileMeta.artist))) fs.mkdirSync(path.join('music', fileMeta.artist));
+
+        // 이미지 있을 시 썸네일 비동기 저장
+        const thumbDstPath = path.join('images', `${fileMeta.title}.jpg`)
+        if (thumbnail) {
+            console.log(thumbnail , '썸네일 저장한다.');
+            fs.writeFileSync(thumbDstPath, thumbnail, 'base64');
+        } 
+
+        // 노래 비동기 이동
+        const songDstPath = path.join('music', fileMeta.artist, `${fileMeta.title}.mp3`);
+        fs.rename(req.file.path, songDstPath, (err) => {
+            console.log(err)
+        });
+
+        // mariaDB에 등록
+        const uploadMusicWork = DB.transaction(async (conn) => {
+            let sql = `SELECT count(musician_name) as cnt FROM tb_musicians WHERE musician_name = "${fileMeta.artist}" AND registrant_uid = ${req.user.uid}`;
+            let rows = await conn.query(sql);
+            
+            if (!rows[0]['cnt']) {
+                sql = Quries.insertMusician(params);
+                await conn.query(sql);
+            }
+
+            sql = `SELECT count(album_name) as cnt FROM tb_albums WHERE album_name = "${fileMeta.album}" AND registrant_uid = ${req.user.uid}`;
+            rows = await conn.query(sql);
+
+            if (!rows[0]['cnt']) {
+                sql = Quries.insertAlbum(params);
+                await conn.query(sql);
+            }
+
+            sql = `SELECT count(song_name) as cnt FROM tb_songs WHERE song_name = "${fileMeta.title}" AND registrant_uid = ${req.user.uid}`;
+            rows = await conn.query(sql);
+
+            if (!rows[0]['cnt']) {
+                sql = Quries.insertSong(params);
+                await conn.query(sql);
+            }
+        });
+
+        await uploadMusicWork();
+
+        console.log({
+            "albumImg": params.path,
+            "musicianImg": params.path,
+            "songImg": params.path,
+            "musician": params.artist,
+            "album": params.album,
+            "songname": params.title,
+            "lyrics": params.lyrics,
+        })
+
+        // elastic 엔진에 등록
+        let inputData = {
+            index: 'song',
+            body: {
+                "albumImg": params.path,
+                "musicianImg": params.path,
+                "songImg": params.path,
+                "musician": params.artist,
+                "album": params.album,
+                "songname": params.title,
+                "lyrics": params.lyrics,
+            }
+        };
+
+        await global._modules.Elastic.putSongData(inputData);
+
+        res.send({ 'success': true });
+    } catch(err) {
         console.log(err)
-    });
-
-    res.send({ 'success': true });
+        res.send({ 'success': false, err });
+    }
+    
 })
 
 module.exports = router;

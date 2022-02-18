@@ -99,7 +99,7 @@ export default {
 
         async getCommentCnt() {
             let sendData = { 
-                'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                'songName': this.$route.params.musicName,
             }
 
             let res = await this.$Api.post('/api/comment/commentCnt', sendData)
@@ -111,7 +111,7 @@ export default {
             this.isLoading = true;
 
             let sendData = { 
-                'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                'songName': decodeURI(this.$route.params.musicName),
                 'pageSize': this.pageSize,
                 'currPage': this.currPage,
                 'cid': this.comments.length ? this.comments[this.comments.length - 1].cid : 0,
@@ -131,7 +131,7 @@ export default {
                 if (this.comment == '') return true;
 
                 let sendData = {
-                    songName: this.$route.params.musicName.replaceAll('-', ' '),
+                    songName: decodeURI(this.$route.params.musicName),
                     content: this.comment,
                     submitDate: (new Date).getTime(),
                 };
@@ -153,7 +153,7 @@ export default {
         async modifyComment(cid, comment) {
             if (this.$cookies.get('x_auth') != null) {
                 let sendData = {
-                    'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                    'songName': decodeURI(this.$route.params.musicName),
                     'cid': cid,
                     'modifyComment': comment
                 }
@@ -173,7 +173,7 @@ export default {
         async deleteComment(cid) {
             if (this.$cookies.get('x_auth') != null) {
                 let sendData = {
-                    'songName': this.$route.params.musicName.replaceAll('-', ' '),
+                    'songName': decodeURI(this.$route.params.musicName),
                     'cid': cid,
                 }
 

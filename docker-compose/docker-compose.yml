@@ -5,7 +5,7 @@ services:
       context: ./mariadb
       dockerfile: Dockerfile
     image: mariadb
-    container_name: daein_mariadb
+    container_name: daein-mariadb
     restart: always
     environment: 
       - MYSQL_ROOT_PASSWORD=daein
@@ -15,12 +15,14 @@ services:
     volumes:
       - ./mariadb/app/db:/var/lib/mysql
       - ./mariadb/app/backup:/backup
+    networks:
+      - elastic
   elasticsearch:
     build: 
       context: ./elasticsearch
       dockerfile: Dockerfile
     image: elastic
-    container_name: daein_elastic
+    container_name: daein-elastic
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -38,9 +40,25 @@ services:
       context: ./kibana
       dockerfile: Dockerfile
     image: kibana
-    container_name: daein_kibana
+    container_name: daein-kibana
     ports:
       - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+  logstash:
+    build:
+      context: ./logstash
+      dockerfile: Dockerfile
+    image: logstash
+    container_name: daein-logstash
+    volumes:
+      - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+      - "./logstash/driver/mariadb-java-client-2.7.5.jar:/opt/logstash/vendor/jar/jdbc/mariadb-java-client-2.7.5.jar"
+    ports:
+      - "5001:5001"
     depends_on:
       - elasticsearch
     networks:

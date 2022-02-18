@@ -18,7 +18,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
@@ -39,7 +39,7 @@
                 <div v-for="(value, key) in lyricsResult" :key="key">
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.songImg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
@@ -65,7 +65,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.albumImg}`" @click="$router.push(`/album/${value.album}`)">
+                            <img class="searchImg" :src="`${value.albumimg}`" @click="$router.push(`/album/${value.album}`)">
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/album/${value.album}`)">{{value.album}}</strong></div>
@@ -87,7 +87,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.musicianImglo}`" @click="$router.push(`/musician/${value.musician}`)">
+                            <img class="searchImg" :src="`${value.musicianimg}`" @click="$router.push(`/musician/${value.musician}`)">
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/musician/${value.musician}`)">{{value.musician}}</strong></div>

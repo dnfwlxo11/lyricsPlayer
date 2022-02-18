@@ -11,12 +11,14 @@ class Elastic {
 
     async createIndex(name, body) {
         let res = await this.client.indices.exists({ index: name });
-        if (res.body) await this.client.indices.delete({ index: name });
+        // if (res.body) await this.client.indices.delete({ index: name });
 
-        await this.client.indices.create({
-            index: name,
-            body: body
-        });
+        if (!res.body) {
+            await this.client.indices.create({
+                index: name,
+                body: body
+            });
+        }
     }
 
     async refreshClient() {

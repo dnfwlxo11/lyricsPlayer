@@ -9,8 +9,8 @@
                     </div>
                     <div class="col-9 d-flex justify-content-start align-items-center">
                         <div class="text-left">
-                            <div><h2>{{albumInfo.album_name.replaceAll('-', ' ')}}</h2></div>
-                            <div><h6 @click="$router.push(`/musician/${albumInfo.musician_name.replaceAll(' ', '-')}`)">{{albumInfo.musician_name}}</h6></div>
+                            <div><h2>{{albumInfo.album_name}}</h2></div>
+                            <div><h6 @click="$router.push(`/musician/${albumInfo.musician_name}`)">{{albumInfo.musician_name}}</h6></div>
                             <div v-if="albumTrack.length">
                                 <h6>{{albumTrack.length}}개의 노래</h6>
                             </div>
@@ -74,13 +74,13 @@ export default {
         },
 
         async getAlbumInfo() {
-            let res = await this.$Api.post(`/api/album/info/${this.$route.params.albumId.replaceAll(' ', '-')}`)
+            let res = await this.$Api.post(`/api/album/info/${this.$route.params.albumId}`)
             
             if (res.data.success) this.albumInfo = res.data.result
         },
 
         async getAlbumMusics() {
-            let res = await this.$Api.post(`/api/album/${this.$route.params.albumId.replaceAll(' ', '-')}`)
+            let res = await this.$Api.post(`/api/album/${this.$route.params.albumId}`)
             
             if (res.data.success) this.albumTrack = res.data.result
         }
