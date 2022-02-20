@@ -153,8 +153,8 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
         let fileMeta = JSON.parse(req.body.metadata);
         let thumbnail = req.body.thumbnail != 'null' ? req.body.thumbnail.replace('data:image/jpeg;base64,', "") : null;
 
-        console.log(thumbnail == null, thumbnail == 'null', thumbnail == true)
-        console.log(fileMeta)
+        console.log(!fs.existsSync('tmpDir'))
+
         let params = {
             'path': thumbnail ? `/cover/${fileMeta.title}.jpg` : `/cover/musician.png`,
             // 'title': fileMeta.title,
@@ -171,8 +171,6 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
             'lyrics': fileMeta.lyrics.replace(/'/g, "\'"),
             'userId': req.user.uid,
         };
-
-        console.log(params.path)
 
         if (!fs.existsSync(path.join('music', fileMeta.artist))) fs.mkdirSync(path.join('music', fileMeta.artist));
 
@@ -217,32 +215,6 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
         });
 
         await uploadMusicWork();
-
-        console.log({
-            "albumImg": params.path,
-            "musicianImg": params.path,
-            "songImg": params.path,
-            "musician": params.artist,
-            "album": params.album,
-            "songname": params.title,
-            "lyrics": params.lyrics,
-        })
-
-        // elastic 엔진에 등록
-        let inputData = {
-            index: 'song',
-            body: {
-                "albumImg": params.path,
-                "musicianImg": params.path,
-                "songImg": params.path,
-                "musician": params.artist,
-                "album": params.album,
-                "songname": params.title,
-                "lyrics": params.lyrics,
-            }
-        };
-
-        await global._modules.Elastic.putSongData(inputData);
 
         res.send({ 'success': true });
     } catch(err) {

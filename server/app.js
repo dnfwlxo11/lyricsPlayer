@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const fs = require('fs');
 const dummyData = require('./dummy.js')
 
 const app = express();
@@ -79,6 +80,8 @@ async function init() {
 }
 
 init();
+
+if (!fs.existsSync('tmpDir')) fs.mkdirSync('tmpDir');
 
 app.use('/', indexRouter);
 app.use('/err', errRouter);
