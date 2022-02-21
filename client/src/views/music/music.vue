@@ -29,14 +29,14 @@
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
                     <div class="col-md-2 m-0 p-0 mt-2 mb-2 pl-2 pr-2">
-                        <img class="musician-img" src="/images/musician.png" alt="대추" @click="$router.push(`/musician/${$route.params.musician}`)">
+                        <img class="musician-img" src="/images/musician.png" alt="대추" @click="$router.push(`/musician/${$route.params.musician}/${albumId}`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
                         <div style="float: left">
                             <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px; float: left" @click="musicControl"></i>
                             <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px; float: left;" @click="musicControl"></i>
                             <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0"><strong>{{currAudioName}}</strong></h3></div>
-                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}/${item.mid}`)">{{$route.params.musician}}</small></div>
+                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}/${albumId}`)">{{$route.params.musician}}</small></div>
                         </div>
                         <div>
                             <progress ref="progress" :value="(musicState['name'] == currAudioName ? musicState['currentTime']/musicState['duration'] : 0)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>
@@ -98,6 +98,7 @@ export default {
         return {
             recommandList: [],
             thumbnailPath: null,
+            albumId: null,
             likes: null,
             isLogin: false,
             showLikes: false,
@@ -137,6 +138,7 @@ export default {
             if (res.data.success) {
                 this.thumbnailPath = res.data.result.thumbnail_path;
                 this.musicState['duration'] = res.data.result.playtime;
+                this.albumId = res.data.result.mid;
             }
         },
 
