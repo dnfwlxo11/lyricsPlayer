@@ -18,10 +18,10 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">
                         </div>
                         <div class="col-md-9">
-                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
+                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">{{value.songname}}</strong></div>
                             <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
                         </div>
                     </div>
@@ -39,10 +39,10 @@
                 <div v-for="(value, key) in lyricsResult" :key="key">
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}`)">
+                            <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">
                         </div>
                         <div class="col-md-9">
-                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}`)">{{value.songname}}</strong></div>
+                            <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">{{value.songname}}</strong></div>
                             <div class="mb-3"><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
                             <div class="mb-3"><span style="font-size: 14px;text-justify: newspaper">{{ (targetName == value.songname) && more ? value.lyrics : value.lyrics.substr(0, 200) + '.....'}} </span></div>
                             <div v-if="targetName == value.songname && more" class="text-right"><i class="mdi mdi-chevron-double-up" style="font-size: 20px;" @click="more=false;targetName=value.songname"></i></div>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="searchOptions.author" class="text-left mb-5">
+            <div v-if="searchOptions.musician" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-account-circle" style="font-size: 30px;"></i>&nbsp;
@@ -142,7 +142,7 @@ export default {
 
                         if (_key == 'album') this.albumResult = item[_key]
                         if (_key == 'songname') this.titleResult = item[_key]
-                        if (_key == 'author') this.musicianResult = item[_key]
+                        if (_key == 'musician') this.musicianResult = item[_key]
                         if (_key == 'lyrics') this.lyricsResult = item[_key]
                     })
                 }

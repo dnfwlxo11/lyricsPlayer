@@ -35,7 +35,7 @@ const routes = [
     component: Login,
   },
   {
-    path: '/music/:musician/:musicName',
+    path: '/music/:musician/:musicName/:sid',
     name: 'Music',
     component: Music
   },

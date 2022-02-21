@@ -38,7 +38,7 @@ router.get('/play/:musician/:musicName', (req, res, next) => {
 
 router.post('/ranking', (req, res, next) => {
     const selectMusicRankingWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicRanking(req.body.id);
+        const sql = Quries.selectMusicRanking(req.body.sid);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -54,7 +54,7 @@ router.post('/ranking', (req, res, next) => {
 
 router.post('/info', (req, res, next) => {
     const selectMusicInfoWork = DB.connect(async (conn) => {
-        const sql = Quries.selectMusicInfo(req.body.musicName.replace(/-/g, ' '));
+        const sql = Quries.selectMusicInfo(req.body.sid);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -189,7 +189,7 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
 
         // mariaDB에 등록
         const uploadMusicWork = DB.transaction(async (conn) => {
-            let sql = `SELECT count(musician_name) as cnt FROM tb_musicians WHERE musician_name = "${fileMeta.artist}" AND registrant_uid = ${req.user.uid}`;
+            let sql = `SELECT count(musician_name) as cnt FROM tb_musicians WHERE musician_name = "${params.artist}" AND registrant_uid = ${params.userId}`;
             let rows = await conn.query(sql);
             
             if (!rows[0]['cnt']) {
@@ -197,7 +197,7 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
                 await conn.query(sql);
             }
 
-            sql = `SELECT count(album_name) as cnt FROM tb_albums WHERE album_name = "${fileMeta.album}" AND registrant_uid = ${req.user.uid}`;
+            sql = Quries.selectAlbum(params);
             rows = await conn.query(sql);
 
             if (!rows[0]['cnt']) {
@@ -205,7 +205,7 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
                 await conn.query(sql);
             }
 
-            sql = `SELECT count(song_name) as cnt FROM tb_songs WHERE song_name = "${fileMeta.title}" AND registrant_uid = ${req.user.uid}`;
+            sql = Quries.selectMusic(params);
             rows = await conn.query(sql);
 
             if (!rows[0]['cnt']) {

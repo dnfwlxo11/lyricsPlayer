@@ -99,7 +99,7 @@ export default {
 
         async getCommentCnt() {
             let sendData = { 
-                'songName': this.$route.params.musicName,
+                'sid': this.$route.params.sid,
             }
 
             let res = await this.$Api.post('/api/comment/commentCnt', sendData)
@@ -110,11 +110,11 @@ export default {
         async getComments() {
             this.isLoading = true;
 
-            let sendData = { 
-                'songName': decodeURI(this.$route.params.musicName),
+            let sendData = {
                 'pageSize': this.pageSize,
                 'currPage': this.currPage,
                 'cid': this.comments.length ? this.comments[this.comments.length - 1].cid : 0,
+                'sid': this.$route.params.sid,
             }
 
             let res = await this.$Api.post('/api/comment/comments', sendData);
@@ -153,9 +153,9 @@ export default {
         async modifyComment(cid, comment) {
             if (this.$cookies.get('x_auth') != null) {
                 let sendData = {
-                    'songName': decodeURI(this.$route.params.musicName),
                     'cid': cid,
-                    'modifyComment': comment
+                    'modifyComment': comment,
+                    'sid': this.$route.params.sid,
                 }
 
                 let res = await this.$Api.post('/api/comment/modify', sendData);
@@ -173,8 +173,8 @@ export default {
         async deleteComment(cid) {
             if (this.$cookies.get('x_auth') != null) {
                 let sendData = {
-                    'songName': decodeURI(this.$route.params.musicName),
                     'cid': cid,
+                    'sid': this.$route.params.sid,
                 }
 
                 let res = await this.$Api.post('/api/comment/delete', sendData);

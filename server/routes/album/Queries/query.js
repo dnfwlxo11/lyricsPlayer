@@ -3,7 +3,7 @@ module.exports = {
         const albumName = params
         const sql = [];
 
-        sql.push(`SELECT tbAlbums.album_name, tbSongs.song_name, tbSongs.thumbnail_path as songImg `)
+        sql.push(`SELECT tbAlbums.album_name, tbSongs.song_name, tbSongs.thumbnail_path as songImg, tbSongs.sid `)
         sql.push(`FROM tb_songs as tbSongs, tb_albums as tbAlbums `)
         sql.push(`WHERE tbSongs.tb_albums_aid = tbAlbums.aid `)
         sql.push(`AND tbAlbums.album_name = '${albumName}';`)

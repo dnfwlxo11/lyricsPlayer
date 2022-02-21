@@ -14,10 +14,10 @@
                             <hr>
                             <div class="row m-0 p-0">
                                 <div class="col-md-3 p-0 m-0 d-flex justify-content-center align-items-center">
-                                    <img class="recommandThumbnail" :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`, () => {}, () => {});">
+                                    <img class="recommandThumbnail" :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`, () => {}, () => {});">
                                 </div>
                                 <div class="col-md-9 text-left">
-                                    <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
+                                    <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
                                     <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name}`)">{{item.musician_name}}</small>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@ export default {
         },
 
         async getMusicInfo() {
-            let res = await this.$Api.post(`/api/music/info`, { 'musicName': this.$route.params.musicName });
+            let res = await this.$Api.post(`/api/music/info`, { 'sid': this.$route.params.sid });
 
             if (res.data.success) {
                 this.thumbnailPath = res.data.result.thumbnail_path;
@@ -196,6 +196,7 @@ export default {
             if (this.$cookies.get('x_auth') != null) {
                 let res = await this.$Api.post('/api/music/like', {
                     songName: decodeURI(this.$route.params.musicName),
+                    sid: this.$route.params.sid,
                 });
 
                 if (res.data.success) this.getLikeCount();
@@ -206,6 +207,7 @@ export default {
 
         async getLikeCount() {
             let sendData = {
+                sid: this.$route.params.sid,
                 songName: decodeURI(this.$route.params.musicName),
                 pageSize: 3,
                 currPage: 0,

@@ -35,11 +35,11 @@
                     <hr>
                     <div class="row">
                         <div class="col-3 d-flex justify-content-center align-items-center">
-                            <img class="song-img" :src="`${item.songImg}`" @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}`)">
+                            <img class="song-img" :src="`${item.songImg}`" @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}/${item.sid}`)">
                         </div>
                         <div class="col-9 d-flex justify-content-start align-items-center">
                             <div class="text-left">
-                                <div><h5 @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}`)">{{item.song_name}}</h5></div>
+                                <div><h5 @click="$router.push(`/music/${albumInfo.musician_name}/${item.song_name}/${item.sid}`)">{{item.song_name}}</h5></div>
                             </div>
                         </div>
                     </div>

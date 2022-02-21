@@ -81,12 +81,12 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="song-img" :src="`${item.songImg}`" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">
+                        <img class="song-img" :src="`${item.songImg}`" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`)">
                     </div>
                     <div class="col-md-9 text-left pt-3 pb-3">
                         <div class="row h-75 pl-3 pr-3">
                             <div>
-                                <h5 class="m-0" @click="$router.push(`/music/${item.musician_name}/${item.song_name}`)">{{item.song_name}}</h5>
+                                <h5 class="m-0" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`)">{{item.song_name}}</h5>
                                 <small>{{item.musician_name}}</small>
                             </div>
                         </div>

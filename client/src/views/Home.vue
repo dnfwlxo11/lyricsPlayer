@@ -23,7 +23,7 @@
                             <label class="custom-control-label" for="switch2">앨범</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switch3" v-model="searchOption.author">
+                            <input type="checkbox" class="custom-control-input" id="switch3" v-model="searchOption.musician">
                             <label class="custom-control-label" for="switch3">뮤지션</label>
                         </div>
                         <div class="col-md-3 custom-control custom-switch">
@@ -39,16 +39,16 @@
                 <div class="row m-0 p-0">
                     <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx">
                         <div class="thumbnail card mb-1">
-                            <img :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item['musician_name']}/${item['song_name']}`)" >
+                            <img :src="`${item.thumbnail_path}`" style="object-fit: cover;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`)" >
                             <div class="overlay d-flex justify-content-center align-items-center">
-                                <i v-if="$store.getters.getPlayState && musicState.name == item['song_name']" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
-                                <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item['musician_name'], item['song_name'])"></i>
+                                <i v-if="$store.getters.getPlayState && musicState.name == item.song_name" class="mdi mdi-pause-circle-outline play" style="font-size: 80px" @click="musicControl(item.musician_name, item.song_name)"></i>
+                                <i v-else class="mdi mdi-arrow-right-drop-circle-outline play" style="font-size: 80px" @click="musicControl(item.musician_name, item.song_name)"></i>
                             </div>
                         </div>
                         <div class="text-left">
                             <div class="music-info text-left">
-                                <strong><span @click="$router.push(`/music/${item['musician_name']}/${item['song_name']}`)">{{item['song_name']}}</span></strong> <br>
-                                <span @click="$router.push(`/musician/${item['musician_name']}`)"><small>{{item['musician_name']}}</small></span>
+                                <strong><span @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`)">{{item.song_name}}</span></strong> <br>
+                                <span @click="$router.push(`/musician/${item.musician_name}`)"><small>{{item.musician_name}}</small></span>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                 isLogin: false,
                 moreOption: false,
                 searchOption: {
-                    songname: true, lyrics: true, author: true, album: true,
+                    songname: true, lyrics: true, musician: true, album: true,
                 },
                 keyword: null,
                 audioPlayer: null,
@@ -101,7 +101,7 @@
         },
         methods: {
             setParams() {
-                let params = `${this.searchOption.songname ? '&songname=true' : ''}${this.searchOption.lyrics ? '&lyrics=true' : ''}${this.searchOption.author ? '&author=true' : ''}${this.searchOption.album ? '&album=true' : ''}`
+                let params = `${this.searchOption.songname ? '&songname=true' : ''}${this.searchOption.lyrics ? '&lyrics=true' : ''}${this.searchOption.musician ? '&musician=true' : ''}${this.searchOption.album ? '&album=true' : ''}`
                 return params
             },
 

@@ -1,24 +1,64 @@
 module.exports = {
+    selectMusic(params) {
+        const songName = params.title;
+        const albumName = params.album;
+        const musicianName = params.artist;
+        const userId = params.userId;
+
+        const sql = [];
+
+        sql.push(`SELECT count(*) as cnt `);
+        sql.push(`FROM tb_songs as tbSongs `);
+        sql.push(`LEFT JOIN tb_albums as tbAlbums ON tbAlbums.aid = tbSongs.tb_albums_aid `);
+        sql.push(`LEFT JOIN tb_musicians as tbMusicians ON tbMusicians.mid = tbAlbums.tb_musicians_mid `);
+        sql.push(`WHERE tbSongs.song_name = "${songName}" `);
+        sql.push(`AND tbAlbums.album_name = "${albumName}" `);
+        sql.push(`AND tbMusicians.musician_name = "${musicianName}" `);
+        sql.push(`AND tbSongs.registrant_uid = "${userId}"`);
+
+        return sql.join('');
+    },
+
+    selectAlbum(params) {
+        const albumName = params.album;
+        const musicianName = params.artist;
+        const userId = params.userId;
+
+        const sql = [];
+
+        sql.push(`SELECT count(*) as cnt `);
+        sql.push(`FROM tb_albums as tbAlbums `);
+        sql.push(`LEFT JOIN tb_musicians as tbMusicians ON tbMusicians.mid = tbAlbums.tb_musicians_mid `);
+        sql.push(`WHERE tbAlbums.album_name = "${albumName}" `);
+        sql.push(`AND tbMusicians.musician_name = "${musicianName}" `);
+        sql.push(`AND tbAlbums.registrant_uid = "${userId}"`);
+
+        return sql.join('');
+    },
+
     selectMusicRanking() {
         const rankLimit = 12;
         const sql = [];
 
-        sql.push(`SELECT songs.song_name, musicians.musician_name, songs.thumbnail_path `);
-        sql.push(`FROM tb_songs as songs, tb_albums as albums, tb_musicians as musicians `);
-        sql.push(`WHERE songs.tb_albums_aid = albums.aid `);
-        sql.push(`AND musicians.mid = albums.tb_musicians_mid `);
+        sql.push(`SELECT tbSongs.sid, tbSongs.song_name, tbMusicians.musician_name, tbSongs.thumbnail_path `);
+        sql.push(`FROM tb_songs as tbSongs `);
+        sql.push(`LEFT JOIN tb_albums as tbAlbums ON tbAlbums.aid = tbSongs.tb_albums_aid `);
+        sql.push(`LEFT JOIN tb_musicians as tbMusicians ON tbMusicians.mid = tbAlbums.tb_musicians_mid `);
+        sql.push(`LEFT JOIN tb_song_likes as tbSongLikes ON tbSongLikes.tb_songs_sid = tbSongs.sid `);
+        sql.push(`GROUP BY tbSongs.sid `);
+        sql.push(`ORDER BY COUNT(tbSongLikes.tb_songs_sid) DESC `);
         sql.push(`LIMIT ${rankLimit}`);
 
         return sql.join('');
     },
 
     selectMusicInfo(params) {
-        const songName = params
+        const sid = params
         const sql = [];
 
         sql.push(`SELECT playtime, thumbnail_path, album `);
         sql.push(`FROM tb_songs `);
-        sql.push(`WHERE song_name = "${songName}"`);
+        sql.push(`WHERE sid = ${sid}`);
 
         return sql.join('');
     },
@@ -50,17 +90,19 @@ module.exports = {
     selectLikeSong(params) {
         const songName = params.songName;
         const userId = params.userId;
+        const sid = params.sid;
         const sql = [];
 
         sql.push(`SELECT tb_users_uid `);
         sql.push(`FROM tb_song_likes `);
         sql.push(`WHERE tb_users_uid = ${userId} `);
-        sql.push(`AND tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}")`);
+        sql.push(`AND tb_songs_sid = ${sid}`);
 
         return sql.join('');
     },
 
     selectLikeCount(params) {
+        const sid = params.sid
         const songName = params.songName;
         const currPage = params.currPage;
         const pageSize = params.pageSize;
@@ -69,7 +111,7 @@ module.exports = {
         sql.push(`SELECT tbUsers.id `);
         sql.push(`FROM tb_song_likes as tbSongLikes `);
         sql.push(`LEFT JOIN tb_users as tbUsers ON tbSongLikes.tb_users_uid = tbUsers.uid `)
-        sql.push(`WHERE tbSongLikes.tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
+        sql.push(`WHERE tbSongLikes.tb_songs_sid = ${sid} `);
         sql.push(`LIMIT ${currPage * pageSize}, ${pageSize}`);
 
         return sql.join('');
