@@ -139,8 +139,6 @@ export default {
         },
 
         async onSongChange(e) {
-            console.log('노래 변경')
-
             this.thumbnail = null;
             const file = e.target.files;
 

@@ -6,9 +6,9 @@ const mariaDB = require('../../modules');
 const path = require('path');
 const DB = mariaDB.Database;
 
-router.post('/:albumName', (req, res, next) => {
+router.post('/:aid', (req, res, next) => {
     const selectAlbumMusicsWork = DB.connect(async (conn) => {
-        const sql = Quries.selectAlbumMusics(decodeURI(req.params.albumName));
+        const sql = Quries.selectAlbumMusics(req.params.aid);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false
@@ -22,9 +22,9 @@ router.post('/:albumName', (req, res, next) => {
     });
 })
 
-router.post('/info/:albumName', (req, res, next) => {
+router.post('/info/:aid', (req, res, next) => {
     const selectAlbumInfoWork = DB.connect(async (conn) => {
-        const sql = Quries.selectAlbumInfo(decodeURI(req.params.albumName));
+        const sql = Quries.selectAlbumInfo(req.params.aid);
         const rows = await conn.query(sql);
 
         if (rows == undefined) return false

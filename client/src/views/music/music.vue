@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="col-md-9 text-left">
                                     <strong style="font-size: 12px;" @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`, () => {}, () => {})">{{item.song_name}}</strong> <br>
-                                    <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name}`)">{{item.musician_name}}</small>
+                                    <small style="font-size: 10px;" @click="$router.push(`/musician/${item.musician_name}/${item.mid}`)">{{item.musician_name}}</small>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             <i v-if="$store.getters.getPlayState && musicState['name'] == currAudioName" class="mr-3 play-btn mdi mdi-pause-circle-outline" style="font-size: 65px; float: left" @click="musicControl"></i>
                             <i v-else class="mr-3 play-btn mdi mdi-arrow-right-drop-circle-outline" style="font-size: 65px; float: left;" @click="musicControl"></i>
                             <div class="row m-0 p-0 mb-2 mt-3 text-left"><h3 class="m-0 p-0"><strong>{{currAudioName}}</strong></h3></div>
-                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}`)">{{$route.params.musician}}</small></div>
+                            <div class="row m-0 p-0 text-left"><small class="m-0 p-0" @click="$router.push(`/musician/${$route.params.musician}/${item.mid}`)">{{$route.params.musician}}</small></div>
                         </div>
                         <div>
                             <progress ref="progress" :value="(musicState['name'] == currAudioName ? musicState['currentTime']/musicState['duration'] : 0)*100" max="100" style="height: 50px;width: 100%;" @click="timeMove"></progress>

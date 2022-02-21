@@ -74,7 +74,7 @@ export default {
     methods: {
         async getLikeCount() {
             let sendData = {
-                songName: this.$route.params.musicName.replaceAll('-', ' '),
+                sid: this.$route.params.sid,
                 pageSize: this.pageSize,
                 currPage: this.currPage,
             }

@@ -40,13 +40,13 @@ module.exports = {
         const rankLimit = 12;
         const sql = [];
 
-        sql.push(`SELECT tbSongs.sid, tbSongs.song_name, tbMusicians.musician_name, tbSongs.thumbnail_path `);
+        sql.push(`SELECT tbSongs.sid, tbSongs.song_name, tbMusicians.mid, tbMusicians.musician_name, tbSongs.thumbnail_path `);
         sql.push(`FROM tb_songs as tbSongs `);
         sql.push(`LEFT JOIN tb_albums as tbAlbums ON tbAlbums.aid = tbSongs.tb_albums_aid `);
         sql.push(`LEFT JOIN tb_musicians as tbMusicians ON tbMusicians.mid = tbAlbums.tb_musicians_mid `);
         sql.push(`LEFT JOIN tb_song_likes as tbSongLikes ON tbSongLikes.tb_songs_sid = tbSongs.sid `);
         sql.push(`GROUP BY tbSongs.sid `);
-        sql.push(`ORDER BY COUNT(tbSongLikes.tb_songs_sid) DESC `);
+        sql.push(`ORDER BY COUNT(tbSongLikes.tb_songs_sid) DESC, tbSongLikes.tb_songs_sid ASC `);
         sql.push(`LIMIT ${rankLimit}`);
 
         return sql.join('');
@@ -56,8 +56,10 @@ module.exports = {
         const sid = params
         const sql = [];
 
-        sql.push(`SELECT playtime, thumbnail_path, album `);
-        sql.push(`FROM tb_songs `);
+        sql.push(`SELECT tbSongs.playtime, tbSongs.thumbnail_path, tbSongs.album, tbMusicians.mid `);
+        sql.push(`FROM tb_songs as tbSongs `);
+        sql.push(`LEFT JOIN tb_albums as tbAlbums ON tbAlbums.aid = tbSongs.tb_albums_aid `);
+        sql.push(`LEFT JOIN tb_musicians as tbMusicians ON tbMusicians.mid = tbAlbums.tb_musicians_mid `);
         sql.push(`WHERE sid = ${sid}`);
 
         return sql.join('');
@@ -88,7 +90,6 @@ module.exports = {
     },
 
     selectLikeSong(params) {
-        const songName = params.songName;
         const userId = params.userId;
         const sid = params.sid;
         const sql = [];
@@ -103,7 +104,6 @@ module.exports = {
 
     selectLikeCount(params) {
         const sid = params.sid
-        const songName = params.songName;
         const currPage = params.currPage;
         const pageSize = params.pageSize;
         const sql = [];
@@ -118,13 +118,13 @@ module.exports = {
     },
 
     insertLikeSong(params) {
-        const songName = params.songName;
+        const sid = params.sid;
         const userId = params.userId;
         const sql = [];
 
         sql.push(`INSERT INTO `);
         sql.push(`tb_song_likes(tb_songs_sid, tb_users_uid) `);
-        sql.push(`VALUES((SELECT sid FROM tb_songs WHERE song_name = "${songName}"), ${userId})`);
+        sql.push(`VALUES(${sid}, ${userId})`);
 
         return sql.join('');
     },
@@ -134,8 +134,6 @@ module.exports = {
         const thumbnailPath = params.path ? params.path : '/cover/musician.png';
         const userId = params.userId;
         const sql = [];
-
-        console.log(thumbnailPath, 'insertMusician')
 
         sql.push(`INSERT INTO `);
         sql.push(`tb_musicians(musician_name, thumbnail_path, registrant_uid) `);
@@ -150,8 +148,6 @@ module.exports = {
         const thumbnailPath = params.path ? params.path : '/cover/musician.png';
         const userId = params.userId;
         const sql = [];
-
-        console.log(thumbnailPath, 'insertAlbum')
 
         sql.push(`INSERT INTO `);
         sql.push(`tb_albums(album_name, tb_musicians_mid, thumbnail_path, registrant_uid) `);

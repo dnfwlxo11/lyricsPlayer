@@ -74,13 +74,13 @@ export default {
         },
 
         async getAlbumInfo() {
-            let res = await this.$Api.post(`/api/album/info/${this.$route.params.albumId}`)
+            let res = await this.$Api.post(`/api/album/info/${this.$route.params.aid}`)
             
             if (res.data.success) this.albumInfo = res.data.result
         },
 
         async getAlbumMusics() {
-            let res = await this.$Api.post(`/api/album/${this.$route.params.albumId}`)
+            let res = await this.$Api.post(`/api/album/${this.$route.params.aid}`)
             
             if (res.data.success) this.albumTrack = res.data.result
         }

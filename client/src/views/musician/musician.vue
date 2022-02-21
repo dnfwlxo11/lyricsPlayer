@@ -43,12 +43,12 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="song-img" :src="`${item.albumImg}`" @click="$router.push(`/album/${item.album_name}`)">
+                            <img class="song-img" :src="`${item.albumImg}`" @click="$router.push(`/album/${item.album_name}/${item.aid}`)">
                         </div>
                         <div class="col-md-9 text-left pt-3 pb-3">
                             <div class="row h-75 pl-3 pr-3">
                                 <div>
-                                    <h5 class="m-0" @click="$router.push(`/album/${item.album_name}`)">{{item.album_name}}</h5>
+                                    <h5 class="m-0" @click="$router.push(`/album/${item.album_name}/${item.aid}`)">{{item.album_name}}</h5>
                                     <small>{{item.musician_name}}</small>
                                 </div>
                             </div>
@@ -131,13 +131,13 @@ export default {
         },
 
         async getMusicianMusic() {
-            let res = await this.$Api.post(`/api/musician/song/${this.$route.params.musicianId}`)
+            let res = await this.$Api.post(`/api/musician/song/${this.$route.params.mid}`)
             
             if (res.data.success) this.musics = res.data.result
         },
 
         async getMusicianAlbum() {
-            let res = await this.$Api.post(`/api/musician/album/${this.$route.params.musicianId}`)
+            let res = await this.$Api.post(`/api/musician/album/${this.$route.params.mid}`)
             
             if (res.data.success) this.albums = res.data.result
         }

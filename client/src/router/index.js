@@ -8,14 +8,13 @@ import Search from '../views/search/search.vue'
 import Authenticate from '../components/Authenticate.vue'
 import Login from '../views/user/login.vue'
 import Upload from '../views/user/upload.vue'
-import store from '@/store'
+import Store from '@/store'
 
 const authenticate = (to, from, next) => {
-  const userInfo = store.state.user;
   const token = window.$cookies.get('x_auth');
 
   if (!token) {
-    next({ path: '/login', query: { redirect: to.fullPath }});
+    Store.commit('setUserLogin', true);
   } else {
     next();
   }
@@ -40,12 +39,12 @@ const routes = [
     component: Music
   },
   {
-    path: '/musician/:musicianId',
+    path: '/musician/:musician/:mid',
     name: 'Musician',
     component: Musician
   },
   {
-    path: '/album/:albumId',
+    path: '/album/:album/:aid',
     name: 'Album',
     component: Album
   },
@@ -53,13 +52,13 @@ const routes = [
     path: '/upload',
     name: 'Upload',
     component: Upload,
-    beforeEnter: authenticate,
+    // beforeEnter: authenticate,
   },
   {
     path: '/search',
     name: 'Search',
     component: Search,
-    beforeEnter: authenticate,
+    // beforeEnter: authenticate,
   },
   {
     path: '/authenticate',

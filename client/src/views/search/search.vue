@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">{{value.songname}}</strong></div>
-                            <div><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
+                            <div><small @click="$router.push(`/album/${value.album}/${value.aid}`)">{{value.album}}</small></div>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-9">
                             <div><strong @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">{{value.songname}}</strong></div>
-                            <div class="mb-3"><small @click="$router.push(`/album/${value.album}`)">{{value.album}}</small></div>
+                            <div class="mb-3"><small @click="$router.push(`/album/${value.album}/${value.aid}`)">{{value.album}}</small></div>
                             <div class="mb-3"><span style="font-size: 14px;text-justify: newspaper">{{ (targetName == value.songname) && more ? value.lyrics : value.lyrics.substr(0, 200) + '.....'}} </span></div>
                             <div v-if="targetName == value.songname && more" class="text-right"><i class="mdi mdi-chevron-double-up" style="font-size: 20px;" @click="more=false;targetName=value.songname"></i></div>
                             <div v-else class="text-right"><i class="mdi mdi-chevron-double-down" style="font-size: 20px;" @click="more=true;targetName=value.songname"></i></div>
@@ -65,10 +65,10 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.albumimg}`" @click="$router.push(`/album/${value.album}`)">
+                            <img class="searchImg" :src="`${value.albumimg}`" @click="$router.push(`/album/${value.album}/${value.aid}`)">
                         </div>
                         <div class="col-md-9">
-                            <div><strong @click="$router.push(`/album/${value.album}`)">{{value.album}}</strong></div>
+                            <div><strong @click="$router.push(`/album/${value.album}/${value.aid}`)">{{value.album}}</strong></div>
                             <!-- <div><small>{{value.trackLen}} 개의 노래 수록</small></div> -->
                         </div>
                     </div>
@@ -87,10 +87,10 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="searchImg" :src="`${value.musicianimg}`" @click="$router.push(`/musician/${value.musician}`)">
+                            <img class="searchImg" :src="`${value.musicianimg}`" @click="$router.push(`/musician/${value.musician}/${value.mid}`)">
                         </div>
                         <div class="col-md-9">
-                            <div><strong @click="$router.push(`/musician/${value.musician}`)">{{value.musician}}</strong></div>
+                            <div><strong @click="$router.push(`/musician/${value.musician}/${value.mid}`)">{{value.musician}}</strong></div>
                         </div>
                     </div>
                 </div>
@@ -124,28 +124,36 @@ export default {
             lyricsResult: [],
             albumResult: [],
             musicianResult: [],
+            aiResult: [],
         }
     },
     mounted() {
         if (this.$route.query['keyword'] != undefined) this.keyword = this.$route.query['keyword']
         this.searchOptions = this.$route.query
+
         this.searchData()
     },
     methods: {
-        async searchData() {
-            let res = await this.$Api.post(`/api/search${this.$route.fullPath}`)
+        async aiSearch() {
+            let res = await this.$Api.post(`/woo/search/${this.keyword.replaceAll(' ', '-')}`);
 
             if (res.data.success) {
-                if (res.data.success) {
-                    res.data.result.map(item => {
-                        const _key = Object.keys(item)[0]
+                this.aiResult = res.data.result;
+            }
+        },
 
-                        if (_key == 'album') this.albumResult = item[_key]
-                        if (_key == 'songname') this.titleResult = item[_key]
-                        if (_key == 'musician') this.musicianResult = item[_key]
-                        if (_key == 'lyrics') this.lyricsResult = item[_key]
-                    })
-                }
+        async searchData() {
+            let res = await this.$Api.post(`/api/search${this.$route.fullPath}`);
+
+            if (res.data.success) {
+                res.data.result.map(item => {
+                    const _key = Object.keys(item)[0]
+
+                    if (_key == 'album') this.albumResult = item[_key];
+                    if (_key == 'songname') this.titleResult = item[_key];
+                    if (_key == 'musician') this.musicianResult = item[_key];
+                    if (_key == 'lyrics') this.lyricsResult = item[_key];
+                })
             }
         }
     }

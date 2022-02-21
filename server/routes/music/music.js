@@ -86,7 +86,7 @@ router.post('/search/:keyword', (req, res, next) => {
 
 router.post('/like', auth, (req, res, next) => {
     let params = {
-        songName: req.body.songName,
+        sid: req.body.sid,
         userId: req.user.uid,
     };
 
@@ -153,16 +153,8 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
         let fileMeta = JSON.parse(req.body.metadata);
         let thumbnail = req.body.thumbnail != 'null' ? req.body.thumbnail.replace('data:image/jpeg;base64,', "") : null;
 
-        console.log(!fs.existsSync('tmpDir'))
-
         let params = {
             'path': thumbnail ? `/cover/${fileMeta.title}.jpg` : `/cover/musician.png`,
-            // 'title': fileMeta.title,
-            // 'artist': fileMeta.artist,
-            // 'duration': fileMeta.duration,
-            // 'genre': fileMeta.genre,
-            // 'album': fileMeta.album,
-            // 'lyrics': fileMeta.lyrics,
             'title': fileMeta.title.replace(/'/g, "\'"),
             'artist': fileMeta.artist.replace(/'/g, "\'"),
             'duration': fileMeta.duration,
@@ -177,7 +169,6 @@ router.post('/upload', auth, upload.single('song'), async (req, res, next) => {
         // 이미지 있을 시 썸네일 비동기 저장
         const thumbDstPath = path.join('images', `${fileMeta.title}.jpg`)
         if (thumbnail) {
-            console.log(thumbnail , '썸네일 저장한다.');
             fs.writeFileSync(thumbDstPath, thumbnail, 'base64');
         } 
 

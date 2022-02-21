@@ -48,7 +48,7 @@
                         <div class="text-left">
                             <div class="music-info text-left">
                                 <strong><span @click="$router.push(`/music/${item.musician_name}/${item.song_name}/${item.sid}`)">{{item.song_name}}</span></strong> <br>
-                                <span @click="$router.push(`/musician/${item.musician_name}`)"><small>{{item.musician_name}}</small></span>
+                                <span @click="$router.push(`/musician/${item.musician_name}/${item.mid}`)"><small>{{item.musician_name}}</small></span>
                             </div>
                         </div>
                     </div>

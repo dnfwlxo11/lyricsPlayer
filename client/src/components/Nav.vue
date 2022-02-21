@@ -14,7 +14,7 @@
                 <div class="collapse navbar-collapse" id="target">
                     <div v-if="!loginState" class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
                         <button class="nav-item btn mr-3" @click="isRegister=true">회원가입</button>
-                        <button class="nav-item btn" @click="isLogin=true">로그인</button>
+                        <button class="nav-item btn" @click="$store.commit('setUserLogin', true)">로그인</button>
                     </div>
                     <div v-else class="p-2 mr-0 pr-0 mb-0 text-right ml-auto">
                         <button class="nav-item btn mr-3" @click="$router.push('/upload')">노래 올리기</button>
@@ -26,7 +26,7 @@
         </div>
         <mypage v-if="isMypage" @on-close="isMypage=false" @on-confirm="isMypage=false;"></mypage>
         <register v-if="isRegister" @on-close="isRegister=false" @on-confirm="isRegister=false;register($event)"></register>
-        <login v-if="isLogin" @on-close="isLogin=false;$emit('not-auth')" @on-confirm="isLogin=false;login($event)" ></login>
+        <login v-if="$store.getters.getUserLogin" @on-close="$store.commit('setUserLogin', false);$emit('not-auth')" @on-confirm="$store.commit('setUserLogin', false);login()" ></login>
     </div>
 </template>
 
@@ -66,12 +66,14 @@ export default {
             let res = await this.$Api.post('/api/user/register', data);
         },
 
-        login(data) {
-            this.loginState = data;
+        login() {
+            this.loginState = true;
         },
 
         logout() {
             this.$cookies.remove('x_auth');
+            this.$store.commit('setUserLogin', false);
+            this.loginState = false;
             this.$router.replace('/', () => {}, () => {
                 window.location.reload();
             });
@@ -84,7 +86,7 @@ export default {
         checkAuth() {
             let token = this.$cookies.get('x_auth');
             
-            if (token != null) this.loginState = true;
+            if (token) this.loginState = true;
             else this.loginState = false;
         },
     },

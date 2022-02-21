@@ -148,7 +148,7 @@
     },
     computed: {
       userProfile() {
-        return this.$store.getters['getUserProfile']
+        return this.$store.getters.getUserProfile
       },
     },
   }

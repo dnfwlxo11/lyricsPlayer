@@ -12,6 +12,7 @@ const vuex = new Vuex.Store({
       currentTime: 'none'
     },
     isPlay: false,
+    isLogin: false,
   },
   mutations: {
     setCurrMusic(state, name) {
@@ -29,6 +30,9 @@ const vuex = new Vuex.Store({
     setUserProfile(state, user) {
       state.user = user;
     },
+    setUserLogin(state, logined) {
+      state.isLogin = logined;
+    },
   },
   getters: {
     getAudioPlayer(state) {
@@ -42,6 +46,16 @@ const vuex = new Vuex.Store({
     },
     getUserProfile(state) {
       return state.user;
+    },
+    getUserLogin(state) {
+      return state.isLogin;
+    }
+  },
+  actions: {
+    async getUserLogin(state) {
+      return await (new Promise((resolve, reject) => {
+        state.isLogin
+      }));
     }
   }
 })
