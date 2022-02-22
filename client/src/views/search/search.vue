@@ -5,6 +5,24 @@
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
+            <div v-if="aiResult.length" class="text-left mb-5">
+                <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                        <span style="font-size: 30px;">🧐</span>&nbsp;
+                        <strong style="font-size: 20px;">I Think, What you want is this!</strong>
+                    </div>
+                    <small>Found {{aiResult.length}} results.</small>
+                </div>
+
+                <div v-for="(item, idx) of aiResult" :key="idx">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{item[0]}}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div v-if="searchOptions.songname" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
@@ -131,14 +149,23 @@ export default {
         if (this.$route.query['keyword'] != undefined) this.keyword = this.$route.query['keyword']
         this.searchOptions = this.$route.query
 
+        this.aiSearch()
         this.searchData()
     },
     methods: {
         async aiSearch() {
-            let res = await this.$Api.post(`/woo/search/${this.keyword.replaceAll(' ', '-')}`);
+            let auth = await this.$Api.post('/api/user/authenticate')
 
-            if (res.data.success) {
-                this.aiResult = res.data.result;
+            if (auth.data.result) {
+                let res = await this.$Api.get(`/ai/search/${this.keyword.replaceAll(' ', '-')}`);
+
+                if (res.data.success) {
+                    this.aiResult = res.data.model_predict;
+                    console.log(this.aiResult);
+                } else {
+                    console.log(res.data)
+                    console.log(res.data.model_predict);
+                }
             }
         },
 

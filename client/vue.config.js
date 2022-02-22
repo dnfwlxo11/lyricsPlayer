@@ -17,8 +17,8 @@ module.exports = {
             '/cover': {
                 target: 'http://localhost:3000/'
             },
-            '/woo': {
-                target: 'http://192.168.0.93:8000'
+            '/ai': {
+                target: 'http://localhost:8000/'
             }
         },
         overlay: true,

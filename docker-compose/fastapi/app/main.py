@@ -7,7 +7,7 @@ app = FastAPI()
 
 model = Word2Vec.load(os.path.join('/code/app', 'word2vec.model'))
 
-@app.get("/")
+@app.get("/ai")
 def main():
     try:
         return { "success": True, "msg": "서버 구동 중" }
@@ -15,10 +15,10 @@ def main():
         print(e)
         return { "success": False, "msg": "서버 구동 간 에러발생", "err": err }
 
-@app.get("/search/{pred_target}")
+@app.get("/ai/search/{pred_target}")
 def read_model(pred_target: str):
     try:
-        return {"model_predict": model.wv.most_similar(f"{pred_target}")}
+        return { "success": True, "model_predict": model.wv.most_similar(f"{pred_target}") }
     except Exception as e:
         print(e)
         return { "success": False, "msg": "해당 단어에 대한 분석이 부족합니다." }
