@@ -1,7 +1,7 @@
 <template>
     <div class="search">
         <top></top>
-        <div v-if="keyword" class="container pt-5 pb-5">
+        <div v-if="keyword && aiResult" class="container pt-5 pb-5">
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
@@ -9,16 +9,23 @@
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <span style="font-size: 30px;">🧐</span>&nbsp;
-                        <strong style="font-size: 20px;">I Think, What you want is this!</strong>
+                        <!-- <span style="font-size: 30px;">🥰😔😠😀🙄😐</span>&nbsp; -->
+                        <strong style="font-size: 20px;">I Think, What you want is this!</strong>    
                     </div>
+                    <!-- <strong style="font-size: 20px;">너는 지금 우울하구나. 이 노래는 어때?</strong> <br>
+                    <strong style="font-size: 20px;">기분좋은 날. 더 신나보자!</strong> <br> -->
                     <small>Found {{aiResult.length}} results.</small>
                 </div>
 
                 <div v-for="(item, idx) of aiResult" :key="idx">
                     <hr>
                     <div class="row">
-                        <div class="col-md-12">
-                            {{item[0]}}
+                        <div class="col-md-3">
+                            <img class="searchImg" :src="`${item.songimg}`" @click="$router.push(`/music/${item.musician}/${item.songname}/${item.sid}`)">
+                        </div>
+                        <div class="col-md-9">
+                            <div><strong @click="$router.push(`/music/${item.musician}/${item.songname}/${item.sid}`)">{{item.songname}}</strong></div>
+                            <div><small @click="$router.push(`/album/${item.album}/${item.aid}`)">{{item.album}}</small></div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +122,8 @@
             </div>
         </div>
         <div v-else class="pt-5 pb-5">
-            <h2><strong>검색어가 없습니다.</strong></h2>
+            <h2><strong>검색 중이에요!</strong></h2>
+            <i class="mdi mdi-loading mdi-spin" style="font-size: 80px;"></i>
         </div>
     </div>
 </template>
@@ -142,7 +150,7 @@ export default {
             lyricsResult: [],
             albumResult: [],
             musicianResult: [],
-            aiResult: [],
+            aiResult: null,
         }
     },
     mounted() {
@@ -157,19 +165,42 @@ export default {
             let auth = await this.$Api.post('/api/user/authenticate')
 
             if (auth.data.result) {
-                let res = await this.$Api.get(`/ai/search/${this.keyword.replaceAll(' ', '-')}`);
+                let w2v = await this.$Api.get(`/ai/search/w2v/${this.keyword.replaceAll(' ', '-')}`);
 
-                if (res.data.success) {
-                    this.aiResult = res.data.model_predict;
-                    console.log(this.aiResult);
+                if (w2v.data.success) {
+                    let result = []
+                    console.log(w2v.data)
+                    let w2vResult = w2v.data.model_predict.negative.reduce((acc, item) => {
+                        acc.push([item[0], item[1]])
+                        return acc
+                    }, [])
+                    
+                    for await (let item of w2vResult) {
+                        let newFullPath = this.$route.fullPath.replace(`keyword=${this.keyword}`, `keyword=${item[0].replaceAll(' ', '-')}`)
+                        let res = await this.$Api.post(`/api/search${newFullPath}`);
+
+                        if (res.data.success) {
+                            res.data.result.map(item => {
+                                const _key = Object.keys(item)[0]
+
+                                if (_key == 'album') result = result.concat(item[_key]);
+                                if (_key == 'songname') result = result.concat(item[_key]);
+                                if (_key == 'musician') result = result.concat(item[_key]);
+                                if (_key == 'lyrics') result = result.concat(item[_key]);
+                            })
+                        }
+                    }
+
+                    this.aiResult = result.slice(0, 5);
                 } else {
-                    console.log(res.data)
-                    console.log(res.data.model_predict);
+                    this.aiResult = [];
+                    console.log(w2v);
                 }
             }
         },
 
         async searchData() {
+            console.log(this.$route.fullPath)
             let res = await this.$Api.post(`/api/search${this.$route.fullPath}`);
 
             if (res.data.success) {
