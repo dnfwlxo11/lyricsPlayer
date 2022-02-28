@@ -12,8 +12,7 @@ router.post('/:keyword', auth, async (req, res, next) => {
     }, [])
     
     options.forEach((item, idx) => {
-        let baseQuery = { "from": 0, "size": 5, "query": { "bool": { "should": [] }}};
-        
+        let baseQuery = { "from": 0, "size": 5, "query": { "bool": { "should": [] }}}
 
         if (req.query[item]) {
             let match_phrase = {}
@@ -28,6 +27,8 @@ router.post('/:keyword', auth, async (req, res, next) => {
             searchQuery.push(baseQuery)
         }
     })
+
+    console.log(JSON.stringify(searchQuery[5]))
 
     const searchResult = await global._modules.Elastic.searchData('song', JSON.stringify(searchQuery));
     let result = searchResult.body.responses;
