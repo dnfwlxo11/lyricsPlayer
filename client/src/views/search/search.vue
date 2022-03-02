@@ -32,6 +32,9 @@
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
+            <div v-if="emotion" class="text-left mb-5">
+                <strong style="font-size: 20px;">🥰😔😠 혹시 지금 "{{emotion}}" 기분이신가요? 😀🙄😐</strong>   
+            </div>
             <div v-if="aiResult.length" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
@@ -181,7 +184,7 @@
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-account-circle" style="font-size: 30px;"></i>&nbsp;
-                        <a href="#musician"><strong style="font-size: 20px;">Musician</strong></a>
+                        <a id="musician"><strong style="font-size: 20px;">Musician</strong></a>
                     </div>
                     <small>Found {{this.searchResult.musician.total}} musicians.</small>
                 </div>
@@ -209,7 +212,7 @@
                         </div>
                     </div>
                     <div v-if="this.searchResult.musician.result.length > 5" class="text-center">
-                        <a id="musician">
+                        <a href="#musician">
                             <i class="mdi mdi-arrow-up-drop-circle" style="font-size: 20px;"></i>
                         </a>
                     </div>
@@ -233,9 +236,14 @@ export default {
     },
     data() {
         return {
+            emotion: null,
             inputKeyword: null,
             keyword: null,
             moreOption: false,
+            targetName: null,
+            more: false,
+            searchOptions: {},
+            aiResult: [],
             pageNum: {
                 songname: 0,
                 lyrics: 0,
@@ -251,10 +259,6 @@ export default {
                 album: { result: [], total: 0 },
                 musician: { result: [], total: 0 },
             },
-            targetName: null,
-            more: false,
-            searchOptions: {},
-            aiResult: [],
         }
     },
     mounted() {
@@ -265,9 +269,18 @@ export default {
         this.searchOptions = this.$route.query
 
         // this.aiSearch()
+        this.getUserEmotion()
         this.searchData()
     },
     methods: {
+        async getUserEmotion() {
+            let res = await this.$Api.get(`/ai/search/emotion/${this.keyword}`);
+
+            if (res.data.success) {
+                this.emotion = res.data.model_predict;
+            }
+        },
+
         async aiSearch() {
             let auth = await this.$Api.post('/api/user/authenticate')
 
@@ -312,10 +325,12 @@ export default {
             this.lyrics = 0;
             this.albums = 0;
             this.musicians = 0;
-            this.titleResult = [];
-            this.lyricsResult = [];
-            this.albumResult = [];
-            this.musicianResult = [];
+            this.searchResult = {
+                songname: { result: [], total: 0 },
+                lyrics: { result: [], total: 0 },
+                album: { result: [], total: 0 },
+                musician: { result: [], total: 0 },
+            }
         },
 
         search() {
@@ -324,6 +339,7 @@ export default {
             this.$router.replace({ path: `/search?keyword=${this.inputKeyword}${this.setParams()}`}, () => {});
             this.initState();
             this.keyword = this.inputKeyword;
+            this.getUserEmotion();
             this.searchData();
         },
 
@@ -334,7 +350,6 @@ export default {
 
         async searchData() {
             let res = await this.$Api.post(`/api/search${this.$route.fullPath}`);
-
             if (res.data.success) {
                 Object.keys(res.data.result).map(key => {
                     const item = res.data.result[key];
@@ -348,7 +363,7 @@ export default {
             let res = await this.$Api.post(`/api/search/search?keyword=${this.keyword}&${option}=true&pageNum=${this.pageNum[option]}`);
 
             this.searchResult[option].result = this.searchResult[option].result.concat(res.data.result[option].result);
-        }
+        },
     }
 }
 </script>

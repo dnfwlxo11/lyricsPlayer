@@ -19,16 +19,31 @@ router.post('/:keyword', auth, async (req, res, next) => {
         let baseQuery = { "from": 0 + (queries.pageNum * 5), "size": 5, "query": { "bool": { "should": [] }}}
 
         if (req.query[item]) {
-            let match_phrase = {}
-            let wildcard = {}
+            // let wildcard = {};
+            let query_string = {};
+            let match_phrase = {};
+            let match_phrase_prefix = {};
 
-            match_phrase[item] = { "query": keyword, "slop": 3 }
-            wildcard[item] = `*${keyword}*`
-
-            baseQuery["query"]["bool"]["should"].push({ "match_phrase": match_phrase})
-            baseQuery["query"]["bool"]["should"].push({ "wildcard": wildcard})
-            searchQuery.push({ "index": "song"})
-            searchQuery.push(baseQuery)
+            query_string = {
+                "fields": [item],
+                "query": `*${keyword.split(' ').join('* AND *')}*`
+                // "operator": "and"
+            };
+            match_phrase[item] = { 
+                "query": keyword, 
+                "slop": 3 
+            };
+            match_phrase_prefix[item] = {
+                "query": keyword,
+                "max_expansions": 50
+            };
+            
+            baseQuery["query"]["bool"]["should"].push({ "query_string": query_string });
+            baseQuery["query"]["bool"]["should"].push({ "match_phrase": match_phrase });
+            baseQuery["query"]["bool"]["should"].push({ "match_phrase_prefix": match_phrase_prefix });
+            
+            searchQuery.push({ "index": "song"});
+            searchQuery.push(baseQuery);
         }
     })
 

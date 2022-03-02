@@ -35,11 +35,24 @@ async function init() {
         "settings": {
             "analysis": {
                 "filter": {
-                    "shingle_filter": {
-                        "type": "shingle",
-                        "min_shingle_size": 3,
-                        "max_shingle_size": 2,
-                        "output_unigrams": true
+                    // "shingle_filter": {
+                    //     "type": "shingle",
+                    //     "min_shingle_size": 3,
+                    //     "max_shingle_size": 2,
+                    //     "output_unigrams": true
+                    // },
+                    // 하나의 공백은 있든 없든 모두 나오게하는 필터
+                    "char_filter": {
+                        "whitespace_remove": {
+                          "type": "pattern_replace",
+                          "pattern": "\\s+",
+                          "replacement": ""
+                        }
+                    },
+                    "ngram_filter": {
+                        "type": "edgeNGram",
+                        "min_gram": 2,
+                        "max_gram": 5
                     }
                 }
             }
@@ -66,6 +79,8 @@ async function init() {
         }
     };
 
+
+    console.log(JSON.stringify(body.settings))
     await global._modules.Elastic.createIndex('song', JSON.stringify(body));
 
 
