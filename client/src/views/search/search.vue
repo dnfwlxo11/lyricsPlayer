@@ -33,18 +33,15 @@
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
             <div v-if="emotion" class="text-left mb-5">
-                <strong style="font-size: 20px;">🥰😔😠 혹시 지금 "{{emotion}}" 기분이신가요? 😀🙄😐</strong>   
-            </div>
-            <div v-if="aiResult.length" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
-                        <span style="font-size: 30px;">🧐</span>&nbsp;
-                        <!-- <span style="font-size: 30px;">🥰😔😠😀🙄😐</span>&nbsp; -->
-                        <strong style="font-size: 20px;">I Think, What you want is this!</strong>    
+                        <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
+                        <a id="title"><strong style="font-size: 20px;">독심술사 대인이의 추천</strong></a>
                     </div>
-                    <!-- <strong style="font-size: 20px;">너는 지금 우울하구나. 이 노래는 어때?</strong> <br>
-                    <strong style="font-size: 20px;">기분좋은 날. 더 신나보자!</strong> <br> -->
-                    <small>Found {{aiResult.total}} results.</small>
+                    <div><strong style="font-size: 15px;">🥰😔😠 혹시 지금 "{{emotion}}" 상태이신가요 😀🙄😐</strong></div>
+                    <div v-if="aiResult.length"><small style="font-size: 15px;">저도 함께 고민해봤어요! 한번 들어보실래요?</small></div>
+                    <div v-else><small>사람 마음 알기는 너무 어려워요. 조금 더 공부하고 올게요.</small></div>
+                    <small>Found {{0}} songs.</small>
                 </div>
                 <div class="mb-5">
                     <div v-for="(item, idx) of aiResult" :key="idx">
@@ -59,6 +56,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3"><hr></div>
                 </div>
             </div>
             <div v-if="searchOptions.songname" class="text-left mb-5">

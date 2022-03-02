@@ -41,6 +41,8 @@ def predict(predict_sentence):
         for i in out:
             logits = i
             logits = logits.detach().cpu().numpy()
+
+            print(logits, 'logits')
             
             test_eval.append(labelMap[str(np.argmax(logits))])
 
