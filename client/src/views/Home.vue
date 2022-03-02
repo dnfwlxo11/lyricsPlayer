@@ -8,7 +8,7 @@
             <input class="text-center keyword-input" type="text" placeholder="원하는걸 적어봐" @keypress.enter="keyword ? $router.push({ path: `/search?keyword=${keyword}${setParams()}`}, () => {}) : null" v-model="keyword">
             <button class="pr-3 mr-3 mdi mdi-magnify keyword-icon" @click="keyword ? $router.push({ path: `/search?keyword=${keyword}${setParams()}`}, () => {}) : null"></button>
             <button class="btn btn-outline-primary" @click="moreOption=!moreOption">옵션 보기</button>
-            </div>
+        </div>
         
         <div class="container trend">
             <div class="mb-5" style="height: 100px;" v-if="moreOption">
@@ -31,7 +31,6 @@
                             <label class="custom-control-label" for="switch4">가사</label>
                         </div>
                     </div>
-                    
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>

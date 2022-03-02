@@ -3,16 +3,20 @@ const router = express.Router();
 const { auth } = require('../../modules/auth');
 
 router.post('/:keyword', auth, async (req, res, next) => {
-    let querys = req.query;
-    let keyword = querys.keyword;
+    let queries = req.query;
+    let keyword = queries.keyword;
+    queries.pageNum ? queries.pageNum : queries.pageNum = 0;
+
+    console.log(queries)
+
     let searchQuery = [];
-    let options = Object.keys(querys).reduce((acc, item) => {
-        if (item != 'keyword' && querys[item]) acc.push(item)
+    let options = Object.keys(queries).reduce((acc, item) => {
+        if (item != 'keyword' && item != 'pageNum' && queries[item]) acc.push(item)
         return acc
     }, [])
     
     options.forEach((item, idx) => {
-        let baseQuery = { "from": 0, "size": 5, "query": { "bool": { "should": [] }}}
+        let baseQuery = { "from": 0 + (queries.pageNum * 5), "size": 5, "query": { "bool": { "should": [] }}}
 
         if (req.query[item]) {
             let match_phrase = {}
@@ -28,8 +32,6 @@ router.post('/:keyword', auth, async (req, res, next) => {
         }
     })
 
-    console.log(JSON.stringify(searchQuery[5]))
-
     const searchResult = await global._modules.Elastic.searchData('song', JSON.stringify(searchQuery));
     let result = searchResult.body.responses;
 
@@ -39,15 +41,16 @@ router.post('/:keyword', auth, async (req, res, next) => {
 
         searchData.forEach((data) => {
             hitsData.push(data._source);
-
-            let pushData = {}
-            pushData[options[idx]] = hitsData;
-
-            acc.push( pushData)
         })
-            
+        
+        acc[options[idx]] = {
+            'result': hitsData,
+            'total': item.hits.total.value,
+
+        };
+
         return acc
-    }, [])
+    }, {});
 
     res.send({ 'success': true, result });
 })

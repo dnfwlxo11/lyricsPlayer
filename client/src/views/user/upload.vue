@@ -40,7 +40,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="mb-2">Album</div>
-                        <input type="text" class="form-control" v-model="metadata.album" placeholder="노래가 수록된 앨범명을 입력해주세요 (앨범이 없다면 제목과 똑같이 채워주세요)">
+                        <input type="text" class="form-control" v-model="metadata.album" placeholder="노래가 수록된 앨범명을 입력해주세요.">
                     </div>
                     <div class="mb-3">
                         <div class="mb-2">Genre</div>
@@ -145,6 +145,7 @@ export default {
             if (file.length) {
                 this.song = file[0];
                 this.metadata.title = this.song.name.split('.')[0];
+                this.metadata.album = this.song.name.split('.')[0];
 
                 this.metadata.duration = Math.floor(await this.loadAudioMetadata());
 
