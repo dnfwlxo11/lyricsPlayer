@@ -1,14 +1,8 @@
 #!/bin/bash
 
-echo ${BRANCH_NAME}
-
 echo "git setting start"
 
-cd /app/app_server
-
-echo $pwd
-echo $ls
-echo ${cat app.js}
+cd /app/server
 
 git checkout ${BRANCH_NAME}
 
@@ -32,4 +26,15 @@ cat > pm2config.json << EOF
 }
 EOF
 
-npm run start
+cat > .env.json << EOF
+PORT=3000
+HOST=localhost
+DB_HOST=daein-mariadb
+DB_PORT=3306
+DB_USER=root
+DB_PASS=daein
+DB_NAME=lyrics_player
+SECRET_TOKEN=secret.key
+EOF
+
+npm run dev
