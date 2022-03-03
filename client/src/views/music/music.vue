@@ -29,7 +29,7 @@
             <div class="mb-5">
                 <div class="row m-0 p-0 d-flex justify-content-center align-items-center">
                     <div class="col-md-2 m-0 p-0 mt-2 mb-2 pl-2 pr-2">
-                        <img class="musician-img" src="/images/musician.png" alt="대추" @click="$router.push(`/musician/${$route.params.musician}/${albumId}`)">
+                        <img class="musician-img" :src="`${thumbnailPath}`" alt="대추" @click="$router.push(`/musician/${$route.params.musician}/${albumId}`)">
                     </div>
                     <div class="col-md-8 m-0 p-0 w-100 pl-2 pr-4 mb-3">
                         <div style="float: left">
@@ -174,7 +174,8 @@ export default {
         },
 
         mustLogin() {
-            this.isLogin = true;
+            this.$store.commit('setUserLogin', true);
+            // this.isLogin = true;
         },
 
         calcTime(time) {

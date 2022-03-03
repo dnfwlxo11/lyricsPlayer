@@ -42,8 +42,10 @@ router.post('/submit', auth, (req, res, next) => {
     let params = req.body;
     params.userId = req.user.uid;
 
+    console.log(params)
+
     const insertCommentWork = DB.connect(async (conn) => {
-        const sql = Queries.insertComment(req.body);
+        const sql = Queries.insertComment(params);
         const result = await conn.query(sql);
 
         return result

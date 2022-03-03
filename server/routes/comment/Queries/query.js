@@ -60,16 +60,18 @@ module.exports = {
 
     deleteComment(params) {
         const userId = params.userId;
-        const songName = params.songName;
+        const sid = params.sid;
         const cid = params.cid;
 
         const sql = [];
 
         sql.push(`DELETE `);
         sql.push(`FROM tb_comments `);
-        sql.push(`WHERE tb_songs_sid = (SELECT sid FROM tb_songs WHERE song_name = "${songName}") `);
+        sql.push(`WHERE tb_songs_sid = ${sid} `);
         sql.push(`AND tb_users_uid = ${userId} `);
         sql.push(`AND cid = ${cid}`);
+
+        console.log(sql.join(''))
 
         return sql.join('');
     }

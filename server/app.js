@@ -3,7 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
-const dummyData = require('./dummy.js')
+const history = require('connect-history-api-fallback');
 
 const app = express();
 
@@ -22,6 +22,7 @@ const searchRouter = require('./routes/search/search.js');
 
 app.set('view engine', 'jade');
 
+app.use(history());
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -35,13 +36,6 @@ async function init() {
         "settings": {
             "analysis": {
                 "filter": {
-                    // "shingle_filter": {
-                    //     "type": "shingle",
-                    //     "min_shingle_size": 3,
-                    //     "max_shingle_size": 2,
-                    //     "output_unigrams": true
-                    // },
-                    // 하나의 공백은 있든 없든 모두 나오게하는 필터
                     "char_filter": {
                         "whitespace_remove": {
                           "type": "pattern_replace",
@@ -80,23 +74,13 @@ async function init() {
     };
 
     await global._modules.Elastic.createIndex('song', JSON.stringify(body));
-
-
-    // for await (let item of dummyData) {
-    //     let inputData = {
-    //         index: 'song',
-    //         body: item
-    //     };
-
-    //     await global._modules.Elastic.putSongData(inputData);
-    // }
 }
 
 init();
 
 if (!fs.existsSync('tmpDir')) fs.mkdirSync('tmpDir');
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/err', errRouter);
 app.use('/api/user', userRouter);
 app.use('/api/music', musicRouter);

@@ -131,6 +131,7 @@ export default {
                 if (this.comment == '') return true;
 
                 let sendData = {
+                    sid: this.$route.params.sid,
                     songName: decodeURI(this.$route.params.musicName),
                     content: this.comment,
                     submitDate: (new Date).getTime(),
@@ -140,7 +141,7 @@ export default {
 
                 if (res.data.success) {
                     this.comment = '';
-                    this.getComments();
+                    // this.getComments();
                     this.getCommentCnt();
                 }
 

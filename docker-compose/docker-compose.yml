@@ -1,5 +1,16 @@
 version: '3'
 services:
+  web_server:
+    build:
+      context: ./nodejs
+    container_name: daein-nodejs
+    image: nodejs
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "3000:3000"
+    networks:
+      - elastic
   ai_server:
     build:
       context: ./fastapi

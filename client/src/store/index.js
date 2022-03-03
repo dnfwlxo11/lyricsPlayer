@@ -51,13 +51,6 @@ const vuex = new Vuex.Store({
       return state.isLogin;
     }
   },
-  actions: {
-    async getUserLogin(state) {
-      return await (new Promise((resolve, reject) => {
-        state.isLogin
-      }));
-    }
-  }
 })
 
 export default vuex;
