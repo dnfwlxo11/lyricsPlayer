@@ -32,7 +32,7 @@
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
-            <div class="text-left mb-5">
+            <div v-if="Object.keys(aiResult).length" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-head-lightbulb-outline" style="font-size: 30px;"></i>&nbsp;
@@ -43,10 +43,10 @@
                     <div v-else><small>사람 마음 알기는 너무 어려워요. 조금 더 공부하고 올게요.</small></div>
                     <small>Found {{aiResult.positive.result.length + aiResult.negative.result.length}} songs.</small>
                 </div>
-                <div>
+                <div v-if="aiResult.positive.result.length + aiResult.negative.result.length">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <strong>혹시 이런걸 원했으려나</strong>
+                            <strong>이런걸 원했으려나</strong>
                             <hr>
                         </div>
                         <div class="col-md-6">

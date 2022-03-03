@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-5" style="font-size: 20px;text-left;height: 15%;"><span>가장 인기있는 노래들을 들어보세요!</span></div>
-            <div v-if="musicRank.length" style="height: 600px;">
+            <div v-if="musicRank.length">
                 <div class="row m-0 p-0">
                     <div class="col-md-2 mb-5 album" v-for="(item, idx) of musicRank" :key="idx">
                         <div class="thumbnail card mb-1">
@@ -161,10 +161,6 @@
         margin-bottom: 50px;
     }
 
-    .thumbnail, .thumbnail > img{
-        height: 200px;
-    }
-
     .line {
         border-bottom: 2px solid grey;
         opacity: 0.2;
@@ -177,6 +173,10 @@
 
     .music-info:hover {
         cursor: pointer;
+    }
+
+    .thumbnail, .thumbnail > img {
+        height: 200px;
     }
 
     .thumbnail:hover {

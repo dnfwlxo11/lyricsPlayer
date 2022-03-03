@@ -20,26 +20,37 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/play/:musician/:musicName', (req, res, next) => {
-    try {
-        let musicianName = decodeURI(req.params.musician);
-        let musicName = decodeURI(req.params.musicName);
-        let musicPath = path.join(_workDir, 'music', musicianName, musicName);
+    let musicianName = decodeURI(req.params.musician);
+    let musicName = decodeURI(req.params.musicName);
+    let musicPath = path.join(_workDir, 'music', musicianName, musicName);
+    let musicFile = null;
 
-        let musicFile = fs.statSync(musicPath);
+    try {
+        musicFile = fs.statSync(musicPath);
+        
+        res.writeHead(200, {
+            "Content-Type": "audio/mp3",
+            "Accept-Ranges": "bytes",
+            "Content-Length": musicFile.size,
+        })
+    
+        let audioStream = fs.createReadStream(musicPath);
+        audioStream.pipe(res);
+    } catch (err) {
+        console.log(err, 'err')
+
+        musicPath = path.join(_workDir, 'music', 'default', 'Oh Happy Day!.mp3');
+        musicFile = fs.statSync(musicPath);
 
         res.writeHead(200, {
             "Content-Type": "audio/mp3",
             "Accept-Ranges": "bytes",
             "Content-Length": musicFile.size,
         })
-
+    
         let audioStream = fs.createReadStream(musicPath);
         audioStream.pipe(res);
-    } catch (err) {
-        console.log(err, 'err')
-
-        res.send({ 'success': false });
-    }  
+    }    
 })
 
 router.post('/ranking', (req, res, next) => {

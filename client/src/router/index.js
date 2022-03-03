@@ -14,7 +14,7 @@ const authenticate = (to, from, next) => {
   const token = window.$cookies.get('x_auth');
 
   if (!token) {
-    Store.commit('setUserLogin', true);
+    next('/')
   } else {
     next();
   }
@@ -52,7 +52,7 @@ const routes = [
     path: '/upload',
     name: 'Upload',
     component: Upload,
-    // beforeEnter: authenticate,
+    beforeEnter: authenticate,
   },
   {
     path: '/search',
