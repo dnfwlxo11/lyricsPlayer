@@ -1,46 +1,12 @@
 import os
 import sys
-from typing import Optional
 from fastapi import FastAPI
-from gensim.models import Word2Vec
-from gensim.models import FastText
+from gensim.models import Doc2Vec
 from utils import kobert
 
 app = FastAPI()
 
-w2vmodel = Word2Vec.load(os.path.join('./models', 'word2vec_model.h5'))
-print(os.path.join('./models', 'word2vec_model.h5'))
-
-def sentence_vectors(sentence, model):
-    sentence_list = sentence.split('-')
-    sen2vec = None
-    count = 0
-    for word in sentence_list:
-        if word in model.wv.key_to_index:
-            count += 1
-            if sen2vec is None:
-                sen2vec = model.wv[word]
-            else:
-                sen2vec = sen2vec + model.wv[word]
-                
-    if sen2vec is not None:
-        sen2vec = sen2vec/count
-        
-    return sen2vec
-
-def sentence_repeat_remove(sentence, model_predict):
-    sentence_list = sentence.split('-')
-    for word in sentence_list:
-        count = 0
-        for compare in model_predict:
-            if word==compare[0]:
-                del model_predict[count]
-                break
-            else:
-                pass
-            count+=1
-
-    return model_predict
+d2vmodel = Doc2Vec.load(os.path.join('./models', 'doc2vec.bin'))
 
 @app.get("/ai")
 def read_model():
@@ -50,18 +16,19 @@ def read_model():
         print(e)
         return { "success": False, "msg": "서버 가동 간 에러 발생" }
 
-@app.get("/ai/search/w2v/{pred_target}")
+@app.get("/ai/search/d2v/{pred_target}")
 def read_model(pred_target: str):
     try:
-        positive = w2vmodel.wv.most_similar(positive = pred_target.split('-'), topn=10),
-        negative = w2vmodel.wv.most_similar(negative = pred_target.split('-'), topn=10)
+        inferred_vec = d2vmodel.infer_vector(pred_target.split())
+        positive = d2vmodel.docvecs.most_similar(positive=[inferred_vec], topn=5)
+        negative = d2vmodel.docvecs.most_similar(negative=[inferred_vec], topn=5)
 
-        w2vmodel_predict = {
+        d2vmodel_predict = {
             "positive": positive,
             "negative": negative
         }
 
-        return { "success": True, "model_predict": w2vmodel_predict }
+        return { "success": True, "model_predict": d2vmodel_predict }
     except Exception as e:
         print(e)
         return { "success": False, "msg": "해당 단어에 대한 분석이 부족합니다." }

@@ -79,8 +79,6 @@ async function init() {
         }
     };
 
-
-    console.log(JSON.stringify(body.settings))
     await global._modules.Elastic.createIndex('song', JSON.stringify(body));
 
 

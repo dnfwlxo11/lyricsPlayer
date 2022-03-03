@@ -3,7 +3,6 @@ import numpy as np
 import gluonnlp as nlp
 import os
 
-print(os.getcwd(), 'bertDatasetstart')
 class BERTDataset(Dataset):
     def __init__(self, dataset, sent_idx, label_idx, bert_tokenizer, max_len,
                  pad, pair):

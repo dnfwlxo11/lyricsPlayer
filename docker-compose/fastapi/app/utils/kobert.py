@@ -7,8 +7,6 @@ import json
 from transformers import BertModel
 import os
 
-print(os.getcwd(), 'kobert start')
-
 def get_kobert_model(model_path, vocab_file, ctx="cpu"):
     bertmodel = BertModel.from_pretrained(model_path, return_dict=False)
     device = torch.device(ctx)

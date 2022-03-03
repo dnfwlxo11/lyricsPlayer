@@ -32,32 +32,57 @@
             <div class="text-left mb-5">
                 <h3><strong>Search results for "{{keyword}}"</strong></h3>
             </div>
-            <div v-if="emotion" class="text-left mb-5">
+            <div class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
-                        <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
+                        <i class="mdi mdi-head-lightbulb-outline" style="font-size: 30px;"></i>&nbsp;
                         <a id="title"><strong style="font-size: 20px;">독심술사 대인이의 추천</strong></a>
                     </div>
-                    <div><strong style="font-size: 15px;">🥰😔😠 혹시 지금 "{{emotion}}" 상태이신가요 😀🙄😐</strong></div>
-                    <div v-if="aiResult.length"><small style="font-size: 15px;">저도 함께 고민해봤어요! 한번 들어보실래요?</small></div>
+                    <div><strong style="font-size: 15px;">🥰😔😠 혹시 지금 <span v-if="emotion">"{{emotion}}"</span><span v-else><i class="mdi mdi-loading mdi-spin"></i></span> 상태이신가요 😀🙄😐</strong></div>
+                    <div v-if="aiResult.positive.result.length + aiResult.negative.result.length"><small style="font-size: 15px;">저도 함께 고민해봤어요! 한번 들어보실래요?</small></div>
                     <div v-else><small>사람 마음 알기는 너무 어려워요. 조금 더 공부하고 올게요.</small></div>
-                    <small>Found {{0}} songs.</small>
+                    <small>Found {{aiResult.positive.result.length + aiResult.negative.result.length}} songs.</small>
                 </div>
-                <div class="mb-5">
-                    <div v-for="(item, idx) of aiResult" :key="idx">
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <img class="searchImg" :src="`${item.songimg}`" @click="$router.push(`/music/${item.musician}/${item.songname}/${item.sid}`)">
-                            </div>
-                            <div class="col-md-9">
-                                <div><strong @click="$router.push(`/music/${item.musician}/${item.songname}/${item.sid}`)">{{item.songname}}</strong></div>
-                                <div><small @click="$router.push(`/musician/${value.musician}/${value.mid}`)">{{item.musician}}</small></div>
-                            </div>
+                <div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>혹시 이런걸 원했으려나</strong>
+                            <hr>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>180도 전환이 필요할때</strong>
+                            <hr>
                         </div>
                     </div>
-                    <div class="mb-3"><hr></div>
+                    <div class="row" v-for="(item, idx) of [0, 1, 2, 3, 4]" :key="idx">
+                        <hr>
+                        <div v-if="aiResult.positive.result[item].songname" class="col-md-6 mb-1" >
+                            <div class="row mb-2">
+                                <div class="col-md-3 mb-2">
+                                    <img class="searchImg-mini" :src="`${aiResult.positive.result[item].songimg}`" @click="$router.push(`/music/${aiResult.positive.result[item].musician}/${aiResult.positive.result[item].songname}/${aiResult.positive.result[item].sid}`)">
+                                </div>
+                                <div class="col-md-9">
+                                    <div><strong @click="$router.push(`/music/${aiResult.positive.result[item].musician}/${aiResult.positive.result[item].songname}/${aiResult.positive.result[item].sid}`)">{{aiResult.positive.result[item].songname}}</strong></div>
+                                    <div><small @click="$router.push(`/musician/${aiResult.positive.result[item].musician}/${aiResult.positive.result[item].mid}`)">{{aiResult.positive.result[item].musician}}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="col-md-6 mb-1"></div>
+                        <div v-if="aiResult.negative.result[item].songname" class="col-md-6 mb-1">
+                            <div class="row mb-2">
+                                <div class="col-md-3 mb-2">
+                                    <img class="searchImg-mini" :src="`${aiResult.negative.result[item].songimg}`" @click="$router.push(`/music/${aiResult.negative.result[item].musician}/${aiResult.negative.result[item].songname}/${aiResult.negative.result[item].sid}`)">
+                                </div>
+                                <div class="col-md-9">
+                                    <div><strong @click="$router.push(`/music/${aiResult.negative.result[item].musician}/${aiResult.negative.result[item].songname}/${aiResult.negative.result[item].sid}`)">{{aiResult.negative.result[item].songname}}</strong></div>
+                                    <div><small @click="$router.push(`/musician/${aiResult.negative.result[item].musician}/${aiResult.negative.result[item].mid}`)">{{aiResult.negative.result[item].musician}}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="col-md-6 mb-2"></div>
+                    </div>
                 </div>
+                <div class="mb-3"><hr></div>
             </div>
             <div v-if="searchOptions.songname" class="text-left mb-5">
                 <div class="mb-3">
@@ -71,7 +96,7 @@
                     <div v-for="(value, key) in this.searchResult.songname.result" :key="key">
                         <hr>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-2">
                                 <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">
                             </div>
                             <div class="col-md-9">
@@ -100,7 +125,7 @@
             <div v-if="searchOptions.lyrics" class="text-left mb-5">
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
-                        <i class="mdi mdi-post-outline" style="font-size: 30px;"></i>&nbsp;
+                        <i class="mdi mdi-script-text-outline" style="font-size: 30px;"></i>&nbsp;
                         <a id="lyric"><strong style="font-size: 20px;">Lyrics</strong></a>
                     </div>
                     <small>Found {{this.searchResult.lyrics.total}} songs.</small>
@@ -109,7 +134,7 @@
                     <div v-for="(value, key) in this.searchResult.lyrics.result" :key="key">
                         <hr>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-2">
                                 <img class="searchImg" :src="`${value.songimg}`" @click="$router.push(`/music/${value.musician}/${value.songname}/${value.sid}`)">
                             </div>
                             <div class="col-md-9">
@@ -151,7 +176,7 @@
                     <div v-for="(value, key) in this.searchResult.album.result" :key="key">
                         <hr>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-2">
                                 <img class="searchImg" :src="`${value.albumimg}`" @click="$router.push(`/album/${value.album}/${value.aid}`)">
                             </div>
                             <div class="col-md-9">
@@ -186,12 +211,11 @@
                     </div>
                     <small>Found {{this.searchResult.musician.total}} musicians.</small>
                 </div>
-                <div class="mb-3"><hr></div>
                 <div class="mb-5">
                     <div v-for="(value, key) in this.searchResult.musician.result" :key="key">
                         <hr>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-2">
                                 <img class="searchImg" :src="`${value.musicianimg}`" @click="$router.push(`/musician/${value.musician}/${value.mid}`)">
                             </div>
                             <div class="col-md-9">
@@ -241,7 +265,7 @@ export default {
             targetName: null,
             more: false,
             searchOptions: {},
-            aiResult: [],
+            aiResult: null,
             pageNum: {
                 songname: 0,
                 lyrics: 0,
@@ -266,7 +290,7 @@ export default {
         }
         this.searchOptions = this.$route.query
 
-        // this.aiSearch()
+        this.aiSearch()
         this.getUserEmotion()
         this.searchData()
     },
@@ -283,38 +307,52 @@ export default {
             let auth = await this.$Api.post('/api/user/authenticate')
 
             if (auth.data.result) {
-                let w2v = await this.$Api.get(`/ai/search/w2v/${this.keyword.replaceAll(' ', '-')}`);
+                let d2v = await this.$Api.get(`/ai/search/d2v/${this.keyword}`);
 
-                if (w2v.data.success) {
-                    let result = []
+                if (d2v.data.success) {
+                    let positiveResult = [];
+                    let negativeResult = [];
 
-                    let w2vResult = w2v.data.model_predict.negative.reduce((acc, item) => {
-                        acc.push([item[0], item[1]])
-                        return acc
-                    }, [])
+                    positiveResult = d2v.data.model_predict.positive.reduce((acc, item) => {
+                        let info = item[0].split('^|');
 
-                    for await (let item of w2vResult) {
-                        // let newFullPath = this.$route.fullPath.replace(`keyword=${this.keyword}`, `keyword=${item[0].replaceAll(' ', '-')}`)
-                        let res = await this.$Api.post(`/api/search/${item[0]}`);
+                        acc.push({
+                            'title': info[0],
+                            'artist': info[1],
+                            'album': info[2],
+                        })
 
-                        if (res.data.success) {
-                            Object.keys(res.data.result).map(key => {
-                                const item = res.data.result[key]
+                        return acc;
+                    }, []);
 
-                                if (key == 'album') result = result.concat(item);
-                                if (key == 'songname') result = result.concat(item);
-                                if (key == 'musician') result = result.concat(item);
-                                if (key == 'lyrics') result = result.concat(item);
-                            })
-                        }
+                    negativeResult = d2v.data.model_predict.negative.reduce((acc, item) => {
+                        let info = item[0].split('^|');
+
+                        acc.push({
+                            'title': info[0],
+                            'artist': info[1],
+                            'album': info[2],
+                        })
+
+                        return acc;
+                    }, []);
+
+                    let sendData = {
+                        'positive': positiveResult,
+                        'negative': negativeResult,
+                    };
+
+                    let elastic_search = await this.$Api.post('/api/search/multi', sendData);
+
+                    this.aiResult = {
+                        'positive': elastic_search.data.result.positive,
+                        'negative': elastic_search.data.result.negative,
                     }
-
-                    this.aiResult = result.slice(0, 5);
                 } else {
-                    this.aiResult = [];
+                    this.aiResult = {};
                 }
             } else {
-                this.aiResult = [];
+                this.aiResult = {};
             }
         },
 
@@ -338,6 +376,7 @@ export default {
             this.initState();
             this.keyword = this.inputKeyword;
             this.getUserEmotion();
+            this.aiSearch();
             this.searchData();
         },
 
@@ -392,6 +431,12 @@ a:hover {
 .searchImg {
     object-fit: cover;
     height: 150px;
+    width: 100%;
+}
+
+.searchImg-mini {
+    object-fit: cover;
+    height: 80px;
     width: 100%;
 }
 

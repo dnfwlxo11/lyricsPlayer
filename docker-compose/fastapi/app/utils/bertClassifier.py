@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import os
 
-print(os.getcwd(), 'bertClassifierstart')
 class BERTClassifier(nn.Module):
     def __init__(self,
                  bert,
