@@ -56,7 +56,7 @@
                     </div>
                     <div class="row" v-for="(item, idx) of [0, 1, 2, 3, 4]" :key="idx">
                         <hr>
-                        <div v-if="aiResult.positive.result[item].songname" class="col-md-6 mb-1" >
+                        <div v-if="aiResult.positive.result[item]" class="col-md-6 mb-1" >
                             <div class="row mb-2">
                                 <div class="col-md-3 mb-2">
                                     <img class="searchImg-mini" :src="`${aiResult.positive.result[item].songimg}`" @click="$router.push(`/music/${aiResult.positive.result[item].musician}/${aiResult.positive.result[item].songname}/${aiResult.positive.result[item].sid}`)">
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div v-else class="col-md-6 mb-1"></div>
-                        <div v-if="aiResult.negative.result[item].songname" class="col-md-6 mb-1">
+                        <div v-if="aiResult.negative.result[item]" class="col-md-6 mb-1">
                             <div class="row mb-2">
                                 <div class="col-md-3 mb-2">
                                     <img class="searchImg-mini" :src="`${aiResult.negative.result[item].songimg}`" @click="$router.push(`/music/${aiResult.negative.result[item].musician}/${aiResult.negative.result[item].songname}/${aiResult.negative.result[item].sid}`)">
@@ -349,6 +349,8 @@ export default {
                             'positive': elastic_search.data.result.positive,
                             'negative': elastic_search.data.result.negative,
                         }
+
+                        console.log(this.aiResult, 'this.aiResult')
                     } else {
                         this.aiResult = {};
                     }

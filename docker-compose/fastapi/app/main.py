@@ -9,18 +9,6 @@ app = FastAPI()
 
 d2vmodel = Doc2Vec.load(os.path.join('./models', 'doc2vec.bin'))
 
-origins = [
-    "http://localhost:16000",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 @app.get("/ai")
 def read_model():
     try:

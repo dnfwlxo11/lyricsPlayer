@@ -11,6 +11,7 @@ services:
     ports:
       - "16000:3000"
     depends_on:
+      - elasticsearch
       - audio_db
     networks:
       - elastic
@@ -40,6 +41,7 @@ services:
     volumes:
       - ./mariadb/app/db:/var/lib/mysql
       - ./mariadb/app/backup:/backup
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - elastic
   elasticsearch:

@@ -64,6 +64,5 @@ device = torch.device('cpu')
 model = bertClassifier.BERTClassifier(bertmodel, dr_rate=0.5)
 model.load_state_dict(torch.load('./models/220223_model.pt', map_location=device))
 
-print(os.getcwd(), 'labelMap')
 with open('./utils/labelMap.json', 'r') as f:
     labelMap = json.load(f)

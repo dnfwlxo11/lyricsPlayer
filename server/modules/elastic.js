@@ -48,7 +48,7 @@ class Elastic {
         };
 
         this.client = new Client({ node: 'http://daein-elastic:9200' });
-        await this.createIndex('song', body);
+        await this.createIndex('song', JSON.stringify(body));
     }
 
     async createIndex(name, body) {

@@ -16,10 +16,10 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://localhost:3000/'
+                target: 'http://localhost:16000/'
             },
             '/cover': {
-                target: 'http://localhost:3000/'
+                target: 'http://localhost:16000/'
             },
             '/ai': {
                 target: 'http://localhost:8000/'
