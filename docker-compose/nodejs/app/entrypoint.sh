@@ -29,8 +29,8 @@ EOF
 cat > .env << EOF
 PORT=3000
 HOST=localhost
-DB_HOST=localhost
-DB_PORT=15000
+DB_HOST=daein-mariadb
+DB_PORT=3306
 DB_USER=root
 DB_PASS=daein
 DB_NAME=lyrics_player

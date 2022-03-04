@@ -8,9 +8,12 @@ services:
     environment:
       - TZ=Asia/Seoul
     ports:
-      - "16000:3000"
+      - "15000:3000"
     depends_on:
       - audio_db
+      - elasticsearch
+    networks:
+      - elastic
   ai_server:
     build:
       context: ./fastapi
