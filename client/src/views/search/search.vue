@@ -296,7 +296,7 @@ export default {
     },
     methods: {
         async getUserEmotion() {
-            let res = await this.$Api.get(`http://daein-fastapi:8000/ai/search/emotion/${this.keyword}`);
+            let res = await this.$Api.get(`/ai/search/emotion/${this.keyword}`);
 
             if (res.data.success) {
                 this.emotion = res.data.model_predict;
@@ -307,7 +307,7 @@ export default {
             let auth = await this.$Api.post('/api/user/authenticate')
 
             if (auth.data.result) {
-                let d2v = await this.$Api.get(`http://daein-fastapi:8000/ai/search/d2v/${this.keyword}`);
+                let d2v = await this.$Api.get(`/ai/search/d2v/${this.keyword}`);
 
                 if (d2v.data.success) {
                     let positiveResult = [];

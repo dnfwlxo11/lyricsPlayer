@@ -18,7 +18,7 @@ module.exports = {
                 target: 'http://localhost:3000/'
             },
             '/ai': {
-                target: 'http://daein-fastapi:8000/'
+                target: 'http://localhost:8000/'
             }
         },
         overlay: true,
