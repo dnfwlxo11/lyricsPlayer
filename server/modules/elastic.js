@@ -6,7 +6,7 @@ class Elastic {
     }
 
     init() {
-        this.client = new Client({ node: 'daein-elastic:9200' });
+        this.client = new Client({ node: 'http://localhost:9200' });
     }
 
     async createIndex(name, body) {

@@ -4,10 +4,10 @@ echo "git setting start"
 
 cd /app/server
 
-git checkout ${BRANCH_NAME}
+git checkout master
 
 git reset --hard HEAD
-git pull origin ${BRANCH_NAME}
+git pull origin master
 
 echo "git ${BRANCH_NAME} pull completed"
 
@@ -29,8 +29,8 @@ EOF
 cat > .env << EOF
 PORT=3000
 HOST=localhost
-DB_HOST=daein-mariadb
-DB_PORT=3306
+DB_HOST=localhost
+DB_PORT=15000
 DB_USER=root
 DB_PASS=daein
 DB_NAME=lyrics_player
