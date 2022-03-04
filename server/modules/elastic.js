@@ -5,8 +5,50 @@ class Elastic {
         this.init();
     }
 
-    init() {
-        this.client = new Client({ node: 'http://localhost:9200' });
+    async init() {
+        let body = {
+            "settings": {
+                "analysis": {
+                    "filter": {
+                        "char_filter": {
+                            "whitespace_remove": {
+                              "type": "pattern_replace",
+                              "pattern": "\\s+",
+                              "replacement": ""
+                            }
+                        },
+                        "ngram_filter": {
+                            "type": "edgeNGram",
+                            "min_gram": 2,
+                            "max_gram": 5
+                        }
+                    }
+                }
+            },
+            "mappings": {
+                "properties": {
+                    "songname": {
+                        "type": "text",
+                        "analyzer": "english"
+                    },
+                    "lyrics": {
+                        "type": "text",
+                        "analyzer": "english"
+                    },
+                    "author": {
+                        "type": "text",
+                        "analyzer": "english"
+                    },
+                    "album": {
+                        "type": "text",
+                        "analyzer": "english"
+                    }
+                }
+            }
+        };
+
+        this.client = new Client({ node: 'http://daein-elastic:9200' });
+        await this.createIndex('song', body);
     }
 
     async createIndex(name, body) {
