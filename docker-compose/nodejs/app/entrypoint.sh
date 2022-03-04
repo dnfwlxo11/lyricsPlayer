@@ -26,7 +26,7 @@ cat > pm2config.json << EOF
 }
 EOF
 
-cat > .env.json << EOF
+cat > .env << EOF
 PORT=3000
 HOST=localhost
 DB_HOST=daein-mariadb
