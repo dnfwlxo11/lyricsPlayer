@@ -5,13 +5,13 @@ services:
       context: ./nodejs
     container_name: daein-nodejs
     image: nodejs
+    restart: always
     environment:
       - TZ=Asia/Seoul
     ports:
       - "16000:3000"
     depends_on:
       - audio_db
-      - elasticsearch
     networks:
       - elastic
   ai_server:
@@ -23,14 +23,12 @@ services:
       - TZ=Asia/Seoul
     ports:
       - "8000:8000"
-    networks:
-      - elastic
   audio_db:
     build: 
       context: ./mariadb
       dockerfile: Dockerfile
-    image: mariadb
     container_name: daein-mariadb
+    image: mariadb
     restart: always
     environment: 
       - MYSQL_ROOT_PASSWORD=daein

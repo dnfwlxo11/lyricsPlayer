@@ -13,6 +13,7 @@ global._workDir = path.join(__dirname);
 
 const indexRouter = require('./routes/index.js');
 const errRouter = require('./routes/authErr.js');
+const aiRouter = require('./routes/ai/ai.js');
 const userRouter = require('./routes/user/user.js');
 const musicRouter = require('./routes/music/music.js');
 const musicianRouter = require('./routes/musician/musician.js');
@@ -31,57 +32,11 @@ app.use('/cover', express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'music')));
 app.use(cookieParser());
 
-async function init() {
-    let body = {
-        "settings": {
-            "analysis": {
-                "filter": {
-                    "char_filter": {
-                        "whitespace_remove": {
-                          "type": "pattern_replace",
-                          "pattern": "\\s+",
-                          "replacement": ""
-                        }
-                    },
-                    "ngram_filter": {
-                        "type": "edgeNGram",
-                        "min_gram": 2,
-                        "max_gram": 5
-                    }
-                }
-            }
-        },
-        "mappings": {
-            "properties": {
-                "songname": {
-                    "type": "text",
-                    "analyzer": "english"
-                },
-                "lyrics": {
-                    "type": "text",
-                    "analyzer": "english"
-                },
-                "author": {
-                    "type": "text",
-                    "analyzer": "english"
-                },
-                "album": {
-                    "type": "text",
-                    "analyzer": "english"
-                }
-            }
-        }
-    };
-
-    await global._modules.Elastic.createIndex('song', JSON.stringify(body));
-}
-
-init();
-
 if (!fs.existsSync('tmpDir')) fs.mkdirSync('tmpDir');
 
 // app.use('/', indexRouter);
 app.use('/err', errRouter);
+app.use('/ai', aiRouter);
 app.use('/api/user', userRouter);
 app.use('/api/music', musicRouter);
 app.use('/api/musician', musicianRouter);

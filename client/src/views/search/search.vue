@@ -307,48 +307,52 @@ export default {
             let auth = await this.$Api.post('/api/user/authenticate')
 
             if (auth.data.result) {
-                let d2v = await this.$Api.get(`/ai/search/d2v/${this.keyword}`);
+                try {
+                    let d2v = await this.$Api.get(`/ai/search/d2v/${this.keyword}`);
 
-                if (d2v.data.success) {
-                    let positiveResult = [];
-                    let negativeResult = [];
+                    if (d2v.data.success) {
+                        let positiveResult = [];
+                        let negativeResult = [];
 
-                    positiveResult = d2v.data.model_predict.positive.reduce((acc, item) => {
-                        let info = item[0].split('^|');
+                        positiveResult = d2v.data.model_predict.positive.reduce((acc, item) => {
+                            let info = item[0].split('^|');
 
-                        acc.push({
-                            'title': info[0],
-                            'artist': info[1],
-                            'album': info[2],
-                        })
+                            acc.push({
+                                'title': info[0],
+                                'artist': info[1],
+                                'album': info[2],
+                            })
 
-                        return acc;
-                    }, []);
+                            return acc;
+                        }, []);
 
-                    negativeResult = d2v.data.model_predict.negative.reduce((acc, item) => {
-                        let info = item[0].split('^|');
+                        negativeResult = d2v.data.model_predict.negative.reduce((acc, item) => {
+                            let info = item[0].split('^|');
 
-                        acc.push({
-                            'title': info[0],
-                            'artist': info[1],
-                            'album': info[2],
-                        })
+                            acc.push({
+                                'title': info[0],
+                                'artist': info[1],
+                                'album': info[2],
+                            })
 
-                        return acc;
-                    }, []);
+                            return acc;
+                        }, []);
 
-                    let sendData = {
-                        'positive': positiveResult,
-                        'negative': negativeResult,
-                    };
+                        let sendData = {
+                            'positive': positiveResult,
+                            'negative': negativeResult,
+                        };
 
-                    let elastic_search = await this.$Api.post('/api/search/multi', sendData);
+                        let elastic_search = await this.$Api.post('/api/search/multi', sendData);
 
-                    this.aiResult = {
-                        'positive': elastic_search.data.result.positive,
-                        'negative': elastic_search.data.result.negative,
+                        this.aiResult = {
+                            'positive': elastic_search.data.result.positive,
+                            'negative': elastic_search.data.result.negative,
+                        }
+                    } else {
+                        this.aiResult = {};
                     }
-                } else {
+                } catch (err) {
                     this.aiResult = {};
                 }
             } else {

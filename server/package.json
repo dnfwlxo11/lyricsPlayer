@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.9.1",
+    "axios": "^0.26.0",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.6",
     "debug": "~2.6.9",
