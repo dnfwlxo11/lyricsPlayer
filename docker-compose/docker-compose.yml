@@ -23,6 +23,8 @@ services:
       - TZ=Asia/Seoul
     ports:
       - "8000:8000"
+    networks:
+      - elastic
   audio_db:
     build: 
       context: ./mariadb

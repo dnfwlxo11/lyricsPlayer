@@ -71,8 +71,6 @@ module.exports = {
         sql.push(`AND tb_users_uid = ${userId} `);
         sql.push(`AND cid = ${cid}`);
 
-        console.log(sql.join(''))
-
         return sql.join('');
     }
 }
