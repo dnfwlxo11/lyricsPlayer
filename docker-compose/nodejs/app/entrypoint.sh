@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo `./wait-for-it.sh daein-elastic:9200 -t 20 -- echo "Check ElasticSearch"`
+
 echo "git setting start"
 
 cd /app/server
