@@ -1,7 +1,7 @@
 
 # Lyrics Player
 
-#### 전이 된 bert 모델을 통해 사용자의 감정을 분석하고 노래 가사를 학습하여 임베딩한 doc2vec 모델을 사용한 AI 음악 플레이어
+#### 전이학습된 bert 모델을 통해 사용자의 감정을 분석하고 노래 가사를 학습하여 임베딩한 doc2vec 모델을 사용한 AI 음악 플레이어
 (AI music player with doc2vec model created by embedding the lyrics of the song and analyzing the user's emotions through the transfer learning bert model)
     
 <br/>
