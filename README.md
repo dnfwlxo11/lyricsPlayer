@@ -2,7 +2,7 @@
 # Lyrics Player
 
 #### 사전 훈련된 bert 모델을 통해 사용자의 감정을 분석하고 노래 가사를 학습하여 임베딩한 doc2vec 모델을 사용한 AI 음악 플레이어
-(AI music player with doc2vec model created by embedding the lyrics of the song and analyzing the user's emotions through the pretrained bert model)
+(AI music player with doc2vec model created by embedding the lyrics of the song and analyzing the user's emotions through the transfer learning bert model)
     
 <br/>
 
@@ -59,10 +59,10 @@ docker-compose up --build -d
 http://localhost:16000
 <br/><br/>
 ## 사용한 오픈소스 및 리소스들 ( Use opensources and resources )
-#### 모델 (모델)
+#### 모델 (Model)
 * [KoBert](https://github.com/SKTBrain/KoBERT) - KoBert (SKT Brain)
   
-#### 음악 파일 (music files)
+#### 음악 파일 (Music files)
 * [자멘도 뮤직](https://www.jamendo.com) [(저작권 정보)](https://www.jamendo.com/legal/licenses) (Jamendo Music (copyright information))  
 만약 불법적인 무언가가 있다면 알려주세요, 수정하겠습니다.  
 If there is anything illegal, please let me know and I will fix it.  
