@@ -82,5 +82,11 @@ If there is anything illegal, please let me know and I will fix it.
 ELK 스택이 켜지는 동안 음악 검색 기능이 동작하지 않습니다.  
 (When running for the first time or running again  
 Music search function does not work while ELK Stack is on.)  
-  
+
+만약 Node.js 컨테이너가 'exec user process caused: no such file or directory' 에러를 발생시키며 실행되지 않는 경우  
+(If the Node.js container does not run with an error 'exec user process caused: no such file or directory')  
+
+![image](https://user-images.githubusercontent.com/32836490/159600600-760f5844-1880-4991-9ecc-e3bd0f395c80.png)  
+"entrypoint.sh", "wait-for-it.sh" 두 개 파일의 라인 시퀀스를 "CRLF"에서 "LF"로 바꾼후 다시 빌드하시면 됩니다.  
+(Change the line sequence of the two files "entrypoint.sh" and "wait-for-it.sh" from "CRLF" to "LF" and then rebuild.)  
 <br/><br/>
