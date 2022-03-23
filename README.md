@@ -12,7 +12,7 @@
 <br/><br/>
 ## 시작하기 ( Getting Started )
 
-도커 환경으로 구성되어 있으며 서버를 구성하고싶다면 Docker만 설치하면 됩니다.
+도커 환경으로 구성되어 있으며 서버를 구성하고싶다면 Docker만 설치하면 됩니다.  
 (It is configured Docker environment and you only need to install Docker if you want to configure the server.)  
 <br/>
 ### 설치 ( installing and run )
@@ -30,7 +30,7 @@ cd {clone directory}/lyricsPlayer/docker-compose
 
 # 2-3) KoBert Model file download and paste
 Model-file-link : https://drive.google.com/drive/folders/1_pkwu_woK6jyi5S9YIEI5kYghzACAI84?usp=sharing
-# download file paste to "{clone directory}/lyricsPlayer/docker-compose/fastapi/models/"
+# download file paste to "{clone directory}/lyricsPlayer/docker-compose/fastapi/app/models/"
 # It should have the following structure
 # path : "{clone directory}/lyricsPlayer/docker-compose/fastapi/models/"
 # models
@@ -52,7 +52,7 @@ docker-compose up --build -d
   
 <br/><br/>
 ## 배포 ( Deployment )
-만약 위의 설치법을 보고 완료했다면 다음 주소로 들어가면됩니다.
+만약 위의 설치법을 보고 완료했다면 다음 주소로 들어가면됩니다.  
 (If you followed the above steps, you can enter the following address.)
   
   
@@ -78,9 +78,9 @@ If there is anything illegal, please let me know and I will fix it.
 #### The korean songs in the screenshots are samples and only the title, artist, and thumbnail, not the song file, were crawled.
 <br/><br/>
 ## 유의사항 ( Caution )
-최초 실행 혹은 재실행 시 
-ELK 스택이 켜지는 동안 음악 검색 기능이 동작하지 않습니다.
-(When running for the first time or running again
-Music search function does not work while ELK Stack is on.)
+최초 실행 혹은 재실행 시   
+ELK 스택이 켜지는 동안 음악 검색 기능이 동작하지 않습니다.  
+(When running for the first time or running again  
+Music search function does not work while ELK Stack is on.)  
   
 <br/><br/>
