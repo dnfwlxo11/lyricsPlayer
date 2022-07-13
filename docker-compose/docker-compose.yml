@@ -4,7 +4,7 @@ services:
     build:
       context: ./nodejs
     container_name: daein-nodejs
-    image: daein-lyrics-nodejs
+    image: nodejs
     restart: always
     environment:
       - TZ=Asia/Seoul
@@ -19,7 +19,8 @@ services:
     build:
       context: ./fastapi
     container_name: daein-fastapi
-    image: daein-lyrics-fastapi
+    image: fastapi
+    restart: always
     environment:
       - TZ=Asia/Seoul
     ports:
@@ -31,7 +32,7 @@ services:
       context: ./mariadb
       dockerfile: Dockerfile
     container_name: daein-mariadb
-    image: daein-lyrics-mariadb
+    image: mariadb
     restart: always
     environment: 
       - MYSQL_ROOT_PASSWORD=daein
@@ -48,7 +49,8 @@ services:
     build: 
       context: ./elasticsearch
       dockerfile: Dockerfile
-    image: daein-lyrics-elastic
+    image: elastic
+    restart: always
     container_name: daein-elastic
     ports:
       - "9200:9200"
@@ -66,7 +68,7 @@ services:
     build: 
       context: ./kibana
       dockerfile: Dockerfile
-    image: daein-lyrics-kibana
+    image: kibana
     container_name: daein-kibana
     ports:
       - "5601:5601"
@@ -78,7 +80,8 @@ services:
     build:
       context: ./logstash
       dockerfile: Dockerfile
-    image: daein-lyrics-logstash
+    image: logstash
+    restart: always
     container_name: daein-logstash
     volumes:
       - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
