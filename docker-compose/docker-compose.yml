@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web_server:
+  web-server:
     build:
       context: ./nodejs
     container_name: daein-nodejs
@@ -15,7 +15,7 @@ services:
       - audio_db
     networks:
       - elastic
-  ai_server:
+  ai-server:
     build:
       context: ./fastapi
     container_name: daein-fastapi
@@ -27,7 +27,7 @@ services:
       - "8000:8000"
     networks:
       - elastic
-  audio_db:
+  audio-db:
     build: 
       context: ./mariadb
       dockerfile: Dockerfile

@@ -5,6 +5,8 @@ from gensim.models import Doc2Vec
 from utils import kobert
 from fastapi.middleware.cors import CORSMiddleware
 
+gdown.download_folder('https://drive.google.com/drive/folders/1_pkwu_woK6jyi5S9YIEI5kYghzACAI84?usp=sharing', quiet=False)
+
 app = FastAPI()
 
 d2vmodel = Doc2Vec.load(os.path.join('./models', 'doc2vec.bin'))
