@@ -3,7 +3,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
-const http = require('http')
 const history = require('connect-history-api-fallback');
 
 const app = express();
@@ -44,31 +43,5 @@ app.use('/api/musician', musicianRouter);
 app.use('/api/album', albumRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/search', searchRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    next(createError(404));
-});
-
-// error handler
-app.use((err, req, res, next) => {
-    const msg = []
-    msg.push('\n======================= ERROR =======================')
-    msg.push(`Tracing: ${err.stack}`)
-    msg.push(`Message: ${err.toString()}`)
-    msg.push('======================= ERROR =======================\n')
-    console.error(msg.join('\n'))
-    res.status(err.status || 500).end()  
-})
-
-const server = http.createServer(app)
-server.listen(process.env.SERVER_PORT, process.env.SERVER_HOST || '0.0.0.0', (err)=>{    
-    console.log(`Server Started > HOST: ${process.env.SERVER_HOST}, PORT: ${process.env.SERVER_PORT}`)
-
-    if(err){    
-        console.error(err)
-        return
-    }  
-})
 
 module.exports = app;

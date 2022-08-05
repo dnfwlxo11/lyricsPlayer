@@ -1,25 +1,25 @@
 version: '3'
 services:
-  web-server:
+  daein-nodejs:
     build:
       context: ./nodejs
+    image: daein-lyrics-nodejs
     container_name: daein-nodejs
-    image: nodejs
     restart: always
     environment:
       - TZ=Asia/Seoul
     ports:
       - "16000:3000"
     depends_on:
-      - elasticsearch
-      - audio_db
+      - daein-elastic
+      - daein-mariadb
     networks:
       - elastic
-  ai-server:
+  daein-fastapi:
     build:
       context: ./fastapi
+    image: daein-lyrics-fastapi
     container_name: daein-fastapi
-    image: fastapi
     restart: always
     environment:
       - TZ=Asia/Seoul
@@ -27,12 +27,12 @@ services:
       - "8000:8000"
     networks:
       - elastic
-  audio-db:
+  daein-mariadb:
     build: 
       context: ./mariadb
       dockerfile: Dockerfile
+    image: daein-lyrics-mariadb
     container_name: daein-mariadb
-    image: mariadb
     restart: always
     environment: 
       - MYSQL_ROOT_PASSWORD=daein
@@ -40,18 +40,18 @@ services:
     ports:
       - "15000:3306"
     volumes:
-      - ./mariadb/app/db:/var/lib/mysql
-      - ./mariadb/app/backup:/backup
-      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./volumes/mariadb/app/db:/var/lib/mysql
+      - ./volumes/mariadb/app/backup:/backup
+      - ./volumes/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - elastic
-  elasticsearch:
+  daein-elastic:
     build: 
       context: ./elasticsearch
       dockerfile: Dockerfile
-    image: elastic
-    restart: always
+    image: daein-lyrics-elastic
     container_name: daein-elastic
+    restart: always
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -64,33 +64,34 @@ services:
         hard: -1
     networks:
       - elastic
-  kibana:
+  daein-kibana:
     build: 
       context: ./kibana
       dockerfile: Dockerfile
-    image: kibana
+    image: daein-lyrics-kibana
     container_name: daein-kibana
+    restart: always
     ports:
       - "5601:5601"
     depends_on:
-      - elasticsearch
+      - daein-elastic
     networks:
       - elastic
-  logstash:
+  daein-logstash:
     build:
       context: ./logstash
       dockerfile: Dockerfile
-    image: logstash
-    restart: always
+    image: daein-lyrics-logstash
     container_name: daein-logstash
+    restart: always
     volumes:
-      - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
-      - "./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
-      - "./logstash/driver/mariadb-java-client-2.7.5.jar:/opt/logstash/vendor/jar/jdbc/mariadb-java-client-2.7.5.jar"
+      - "./volumes/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "./volumes/logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+      - "./volumes/logstash/driver/mariadb-java-client-2.7.5.jar:/opt/logstash/vendor/jar/jdbc/mariadb-java-client-2.7.5.jar"
     ports:
       - "5001:5001"
     depends_on:
-      - elasticsearch
+      - daein-elastic
     networks:
       - elastic
 

@@ -47,7 +47,7 @@ class Elastic {
             }
         };
 
-        this.client = new Client({ node: 'http://elasticsearch:9200' });
+        this.client = new Client({ node: 'http://daein-elastic:9200' });
         await this.createIndex('song', JSON.stringify(body));
     }
 
