@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo `./wait-for-it.sh daein-elastic:9200 -t 600 -- echo "Check ElasticSearch"`
+echo `./wait-for-it.sh elasticsearch:9200 -t 600 -- echo "Check ElasticSearch"`
 
 echo "git setting start"
 
@@ -31,7 +31,7 @@ EOF
 cat > .env << EOF
 PORT=3000
 HOST=localhost
-DB_HOST=daein-mariadb
+DB_HOST=audio-db
 DB_PORT=3306
 DB_USER=root
 DB_PASS=daein
