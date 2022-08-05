@@ -30,7 +30,6 @@ EOF
 
 cat > .env << EOF
 SERVER_PORT=3000
-SERVER_HOST=localhost
 DB_HOST=audio-db
 DB_PORT=3306
 DB_USER=root
