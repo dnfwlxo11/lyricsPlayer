@@ -35,7 +35,7 @@ DB_PORT=15000
 DB_USER=root
 DB_PASS=daein
 DB_NAME=lyrics_player
-SECRET_TOKEN=secret.key
+SECRET_TOKEN=daein.dev
 EOF
 
 npm run dev
