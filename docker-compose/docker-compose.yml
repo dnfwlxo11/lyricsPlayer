@@ -3,7 +3,7 @@ services:
   daein-nodejs:
     build:
       context: ./nodejs
-    image: daein-lyrics-nodejs
+    image: dnfwlxo11/daein-lyrics-nodejs:1.2.0
     container_name: daein-nodejs
     restart: always
     environment:
@@ -18,7 +18,7 @@ services:
   daein-fastapi:
     build:
       context: ./fastapi
-    image: daein-lyrics-fastapi
+    image: dnfwlxo11/daein-lyrics-fastapi:1.2.3
     container_name: daein-fastapi
     restart: always
     environment:
@@ -31,7 +31,7 @@ services:
     build: 
       context: ./mariadb
       dockerfile: Dockerfile
-    image: daein-lyrics-mariadb
+    image: dnfwlxo11/daein-lyrics-mariadb:1.2.0
     container_name: daein-mariadb
     restart: always
     environment: 
@@ -49,7 +49,7 @@ services:
     build: 
       context: ./elasticsearch
       dockerfile: Dockerfile
-    image: daein-lyrics-elastic
+    image: dnfwlxo11/daein-lyrics-elastic:1.2.0
     container_name: daein-elastic
     restart: always
     ports:
@@ -68,7 +68,7 @@ services:
     build: 
       context: ./kibana
       dockerfile: Dockerfile
-    image: daein-lyrics-kibana
+    image: dnfwlxo11/daein-lyrics-kibana:1.2.0
     container_name: daein-kibana
     restart: always
     ports:
@@ -81,7 +81,7 @@ services:
     build:
       context: ./logstash
       dockerfile: Dockerfile
-    image: daein-lyrics-logstash
+    image: dnfwlxo11/daein-lyrics-logstash:1.2.0
     container_name: daein-logstash
     restart: always
     volumes:

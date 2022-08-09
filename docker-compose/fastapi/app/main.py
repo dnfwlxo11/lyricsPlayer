@@ -4,12 +4,8 @@ from fastapi import FastAPI
 from gensim.models import Doc2Vec
 from utils import kobert
 from fastapi.middleware.cors import CORSMiddleware
-import gdown
 
 app = FastAPI()
-
-if not os.path.isfile('./models/kobert_from_pretrained/pytorch_model.bin'):
-    gdown.download_folder('https://drive.google.com/drive/folders/1_pkwu_woK6jyi5S9YIEI5kYghzACAI84', quiet=True)
 d2vmodel = Doc2Vec.load(os.path.join('./models', 'doc2vec.bin'))
 
 @app.get("/ai")

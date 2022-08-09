@@ -3,7 +3,7 @@ const axios = require('axios');
 const router = express.Router();
 
 const api = axios.create({
-    baseURL: 'http://daein-fastapi:8000',
+    baseURL: 'daein-fastapi:8000',
     timeout: 60000
 });
 
