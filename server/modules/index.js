@@ -4,6 +4,6 @@ const { auth } = require('./auth')
 
 module.exports = {
     Database: new Database,
-    Elastic: new Elastic,
+    // Elastic: new Elastic,
     Auth: auth
 }
