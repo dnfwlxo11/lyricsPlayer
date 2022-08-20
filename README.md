@@ -58,6 +58,8 @@ docker-compose up --build -d
   
 http://localhost:16000
 <br/><br/>
+[사용해보기](https://lyrics.daein.dev)
+<br/><br/>
 ## 사용한 오픈소스 및 리소스들 ( Use opensources and resources )
 #### 모델 (Model)
 * [KoBert](https://github.com/SKTBrain/KoBERT) - KoBert (SKT Brain)
